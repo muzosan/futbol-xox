@@ -1,0 +1,373 @@
+[
+  {
+    "id": "Q495299",
+    "ad": "Galatasaray",
+    "arama": "Galatasaray",
+    "lig": "Süper Lig",
+    "oyuncu_sayisi": 658
+  },
+  {
+    "id": "Q6601875",
+    "ad": "Fenerbahçe",
+    "arama": "Fenerbahçe",
+    "lig": "Süper Lig",
+    "oyuncu_sayisi": 622
+  },
+  {
+    "id": "Q172567",
+    "ad": "Beşiktaş",
+    "arama": "Beşiktaş",
+    "lig": "Süper Lig",
+    "oyuncu_sayisi": 439
+  },
+  {
+    "id": "Q192641",
+    "ad": "Trabzonspor",
+    "arama": "Trabzonspor",
+    "lig": "Süper Lig",
+    "oyuncu_sayisi": 422
+  },
+  {
+    "id": "Q857938",
+    "ad": "İstanbul Başakşehir FK",
+    "arama": "İstanbul Başakşehir",
+    "lig": "Süper Lig",
+    "oyuncu_sayisi": 179
+  },
+  {
+    "id": "Q203573",
+    "ad": "Bursaspor",
+    "arama": "Bursaspor",
+    "lig": "Süper Lig",
+    "oyuncu_sayisi": 326
+  },
+  {
+    "id": "Q372599",
+    "ad": "Sivasspor",
+    "arama": "Sivasspor",
+    "lig": "Süper Lig",
+    "oyuncu_sayisi": 228
+  },
+  {
+    "id": "Q138230",
+    "ad": "Kasımpaşa SK",
+    "arama": "Kasımpaşa",
+    "lig": "Süper Lig",
+    "oyuncu_sayisi": 199
+  },
+  {
+    "id": "Q43710",
+    "ad": "Antalyaspor",
+    "arama": "Antalyaspor",
+    "lig": "Süper Lig",
+    "oyuncu_sayisi": 277
+  },
+  {
+    "id": "Q18656",
+    "ad": "Manchester United FC",
+    "arama": "Manchester United F.C.",
+    "lig": "Premier League",
+    "oyuncu_sayisi": 1226
+  },
+  {
+    "id": "Q1130849",
+    "ad": "Liverpool FC",
+    "arama": "Liverpool F.C.",
+    "lig": "Premier League",
+    "oyuncu_sayisi": 1083
+  },
+  {
+    "id": "Q9617",
+    "ad": "Arsenal FC",
+    "arama": "Arsenal F.C.",
+    "lig": "Premier League",
+    "oyuncu_sayisi": 1067
+  },
+  {
+    "id": "Q9616",
+    "ad": "Chelsea FC",
+    "arama": "Chelsea F.C.",
+    "lig": "Premier League",
+    "oyuncu_sayisi": 841
+  },
+  {
+    "id": "Q50602",
+    "ad": "Manchester City FC",
+    "arama": "Manchester City F.C.",
+    "lig": "Premier League",
+    "oyuncu_sayisi": 1109
+  },
+  {
+    "id": "Q18741",
+    "ad": "Tottenham Hotspur FC",
+    "arama": "Tottenham Hotspur F.C.",
+    "lig": "Premier League",
+    "oyuncu_sayisi": 1001
+  },
+  {
+    "id": "Q5794",
+    "ad": "Everton FC",
+    "arama": "Everton F.C.",
+    "lig": "Premier League",
+    "oyuncu_sayisi": 1059
+  },
+  {
+    "id": "Q18716",
+    "ad": "Newcastle United FC",
+    "arama": "Newcastle United F.C.",
+    "lig": "Premier League",
+    "oyuncu_sayisi": 934
+  },
+  {
+    "id": "Q18711",
+    "ad": "Aston Villa FC",
+    "arama": "Aston Villa F.C.",
+    "lig": "Premier League",
+    "oyuncu_sayisi": 1042
+  },
+  {
+    "id": "Q18747",
+    "ad": "West Ham United FC",
+    "arama": "West Ham United F.C.",
+    "lig": "Premier League",
+    "oyuncu_sayisi": 1019
+  },
+  {
+    "id": "Q8682",
+    "ad": "Real Madrid CF",
+    "arama": "Real Madrid CF",
+    "lig": "La Liga",
+    "oyuncu_sayisi": 776
+  },
+  {
+    "id": "Q7156",
+    "ad": "FC Barcelona",
+    "arama": "FC Barcelona",
+    "lig": "La Liga",
+    "oyuncu_sayisi": 1287
+  },
+  {
+    "id": "Q8701",
+    "ad": "Atlético Madrid",
+    "arama": "Atlético Madrid",
+    "lig": "La Liga",
+    "oyuncu_sayisi": 762
+  },
+  {
+    "id": "Q10329",
+    "ad": "Sevilla FC",
+    "arama": "Sevilla FC",
+    "lig": "La Liga",
+    "oyuncu_sayisi": 514
+  },
+  {
+    "id": "Q10333",
+    "ad": "Valencia CF",
+    "arama": "Valencia CF",
+    "lig": "La Liga",
+    "oyuncu_sayisi": 452
+  },
+  {
+    "id": "Q12297",
+    "ad": "Villarreal CF",
+    "arama": "Villarreal CF",
+    "lig": "La Liga",
+    "oyuncu_sayisi": 320
+  },
+  {
+    "id": "Q8723",
+    "ad": "Real Betis",
+    "arama": "Real Betis",
+    "lig": "La Liga",
+    "oyuncu_sayisi": 570
+  },
+  {
+    "id": "Q8687",
+    "ad": "Athletic Bilbao",
+    "arama": "Athletic Bilbao",
+    "lig": "La Liga",
+    "oyuncu_sayisi": 744
+  },
+  {
+    "id": "Q10315",
+    "ad": "Real Sociedad",
+    "arama": "Real Sociedad",
+    "lig": "La Liga",
+    "oyuncu_sayisi": 535
+  },
+  {
+    "id": "Q1422",
+    "ad": "Juventus FC",
+    "arama": "Juventus FC",
+    "lig": "Serie A",
+    "oyuncu_sayisi": 1097
+  },
+  {
+    "id": "Q1543",
+    "ad": "A.C. Milan",
+    "arama": "AC Milan",
+    "lig": "Serie A",
+    "oyuncu_sayisi": 1221
+  },
+  {
+    "id": "Q631",
+    "ad": "FC Internazionale Milano",
+    "arama": "Inter Milan",
+    "lig": "Serie A",
+    "oyuncu_sayisi": 1362
+  },
+  {
+    "id": "Q2739",
+    "ad": "AS Roma",
+    "arama": "AS Roma",
+    "lig": "Serie A",
+    "oyuncu_sayisi": 972
+  },
+  {
+    "id": "Q2609",
+    "ad": "SS Lazio",
+    "arama": "SS Lazio",
+    "lig": "Serie A",
+    "oyuncu_sayisi": 975
+  },
+  {
+    "id": "Q2641",
+    "ad": "SSC Napoli",
+    "arama": "SSC Napoli",
+    "lig": "Serie A",
+    "oyuncu_sayisi": 877
+  },
+  {
+    "id": "Q2052",
+    "ad": "ACF Fiorentina",
+    "arama": "ACF Fiorentina",
+    "lig": "Serie A",
+    "oyuncu_sayisi": 1038
+  },
+  {
+    "id": "Q1886",
+    "ad": "Atalanta BC",
+    "arama": "Atalanta BC",
+    "lig": "Serie A",
+    "oyuncu_sayisi": 984
+  },
+  {
+    "id": "Q15789",
+    "ad": "FC Bayern Münih",
+    "arama": "FC Bayern Munich",
+    "lig": "Bundesliga",
+    "oyuncu_sayisi": 771
+  },
+  {
+    "id": "Q41420",
+    "ad": "Borussia Dortmund",
+    "arama": "Borussia Dortmund",
+    "lig": "Bundesliga",
+    "oyuncu_sayisi": 463
+  },
+  {
+    "id": "Q104761",
+    "ad": "Bayer 04 Leverkusen",
+    "arama": "Bayer 04 Leverkusen",
+    "lig": "Bundesliga",
+    "oyuncu_sayisi": 456
+  },
+  {
+    "id": "Q32494",
+    "ad": "FC Schalke 04",
+    "arama": "FC Schalke 04",
+    "lig": "Bundesliga",
+    "oyuncu_sayisi": 578
+  },
+  {
+    "id": "Q4512",
+    "ad": "VfB Stuttgart",
+    "arama": "VfB Stuttgart",
+    "lig": "Bundesliga",
+    "oyuncu_sayisi": 733
+  },
+  {
+    "id": "Q51974",
+    "ad": "Hamburger SV",
+    "arama": "Hamburger SV",
+    "lig": "Bundesliga",
+    "oyuncu_sayisi": 618
+  },
+  {
+    "id": "Q51976",
+    "ad": "SV Werder Bremen",
+    "arama": "SV Werder Bremen",
+    "lig": "Bundesliga",
+    "oyuncu_sayisi": 447
+  },
+  {
+    "id": "Q101959",
+    "ad": "Borussia Mönchengladbach",
+    "arama": "Borussia Mönchengladbach",
+    "lig": "Bundesliga",
+    "oyuncu_sayisi": 445
+  },
+  {
+    "id": "Q38245",
+    "ad": "Eintracht Frankfurt",
+    "arama": "Eintracht Frankfurt",
+    "lig": "Bundesliga",
+    "oyuncu_sayisi": 553
+  },
+  {
+    "id": "Q483020",
+    "ad": "Paris Saint-Germain",
+    "arama": "Paris Saint-Germain F.C.",
+    "lig": "Ligue 1",
+    "oyuncu_sayisi": 547
+  },
+  {
+    "id": "Q132885",
+    "ad": "Olympique de Marseille",
+    "arama": "Olympique de Marseille",
+    "lig": "Ligue 1",
+    "oyuncu_sayisi": 838
+  },
+  {
+    "id": "Q704",
+    "ad": "Olympique Lyonnais",
+    "arama": "Olympique Lyonnais",
+    "lig": "Ligue 1",
+    "oyuncu_sayisi": 595
+  },
+  {
+    "id": "Q180305",
+    "ad": "AS Monaco FC",
+    "arama": "AS Monaco FC",
+    "lig": "Ligue 1",
+    "oyuncu_sayisi": 612
+  },
+  {
+    "id": "Q19516",
+    "ad": "Lille OSC",
+    "arama": "Lille OSC",
+    "lig": "Ligue 1",
+    "oyuncu_sayisi": 569
+  },
+  {
+    "id": "Q185163",
+    "ad": "OGC Nice",
+    "arama": "OGC Nice",
+    "lig": "Ligue 1",
+    "oyuncu_sayisi": 576
+  },
+  {
+    "id": "Q19509",
+    "ad": "Stade Rennais FC",
+    "arama": "Stade Rennais F.C.",
+    "lig": "Ligue 1",
+    "oyuncu_sayisi": 686
+  },
+  {
+    "id": "Q1423118",
+    "ad": "Göztepe SK",
+    "arama": "Göztepe",
+    "lig": "Süper Lig",
+    "oyuncu_sayisi": 274
+  }
+]
