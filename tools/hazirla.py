@@ -6,7 +6,7 @@ Kullanım (tools klasöründe):
     py hazirla.py
 
 Yaptıkları:
-    1) Doğru cevap olabilecek oyuncuların (2+ kulüp) İngilizce isimlerini Wikidata'dan çeker
+    1) Wikidata oyuncularının İngilizce isimlerini çeker
        -> arama kutusu hem "Mkhitaryan" hem "Mhitaryan" yazımını tanır
     2) Kulüplere kısa, okunaklı isimler verir (FC Internazionale Milano -> Inter)
     3) Dosyaları küçültüp ../assets/data/ klasörüne yazar
@@ -88,9 +88,11 @@ def main():
     oyuncular = yukle(os.path.join(VERI, "players.json"))
     tablolar = yukle(os.path.join(VERI, "grids.json"))
 
-    # Sadece en az 2 kulübümüzde oynamış oyuncular doğru cevap olabilir
-    adaylar = [o for o in oyuncular if len(o["kulupler"]) >= 2]
-    isimler = ingilizce_isimleri_cek([o["id"] for o in adaylar])
+    # Arama kutusu herkesi bulsun: tek kulüplü oyuncular da yazılabilmeli,
+    # yanlışsa oyun "yanlış" desin. (Transfermarkt'tan gelen "TM..." ID'lerin
+    # isimleri zaten standart yazımda, onlar için Wikidata'ya sorulmaz.)
+    adaylar = oyuncular
+    isimler = ingilizce_isimleri_cek([o["id"] for o in adaylar if o["id"].startswith("Q")])
 
     app_oyuncular = []
     for o in adaylar:
