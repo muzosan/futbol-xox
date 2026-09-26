@@ -9,7 +9,6 @@ enum Mark { x, o }
 extension MarkInfo on Mark {
   Mark get other => this == Mark.x ? Mark.o : Mark.x;
   String get symbol => this == Mark.x ? 'X' : 'O';
-  String get playerName => this == Mark.x ? 'Oyuncu 1' : 'Oyuncu 2';
 }
 
 enum GuessResult { correct, wrong, alreadyUsed, invalid }
@@ -29,12 +28,16 @@ class GameController extends ChangeNotifier {
     required this.grid,
     this.turnSeconds = 30,
     this.onTimeout,
+    this.names = const {Mark.x: 'Oyuncu 1', Mark.o: 'Oyuncu 2'},
   }) : secondsLeft = turnSeconds {
     _startTimer();
   }
 
   final PuzzleGrid grid;
   final int turnSeconds;
+  final Map<Mark, String> names;
+
+  String nameOf(Mark mark) => names[mark] ?? mark.symbol;
 
   /// Süre dolunca çağrılır (sırası geçen oyuncu parametre olarak gelir).
   final void Function(Mark who)? onTimeout;
@@ -42,7 +45,7 @@ class GameController extends ChangeNotifier {
   /// Üst üste bu kadar tur kimse doğru cevap veremezse oyun berabere biter.
   static const int maxTurnsWithoutProgress = 6;
 
-  static const List<List<int>> _lines = [
+  static const List<List<int>> lines = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8], // yatay
     [0, 3, 6], [1, 4, 7], [2, 5, 8], // dikey
     [0, 4, 8], [2, 4, 6], // çapraz
@@ -110,7 +113,7 @@ class GameController extends ChangeNotifier {
   }
 
   void _checkGameOver() {
-    for (final line in _lines) {
+    for (final line in lines) {
       final first = cells[line[0]];
       if (first != null &&
           cells[line[1]]?.owner == first.owner &&

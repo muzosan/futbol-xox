@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../data/models.dart';
 import '../data/repository.dart';
+import '../theme.dart';
 
 /// Oyuncu arama paneli. Seçilen oyuncuyla kapanır (Navigator.pop ile döner).
 /// Not: Liste cevabı ele vermez; aranan isimle eşleşen herkesi gösterir.
@@ -43,8 +44,8 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
     final keyboard = media.viewInsets.bottom;
-    final height = max(220.0, min(media.size.height * 0.6,
-        media.size.height - keyboard - 80));
+    final height = max(220.0,
+        min(media.size.height * 0.6, media.size.height - keyboard - 80));
 
     return Padding(
       padding: EdgeInsets.only(bottom: keyboard),
@@ -53,14 +54,19 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
-              child: Text(
-                '${widget.rowClub.name}  ×  ${widget.colClub.name}',
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium
-                    ?.copyWith(fontWeight: FontWeight.bold),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(child: _ClubName(widget.rowClub.name)),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text('×',
+                        style: TextStyle(
+                            fontSize: 20, color: AppColors.textMuted)),
+                  ),
+                  Flexible(child: _ClubName(widget.colClub.name)),
+                ],
               ),
             ),
             Padding(
@@ -70,11 +76,22 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
                 autofocus: true,
                 onChanged: _onChanged,
                 textInputAction: TextInputAction.search,
+                style: const TextStyle(color: AppColors.text),
                 decoration: InputDecoration(
                   hintText: 'Oyuncu ara...',
-                  prefixIcon: const Icon(Icons.search),
+                  hintStyle: const TextStyle(color: AppColors.textMuted),
+                  prefixIcon:
+                      const Icon(Icons.search, color: AppColors.textMuted),
+                  filled: true,
+                  fillColor: AppColors.surfaceHigh,
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: const BorderSide(color: AppColors.primary),
+                  ),
                 ),
               ),
             ),
@@ -89,6 +106,7 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
                               ? 'İki kulüpte de oynamış bir futbolcu yaz'
                               : 'Oyuncu bulunamadı',
                           textAlign: TextAlign.center,
+                          style: const TextStyle(color: AppColors.textMuted),
                         ),
                       ),
                     )
@@ -103,9 +121,14 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
                         ].join(' · ');
                         return ListTile(
                           enabled: !used,
-                          leading: const Icon(Icons.person_outline),
+                          leading: const Icon(Icons.person_outline,
+                              color: AppColors.textMuted),
                           title: Text(p.name),
-                          subtitle: details.isEmpty ? null : Text(details),
+                          subtitle: details.isEmpty
+                              ? null
+                              : Text(details,
+                                  style: const TextStyle(
+                                      color: AppColors.textMuted)),
                           onTap: used ? null : () => Navigator.pop(context, p),
                         );
                       },
@@ -113,6 +136,26 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ClubName extends StatelessWidget {
+  const _ClubName(this.name);
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      name,
+      textAlign: TextAlign.center,
+      overflow: TextOverflow.ellipsis,
+      style: const TextStyle(
+        fontSize: 17,
+        fontWeight: FontWeight.w800,
+        color: AppColors.text,
       ),
     );
   }

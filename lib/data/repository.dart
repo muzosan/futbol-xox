@@ -16,6 +16,7 @@ class Repository {
 
   final Random _random = Random();
   String? _lastGridId;
+  final Map<String, List<Player>> _answerCache = {};
 
   static Future<Repository> load() async {
     final files = await Future.wait([
@@ -70,11 +71,20 @@ class Repository {
     return grid;
   }
 
+  /// İki kulüpte de oynamış bütün oyuncular (en bilinen başta). Sonuç önbelleğe alınır.
+  List<Player> answers(String clubA, String clubB) {
+    final key = clubA.compareTo(clubB) < 0 ? '$clubA|$clubB' : '$clubB|$clubA';
+    return _answerCache.putIfAbsent(
+      key,
+      () => players
+          .where((p) => p.clubs.contains(clubA) && p.clubs.contains(clubB))
+          .toList(),
+    );
+  }
+
   /// Oyun sonunda boş kalan hücreler için örnek cevap (en bilinen oyuncu).
   Player? exampleAnswer(String clubA, String clubB) {
-    for (final p in players) {
-      if (p.clubs.contains(clubA) && p.clubs.contains(clubB)) return p;
-    }
-    return null;
+    final list = answers(clubA, clubB);
+    return list.isEmpty ? null : list.first;
   }
 }

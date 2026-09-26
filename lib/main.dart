@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'screens/home_screen.dart';
+import 'theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,13 +16,7 @@ class FutbolXoxApp extends StatelessWidget {
     return MaterialApp(
       title: 'Futbol XOX',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1B8A4B),
-          brightness: Brightness.dark,
-        ),
-      ),
+      theme: buildAppTheme(),
       home: const HomeScreen(),
     );
   }
