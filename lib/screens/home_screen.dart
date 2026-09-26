@@ -67,7 +67,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }
               if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CircularProgressIndicator(color: AppColors.primary),
+                      SizedBox(height: 16),
+                      Text('Oyuncular yükleniyor…',
+                          style: TextStyle(color: AppColors.textMuted)),
+                    ],
+                  ),
+                );
               }
               return _buildMenu(snapshot.data!);
             },

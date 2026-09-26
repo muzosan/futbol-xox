@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart' show compute;
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'models.dart';
@@ -24,22 +25,11 @@ class Repository {
       rootBundle.loadString('assets/data/players.json'),
       rootBundle.loadString('assets/data/grids.json'),
     ]);
-
-    final clubList = (jsonDecode(files[0]) as List)
-        .map((e) => Club.fromJson(e as Map<String, dynamic>));
-    final playerList = (jsonDecode(files[1]) as List)
-        .map((e) => Player.fromJson(e as Map<String, dynamic>))
-        .toList()
-      ..sort((a, b) => b.popularity.compareTo(a.popularity));
-    final gridList = (jsonDecode(files[2]) as List)
-        .map((e) => PuzzleGrid.fromJson(e as Map<String, dynamic>))
-        .toList();
-
-    return Repository._(
-      {for (final c in clubList) c.id: c},
-      playerList,
-      gridList,
-    );
+    // JSON çözme ve 32.000 oyuncunun arama anahtarlarını hazırlama işi ayrı bir
+    // iş parçacığında (isolate) yapılır; böylece açılışta arayüz donmaz.
+    // (Web'de isolate olmadığı için aynı iş normal şekilde çalışır.)
+    final parsed = await compute(_parseAll, files);
+    return Repository._(parsed.clubs, parsed.players, parsed.grids);
   }
 
   Club club(String id) => clubs[id]!;
@@ -87,4 +77,25 @@ class Repository {
     final list = answers(clubA, clubB);
     return list.isEmpty ? null : list.first;
   }
+}
+
+class _ParsedData {
+  const _ParsedData(this.clubs, this.players, this.grids);
+  final Map<String, Club> clubs;
+  final List<Player> players;
+  final List<PuzzleGrid> grids;
+}
+
+/// compute() ile çağrılabilmesi için sınıf dışında (top-level) tanımlı.
+_ParsedData _parseAll(List<String> files) {
+  final clubList = (jsonDecode(files[0]) as List)
+      .map((e) => Club.fromJson(e as Map<String, dynamic>));
+  final playerList = (jsonDecode(files[1]) as List)
+      .map((e) => Player.fromJson(e as Map<String, dynamic>))
+      .toList()
+    ..sort((a, b) => b.popularity.compareTo(a.popularity));
+  final gridList = (jsonDecode(files[2]) as List)
+      .map((e) => PuzzleGrid.fromJson(e as Map<String, dynamic>))
+      .toList();
+  return _ParsedData({for (final c in clubList) c.id: c}, playerList, gridList);
 }
