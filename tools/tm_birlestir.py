@@ -207,6 +207,7 @@ def main():
             if o["dogum_yili"] is None:
                 o["dogum_yili"] = bilgi["yil"]
             o["kaynak"] = "wd+tm"
+            o["tm"] = tm_id  # kariyer_hazirla.py için
         else:
             yeni_oyuncu += 1
             wd_oyuncular[f"TM{tm_id}"] = {

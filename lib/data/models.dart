@@ -87,3 +87,24 @@ class PuzzleGrid {
             .toList(),
       );
 }
+
+/// Kariyerde bir durak: kulüp adı ve katıldığı yıl (bilinmiyorsa null).
+class CareerStep {
+  const CareerStep(this.club, this.year);
+  final String club;
+  final int? year;
+}
+
+class Career {
+  const Career(this.playerId, this.steps);
+
+  final String playerId;
+  final List<CareerStep> steps; // kronolojik sırayla
+
+  factory Career.fromJson(Map<String, dynamic> json) => Career(
+        json['id'] as String,
+        (json['c'] as List)
+            .map((s) => CareerStep((s as List)[0] as String, s[1] as int?))
+            .toList(),
+      );
+}

@@ -1,19 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 
 import '../data/models.dart';
+import '../data/repository.dart';
+import 'engine/common.dart';
+import 'engine/xox_engine.dart';
+import 'turn_timer.dart';
 
-enum Mark { x, o }
-
-extension MarkInfo on Mark {
-  Mark get other => this == Mark.x ? Mark.o : Mark.x;
-  String get symbol => this == Mark.x ? 'X' : 'O';
-}
-
-enum GuessResult { correct, wrong, alreadyUsed, invalid }
-
-enum EndReason { line, boardFull, stalemate }
+export 'engine/common.dart';
+export 'engine/xox_engine.dart' show EndReason;
 
 class FilledCell {
   const FilledCell(this.player, this.owner);
@@ -21,135 +15,91 @@ class FilledCell {
   final Mark owner;
 }
 
-/// Oyunun bütün kuralları burada. Ekran sadece bu sınıfı dinler ve çizer.
-/// Online moda geçince aynı kurallar sunucu tarafında da kullanılacak.
-class GameController extends ChangeNotifier {
+/// Yerel XOX oyunu: kuralları [XoxEngine]'e bırakır, üstüne zamanlayıcı ekler
+/// ve ekranın ihtiyaç duyduğu bilgileri (oyuncu isimleri vb.) sağlar.
+class GameController extends ChangeNotifier with TurnTimer {
   GameController({
+    required this.repo,
     required this.grid,
     this.turnSeconds = 30,
     this.onTimeout,
     this.names = const {Mark.x: 'Oyuncu 1', Mark.o: 'Oyuncu 2'},
-  }) : secondsLeft = turnSeconds {
-    _startTimer();
+  }) : engine = XoxEngine(
+          gridId: grid.id,
+          rows: grid.rows,
+          cols: grid.cols,
+          clubsOf: repo.clubsOf,
+        ) {
+    startTurnTimer();
   }
 
+  static const List<List<int>> lines = XoxEngine.lines;
+  static const int maxTurnsWithoutProgress = XoxEngine.maxTurnsWithoutProgress;
+
+  final Repository repo;
   final PuzzleGrid grid;
+  @override
   final int turnSeconds;
+  final void Function(Mark who)? onTimeout;
   final Map<Mark, String> names;
+  final XoxEngine engine;
 
   String nameOf(Mark mark) => names[mark] ?? mark.symbol;
 
-  /// Süre dolunca çağrılır (sırası geçen oyuncu parametre olarak gelir).
-  final void Function(Mark who)? onTimeout;
+  List<FilledCell?> get cells => [
+        for (final c in engine.cells)
+          c == null ? null : FilledCell(repo.playerById(c.playerId)!, c.owner),
+      ];
 
-  /// Üst üste bu kadar tur kimse doğru cevap veremezse oyun berabere biter.
-  static const int maxTurnsWithoutProgress = 6;
+  Set<String> get usedPlayerIds => engine.usedPlayerIds;
+  Mark get current => engine.current;
+  int get turnNumber => engine.turnNumber;
+  Mark? get winner => engine.winner;
+  bool get isDraw => engine.isDraw;
+  bool get isOver => engine.isOver;
+  List<int>? get winningLine => engine.winningLine;
+  EndReason? get endReason => engine.endReason;
 
-  static const List<List<int>> lines = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], // yatay
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], // dikey
-    [0, 4, 8], [2, 4, 6], // çapraz
-  ];
+  String rowClubId(int cell) => engine.rowClubId(cell);
+  String colClubId(int cell) => engine.colClubId(cell);
 
-  final List<FilledCell?> cells = List<FilledCell?>.filled(9, null);
-  final Set<String> usedPlayerIds = {};
-
-  Mark current = Mark.x;
-  int turnNumber = 0;
-  int secondsLeft;
-
-  Mark? winner;
-  bool isDraw = false;
-  List<int>? winningLine;
-  EndReason? endReason;
-
-  int _turnsWithoutProgress = 0;
-  Timer? _timer;
-
-  bool get isOver => winner != null || isDraw;
-
-  String rowClubId(int cell) => grid.rows[cell ~/ 3];
-  String colClubId(int cell) => grid.cols[cell % 3];
-
-  int cellCount(Mark mark) => cells.where((c) => c?.owner == mark).length;
-
-  bool isCorrect(Player player, int cell) =>
-      player.clubs.contains(rowClubId(cell)) &&
-      player.clubs.contains(colClubId(cell));
+  int cellCount(Mark mark) =>
+      engine.cells.where((c) => c?.owner == mark).length;
 
   GuessResult guess(int cell, Player player) {
-    if (isOver || cells[cell] != null) return GuessResult.invalid;
-    if (usedPlayerIds.contains(player.id)) return GuessResult.alreadyUsed;
-
-    if (!isCorrect(player, cell)) {
-      _endTurn(progress: false);
-      return GuessResult.wrong;
+    final result = engine.guess(cell, player.id);
+    if (result == GuessResult.correct || result == GuessResult.wrong) {
+      _afterMove();
     }
-
-    cells[cell] = FilledCell(player, current);
-    usedPlayerIds.add(player.id);
-    _endTurn(progress: true);
-    return GuessResult.correct;
+    return result;
   }
 
   void pass() {
     if (isOver) return;
-    _endTurn(progress: false);
+    engine.pass();
+    _afterMove();
   }
 
-  void _endTurn({required bool progress}) {
-    _turnsWithoutProgress = progress ? 0 : _turnsWithoutProgress + 1;
-    _checkGameOver();
-
-    if (isOver) {
-      _timer?.cancel();
+  void _afterMove() {
+    if (engine.isOver) {
+      stopTurnTimer();
     } else {
-      current = current.other;
-      turnNumber++;
-      secondsLeft = turnSeconds;
-      _startTimer();
+      startTurnTimer();
     }
     notifyListeners();
   }
 
-  void _checkGameOver() {
-    for (final line in lines) {
-      final first = cells[line[0]];
-      if (first != null &&
-          cells[line[1]]?.owner == first.owner &&
-          cells[line[2]]?.owner == first.owner) {
-        winner = first.owner;
-        winningLine = line;
-        endReason = EndReason.line;
-        return;
-      }
-    }
-    if (cells.every((c) => c != null)) {
-      isDraw = true;
-      endReason = EndReason.boardFull;
-    } else if (_turnsWithoutProgress >= maxTurnsWithoutProgress) {
-      isDraw = true;
-      endReason = EndReason.stalemate;
-    }
-  }
-
-  void _startTimer() {
-    _timer?.cancel();
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      secondsLeft--;
-      if (secondsLeft <= 0) {
-        final who = current;
-        _endTurn(progress: false);
-        onTimeout?.call(who);
-      } else {
-        notifyListeners();
-      }
-    });
+  @override
+  void onTurnExpired() {
+    final who = engine.current;
+    engine.pass();
+    _afterMove();
+    onTimeout?.call(who);
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    stopTurnTimer();
     super.dispose();
   }
 }

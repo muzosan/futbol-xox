@@ -12,14 +12,16 @@ class PlayerSearchSheet extends StatefulWidget {
   const PlayerSearchSheet({
     super.key,
     required this.repo,
-    required this.rowClub,
-    required this.colClub,
+    required this.title,
+    required this.hint,
     required this.usedIds,
   });
 
   final Repository repo;
-  final Club rowClub;
-  final Club colClub;
+  final String title;
+
+  /// Arama kutusu boşken gösterilen açıklama
+  final String hint;
   final Set<String> usedIds;
 
   @override
@@ -55,18 +57,16 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(child: _ClubName(widget.rowClub.name)),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text('×',
-                        style: TextStyle(
-                            fontSize: 20, color: AppColors.textMuted)),
-                  ),
-                  Flexible(child: _ClubName(widget.colClub.name)),
-                ],
+              child: Text(
+                widget.title,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.text,
+                ),
               ),
             ),
             Padding(
@@ -103,7 +103,7 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
                         padding: const EdgeInsets.all(24),
                         child: Text(
                           _controller.text.trim().length < 2
-                              ? 'İki kulüpte de oynamış bir futbolcu yaz'
+                              ? widget.hint
                               : 'Oyuncu bulunamadı',
                           textAlign: TextAlign.center,
                           style: const TextStyle(color: AppColors.textMuted),
@@ -136,26 +136,6 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _ClubName extends StatelessWidget {
-  const _ClubName(this.name);
-
-  final String name;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      name,
-      textAlign: TextAlign.center,
-      overflow: TextOverflow.ellipsis,
-      style: const TextStyle(
-        fontSize: 17,
-        fontWeight: FontWeight.w800,
-        color: AppColors.text,
       ),
     );
   }

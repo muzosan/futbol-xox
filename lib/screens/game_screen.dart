@@ -64,6 +64,7 @@ class _GameScreenState extends State<GameScreen> {
   void _createGame() {
     _bot = widget.botLevel == null ? null : Bot(widget.botLevel!, widget.repo);
     _game = GameController(
+      repo: widget.repo,
       grid: widget.repo.randomGrid(widget.difficulty),
       onTimeout: _onTimeout,
       names: _vsBot
@@ -160,8 +161,8 @@ class _GameScreenState extends State<GameScreen> {
       useSafeArea: true,
       builder: (_) => PlayerSearchSheet(
         repo: widget.repo,
-        rowClub: rowClub,
-        colClub: colClub,
+        title: '${rowClub.name}  ×  ${colClub.name}',
+        hint: 'İki kulüpte de oynamış bir futbolcu yaz',
         usedIds: _game.usedPlayerIds,
       ),
     );

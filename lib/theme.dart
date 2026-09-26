@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'game/engine/common.dart';
+
 /// Uygulamanın renk paleti: gece maçı temalı koyu arayüz.
 class AppColors {
   static const background = Color(0xFF0B0F14);
@@ -15,6 +17,8 @@ class AppColors {
   static const success = Color(0xFF1E9E6A);
   static const danger = Color(0xFFD64560);
 }
+
+Color markColor(Mark mark) => mark == Mark.x ? AppColors.x : AppColors.o;
 
 ThemeData buildAppTheme() {
   final scheme = ColorScheme.fromSeed(

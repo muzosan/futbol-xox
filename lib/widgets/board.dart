@@ -4,8 +4,7 @@ import '../data/models.dart';
 import '../data/repository.dart';
 import '../game/game_controller.dart';
 import '../theme.dart';
-
-Color markColor(Mark mark) => mark == Mark.x ? AppColors.x : AppColors.o;
+import 'players_header.dart';
 
 const List<Color> _clubPalette = [
   Color(0xFF7E57C2), Color(0xFF3F51B5), Color(0xFF00897B), Color(0xFFE64A19),
@@ -269,7 +268,7 @@ class _Cell extends StatelessWidget {
   }
 }
 
-/// Üstteki oyuncu kutuları ve süre çubuğu.
+/// XOX için üst bilgi: oyuncu kutuları (dolu hücre sayısı) ve süre.
 class TurnBar extends StatelessWidget {
   const TurnBar({super.key, required this.game, this.botThinking = false});
 
@@ -278,90 +277,20 @@ class TurnBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lowTime = game.secondsLeft <= 10;
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(child: _PlayerChip(game: game, mark: Mark.x)),
-            const SizedBox(width: 12),
-            Expanded(child: _PlayerChip(game: game, mark: Mark.o)),
-          ],
-        ),
-        const SizedBox(height: 14),
-        if (!game.isOver) ...[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: game.secondsLeft / game.turnSeconds,
-              minHeight: 6,
-              backgroundColor: AppColors.surfaceHigh,
-              color: lowTime ? AppColors.danger : markColor(game.current),
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            botThinking
-                ? '${game.nameOf(game.current)} düşünüyor…'
-                : 'Sıra: ${game.nameOf(game.current)} · ${game.secondsLeft} sn',
-            style: TextStyle(
-              fontSize: 13,
-              color: lowTime ? AppColors.danger : AppColors.textMuted,
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-}
-
-class _PlayerChip extends StatelessWidget {
-  const _PlayerChip({required this.game, required this.mark});
-
-  final GameController game;
-  final Mark mark;
-
-  @override
-  Widget build(BuildContext context) {
-    final active = !game.isOver && game.current == mark;
-    final won = game.winner == mark;
-    final color = markColor(mark);
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 250),
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-      decoration: BoxDecoration(
-        color: active || won ? color.withValues(alpha: 0.14) : AppColors.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: active || won ? color : AppColors.border,
-          width: active || won ? 2 : 1,
-        ),
-        boxShadow: active
-            ? [BoxShadow(color: color.withValues(alpha: 0.3), blurRadius: 12)]
-            : null,
-      ),
-      child: Row(
-        children: [
-          Text(
-            mark.symbol,
-            style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.w900, color: color),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              game.nameOf(mark),
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w600, color: AppColors.text),
-            ),
-          ),
-          Text(
-            '${game.cellCount(mark)}',
-            style: TextStyle(fontWeight: FontWeight.w800, color: color),
-          ),
-        ],
-      ),
+    return PlayersHeader(
+      names: {Mark.x: game.nameOf(Mark.x), Mark.o: game.nameOf(Mark.o)},
+      values: {
+        Mark.x: '${game.cellCount(Mark.x)}',
+        Mark.o: '${game.cellCount(Mark.o)}',
+      },
+      current: game.current,
+      winner: game.winner,
+      isOver: game.isOver,
+      secondsLeft: game.secondsLeft,
+      turnSeconds: game.turnSeconds,
+      status: botThinking
+          ? '${game.nameOf(game.current)} düşünüyor…'
+          : 'Sıra: ${game.nameOf(game.current)} · ${game.secondsLeft} sn',
     );
   }
 }
