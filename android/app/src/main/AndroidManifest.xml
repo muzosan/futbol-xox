@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- İnternet: yazı tipleri (Google Fonts) ve ileride online mod için -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
-        android:label="futbol_xox"
+        android:label="Futbol XOX"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -40,6 +43,11 @@
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
+        </intent>
+        <!-- "Hatalı veri bildir": e-posta uygulamasını açabilmek için -->
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
         </intent>
     </queries>
 </manifest>

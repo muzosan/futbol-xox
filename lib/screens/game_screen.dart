@@ -6,6 +6,8 @@ import '../data/models.dart';
 import '../data/repository.dart';
 import '../game/ai_player.dart';
 import '../game/game_controller.dart';
+import '../reactions/reactions.dart';
+import '../report/report.dart';
 import '../theme.dart';
 import '../widgets/board.dart';
 import '../widgets/player_search_sheet.dart';
@@ -43,6 +45,8 @@ class _GameScreenState extends State<GameScreen> {
   bool _sheetOpen = false;
   int _sheetTurn = -1;
   bool _resultShown = false;
+  final _reactions = ReactionController();
+  BotReactor? _botReactor;
 
   bool get _vsBot => _bot != null;
   bool get _botTurn => _vsBot && !_game.isOver && _game.current == Mark.o;
@@ -58,11 +62,15 @@ class _GameScreenState extends State<GameScreen> {
     _botTimer?.cancel();
     _game.removeListener(_onGameChanged);
     _game.dispose();
+    _botReactor?.dispose();
+    _reactions.dispose();
     super.dispose();
   }
 
   void _createGame() {
     _bot = widget.botLevel == null ? null : Bot(widget.botLevel!, widget.repo);
+    _botReactor?.dispose();
+    _botReactor = _bot == null ? null : BotReactor(_reactions);
     _game = GameController(
       repo: widget.repo,
       grid: widget.repo.randomGrid(widget.difficulty),
@@ -121,6 +129,7 @@ class _GameScreenState extends State<GameScreen> {
     final result = _game.guess(cell, player);
     if (result == GuessResult.correct) {
       _toast('Bot: ${player.name}', color: AppColors.o.withValues(alpha: 0.9));
+      _botReactor?.onBotScored();
     } else if (result == GuessResult.wrong) {
       final row = widget.repo.club(_game.rowClubId(cell)).name;
       final col = widget.repo.club(_game.colClubId(cell)).name;
@@ -135,13 +144,14 @@ class _GameScreenState extends State<GameScreen> {
     _toast('Süre doldu! Sıra: ${_game.nameOf(who.other)}');
   }
 
-  void _toast(String message, {Color? color}) {
+  void _toast(String message, {Color? color, SnackBarAction? action}) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(
         content: Text(message, style: const TextStyle(color: Colors.white)),
         backgroundColor: color ?? AppColors.surfaceHigh,
-        duration: const Duration(seconds: 2),
+        duration: Duration(seconds: action == null ? 2 : 5),
+        action: action,
       ));
   }
 
@@ -173,12 +183,23 @@ class _GameScreenState extends State<GameScreen> {
     switch (result) {
       case GuessResult.correct:
         _toast('Doğru! ${player.name}', color: AppColors.success);
+        _botReactor?.onPlayerScored();
       case GuessResult.wrong:
         _toast(
           'Yanlış! ${player.name}, ${rowClub.name} ve ${colClub.name} '
           'kulüplerinin ikisinde birden oynamamış.',
           color: AppColors.danger,
+          action: reportAction(
+            context,
+            DataReport(
+              mode: 'XOX',
+              player: player,
+              clubs: [rowClub, colClub],
+              claim: 'Oyun: iki kulüpte birden oynamamış',
+            ),
+          ),
         );
+        _botReactor?.onPlayerMissed();
       case GuessResult.alreadyUsed:
         _toast('Bu oyuncu bu maçta zaten kullanıldı.');
       case GuessResult.invalid:
@@ -195,6 +216,7 @@ class _GameScreenState extends State<GameScreen> {
     final String title;
     final String message;
     final winner = _game.winner;
+    if (winner != null) _botReactor?.onGameEnd(botWon: winner == Mark.o);
     if (winner != null) {
       if (_vsBot) {
         title = winner == Mark.x ? 'Kazandın!' : 'Bot kazandı';
@@ -255,25 +277,30 @@ class _GameScreenState extends State<GameScreen> {
         difficultyLabels[widget.difficulty] ?? widget.difficulty;
 
     return ListenableBuilder(
-      listenable: _game,
+      listenable: Listenable.merge([_game, _reactions]),
       builder: (context, _) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: AppColors.background,
+            backgroundColor: Colors.transparent,
             surfaceTintColor: Colors.transparent,
             centerTitle: true,
             title: Text(
               '$modeLabel · $diffLabel',
               style: const TextStyle(
-                  fontSize: 17, fontWeight: FontWeight.w700),
+                  fontSize: 17, fontWeight: FontWeight.w800),
             ),
+            actions: [if (_vsBot) ReactionButton(controller: _reactions)],
           ),
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
               child: Column(
                 children: [
-                  TurnBar(game: _game, botThinking: _botTurn),
+                  TurnBar(
+                    game: _game,
+                    botThinking: _botTurn,
+                    bubbles: _reactions.bubbles,
+                  ),
                   const SizedBox(height: 16),
                   Expanded(
                     child: Center(

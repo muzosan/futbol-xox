@@ -13,24 +13,34 @@ List<List<String>> generateHuntRounds(
 }) {
   final rnd = random ?? Random();
 
-  // (en az 2 kulüplü tanınmış oyuncu, en az 3 kulüplü, "tanınmış" eşiği)
-  final (min2, min3, known) = switch (difficulty) {
-    'kolay' => (25, 5, 15),
-    'orta' => (15, 3, 10),
-    _ => (8, 1, 5),
+  // (en az 2 kulüplü ünlü oyuncu, en az 3 kulüplü, "ünlü" eşiği, en yüksek kulüp seviyesi)
+  // kolay: sadece büyük kulüpler ve çok ünlü oyuncular
+  final (min2, min3, known, maxTier) = switch (difficulty) {
+    'kolay' => (12, 3, 30, 1),
+    'orta' => (10, 2, 20, 2),
+    _ => (8, 1, 5, 3),
   };
 
-  // Kolayda, çok sayıda tanınmış oyuncusu olan büyük kulüplerden seç
-  var pool = repo.clubs.keys.toList();
-  if (difficulty == 'kolay') {
-    pool.sort((a, b) => repo
-        .playersOf(b)
-        .where((p) => p.popularity >= known)
-        .length
-        .compareTo(
-            repo.playersOf(a).where((p) => p.popularity >= known).length));
-    pool = pool.take(30).toList();
+  // En çok tanınmış oyuncusu olan kulüpler (seviye bilgisi yoksa yedek olarak da)
+  List<String> mostFamous(int count) {
+    final fame = <String, int>{
+      for (final id in repo.clubs.keys)
+        id: repo.playersOf(id).where((p) => p.popularity >= 15).length,
+    };
+    return (repo.clubs.keys.where((id) => fame[id]! > 0).toList()
+          ..sort((a, b) => fame[b]!.compareTo(fame[a]!)))
+        .take(count)
+        .toList();
   }
+
+  // Kolay/orta: seviyeye göre havuz. Zor: en çok tanınmış oyuncusu olan 300 kulüp.
+  var pool = maxTier < 3
+      ? repo.clubs.values
+          .where((c) => c.tier <= maxTier)
+          .map((c) => c.id)
+          .toList()
+      : mostFamous(300);
+  if (pool.length < 15) pool = mostFamous(maxTier == 1 ? 40 : 120);
 
   final result = <List<String>>[];
   final usedClubs = <String>{};

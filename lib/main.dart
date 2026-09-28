@@ -5,16 +5,16 @@ import 'theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const FutbolXoxApp());
+  runApp(const VoleaApp());
 }
 
-class FutbolXoxApp extends StatelessWidget {
-  const FutbolXoxApp({super.key});
+class VoleaApp extends StatelessWidget {
+  const VoleaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Futbol XOX',
+      title: 'Volea',
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
       home: const HomeScreen(),

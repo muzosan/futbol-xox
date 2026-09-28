@@ -10,24 +10,39 @@ import 'turn_timer.dart';
 
 export 'engine/chain_engine.dart' show ChainEngine, ChainFail, ChainLink, ChainResult;
 
-/// Zorluğa göre başlangıç futbolcusu seçer: en az 3 kulübümüzde oynamış biri.
+/// Zorluğa göre başlangıç futbolcusu seçer.
+/// kolay: en az 2 büyük kulüpte oynamış bir yıldız (bağlantı kurmak kolay olsun)
+/// orta : en az 2 büyük/tanınmış kulüpte oynamış tanınmış biri
+/// zor  : en az 3 kulübümüzde oynamış, daha az bilinen biri
 String pickChainStart(Repository repo, String difficulty, {Random? random}) {
   final rnd = random ?? Random();
-  var minPopularity = switch (difficulty) {
-    'kolay' => 40,
-    'orta' => 20,
-    _ => 8,
+  final (startPopularity, maxTier, minClubs) = switch (difficulty) {
+    'kolay' => (50, 1, 2),
+    'orta' => (25, 2, 2),
+    _ => (8, 3, 3),
   };
+  var minPopularity = startPopularity;
   while (true) {
     final pool = repo.players
-        .where((p) => p.popularity >= minPopularity && p.clubs.length >= 3)
+        .where((p) =>
+            p.popularity >= minPopularity &&
+            repo.bigClubCount(p, maxTier) >= minClubs)
         .toList();
     if (pool.length >= 10 || minPopularity <= 1) {
-      return pool[rnd.nextInt(pool.length)].id;
+      return pool.isEmpty
+          ? repo.players.first.id
+          : pool[rnd.nextInt(pool.length)].id;
     }
     minPopularity ~/= 2;
   }
 }
+
+/// Zorluğa göre can sayısı ve kulüp başına bağlantı hakkı.
+({int lives, int maxClubUses}) chainRules(String difficulty) =>
+    switch (difficulty) {
+      'kolay' => (lives: 4, maxClubUses: 3),
+      _ => (lives: 3, maxClubUses: 2),
+    };
 
 /// Yerel Kariyer Zinciri oyunu: kuralları [ChainEngine]'e bırakır, üstüne
 /// zamanlayıcı ekler.

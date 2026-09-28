@@ -3,18 +3,22 @@ import 'package:flutter/material.dart';
 import '../data/records.dart';
 import '../data/repository.dart';
 import '../game/ai_player.dart';
+import '../report/report.dart';
 import '../theme.dart';
 import 'chain_screen.dart';
+import 'draft_screen.dart';
+import 'duel_screen.dart';
 import 'game_screen.dart';
 import 'hunt_screen.dart';
+import 'imposter_setup_screen.dart';
 import 'quiz_screen.dart';
 import 'who_screen.dart';
 
-enum GameMode { xox, hunt, chain, quiz, who }
+enum GameMode { xox, duel, draft, imposter, hunt, chain, quiz, who }
 
 class _ModeInfo {
   const _ModeInfo(this.title, this.icon, this.description, this.levelTexts,
-      {this.solo = false});
+      {this.solo = false, this.party = false});
 
   final String title;
   final IconData icon;
@@ -25,6 +29,9 @@ class _ModeInfo {
 
   /// Tek kişilik mod (bot veya 2 kişilik seçimi yok)
   final bool solo;
+
+  /// Kalabalık grup modu (3-8 kişi, tek telefon)
+  final bool party;
 }
 
 const Map<GameMode, _ModeInfo> _modes = {
@@ -33,28 +40,50 @@ const Map<GameMode, _ModeInfo> _modes = {
     Icons.grid_3x3,
     'Satırdaki ve sütundaki iki kulüpte de oynamış bir futbolcu bul. Üç '
         'hücreyi yan yana, alt alta ya da çapraz dizen kazanır!',
-    ['Bol cevaplı tablolar', 'Dengeli tablolar', 'Az bilinen eşleşmeler'],
+    ['Büyük kulüpler, ünlü oyuncular', 'Tanınmış kulüpler', 'Az bilinen eşleşmeler'],
+  ),
+  GameMode.duel: _ModeInfo(
+    'Kart Düellosu',
+    Icons.style,
+    'Futbolcu kartınla rakibini istatistikte yen! Sıran gelince kartından bir '
+        'istatistik seç: gol, asist, milli maç... Yüksek olan turu alır, 7 tur.',
+    ['Yıldız kartlar', 'Tanınmış oyuncular', 'Bütün oyuncular'],
+  ),
+  GameMode.draft: _ModeInfo(
+    'Kadro Kur',
+    Icons.groups,
+    'Her maç bir ölçüt: en çok gol, asist, kırmızı kart... 5 turda gelen '
+        'takımlardan birer oyuncu seç, ölçüte göre en güçlü kadroyu kur!',
+    ['Büyük kulüpler', 'Tanınmış kulüpler', 'Bütün kulüpler'],
+  ),
+  GameMode.imposter: _ModeInfo(
+    'Sahtekâr',
+    Icons.theater_comedy,
+    'Herkes gizli futbolcuyu görür, biri hariç: sahtekâr! Sırayla tek kelimelik '
+        'ipuçları verin, gizli oylamayla sahtekârı yakalayın. 3-8 kişi, tek telefon.',
+    ['Çok ünlü futbolcular', 'Tanınmış futbolcular', 'Az bilinen futbolcular'],
+    party: true,
   ),
   GameMode.hunt: _ModeInfo(
     'Kulüp Avı',
     Icons.hub_outlined,
     'Ekrana gelen 5 kulübün en çoğunda oynamış futbolcuyu bul. Ne kadar çok '
         'kulüp, o kadar çok puan! 3 turun sonunda en çok puanı toplayan kazanır.',
-    ['Bol ortaklı kulüpler', 'Dengeli kulüpler', 'Az bağlantılı kulüpler'],
+    ['Büyük kulüpler, ünlü oyuncular', 'Tanınmış kulüpler', 'Az bilinen kulüpler'],
   ),
   GameMode.chain: _ModeInfo(
     'Zincir',
     Icons.link,
     'Son futbolcuyla aynı kulüpte oynamış başka bir futbolcu yaz, zinciri '
         'uzat. Yanlış cevap bir can götürür; canı biten kaybeder!',
-    ['Çok ünlü başlangıç', 'Tanınmış başlangıç', 'Az bilinen başlangıç'],
+    ['Yıldız başlangıç · 4 can', 'Tanınmış başlangıç', 'Az bilinen başlangıç'],
   ),
   GameMode.quiz: _ModeInfo(
     'Doğru mu?',
     Icons.bolt,
     '60 saniyede olabildiğince çok soruyu bil: "Bu futbolcu bu kulüpte oynadı '
         'mı?" Yanlış cevap süreden 5 saniye götürür.',
-    ['Ünlü oyuncular', 'Tanınmış oyuncular', 'Az bilinen oyuncular'],
+    ['Yıldızlar ve büyük kulüpler', 'Tanınmış oyuncular', 'Az bilinen oyuncular'],
     solo: true,
   ),
   GameMode.who: _ModeInfo(
@@ -62,7 +91,7 @@ const Map<GameMode, _ModeInfo> _modes = {
     Icons.person_search,
     'Bir futbolcunun kariyerindeki kulüpler sırayla açılır. Ne kadar az '
         'ipucuyla bilirsen o kadar çok puan! 5 soru, soru başına 10 puan.',
-    ['Çok ünlü oyuncular', 'Tanınmış oyuncular', 'Az bilinen oyuncular'],
+    ['Yıldızlar · 2 kulüp açık', 'Tanınmış oyuncular', 'Az bilinen oyuncular'],
     solo: true,
   ),
 };
@@ -130,6 +159,12 @@ class _HomeScreenState extends State<HomeScreen> {
     final Widget screen = switch (_mode) {
       GameMode.xox =>
         GameScreen(repo: repo, difficulty: level.key, botLevel: bot),
+      GameMode.duel =>
+        DuelScreen(repo: repo, difficulty: level.key, botLevel: bot),
+      GameMode.draft =>
+        DraftScreen(repo: repo, difficulty: level.key, botLevel: bot),
+      GameMode.imposter =>
+        ImposterSetupScreen(repo: repo, difficulty: level.key),
       GameMode.hunt =>
         HuntScreen(repo: repo, difficulty: level.key, botLevel: bot),
       GameMode.chain =>
@@ -144,18 +179,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: RadialGradient(
-            center: const Alignment(0, -0.9),
-            radius: 1.3,
-            colors: [
-              AppColors.primary.withValues(alpha: 0.13),
-              AppColors.background,
-            ],
-          ),
-        ),
-        child: SafeArea(
+      body: SafeArea(
+        child: KeyedSubtree(
           child: FutureBuilder<Repository>(
             future: _repoFuture,
             builder: (context, snapshot) {
@@ -173,10 +198,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CircularProgressIndicator(color: AppColors.primary),
-                      SizedBox(height: 16),
+                      _Hero(),
+                      SizedBox(height: 36),
+                      SizedBox(
+                        width: 28,
+                        height: 28,
+                        child: CircularProgressIndicator(
+                            strokeWidth: 3, color: AppColors.gold),
+                      ),
+                      SizedBox(height: 14),
                       Text('Oyuncular yükleniyor…',
-                          style: TextStyle(color: AppColors.textMuted)),
+                          style: TextStyle(
+                              color: AppColors.textMuted,
+                              fontWeight: FontWeight.w700)),
                     ],
                   ),
                 );
@@ -199,36 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Center(
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.surface,
-                    border: Border.all(color: AppColors.primary, width: 2),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.35),
-                        blurRadius: 28,
-                      ),
-                    ],
-                  ),
-                  child: const Icon(Icons.sports_soccer,
-                      size: 44, color: AppColors.primary),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'FUTBOL XOX',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 3,
-                  color: AppColors.text,
-                ),
-              ),
+              const _Hero(),
               const SizedBox(height: 24),
               // Mod seçimi
               GridView.count(
@@ -258,7 +263,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              if (!info.solo) ...[
+              if (info.party) ...[
+                const Text(
+                  '3-8 Kişi · Tek Telefon · Elden Ele',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.w900, color: AppColors.text),
+                ),
+                const SizedBox(height: 20),
+              ] else if (!info.solo) ...[
                 SegmentedButton<bool>(
                   showSelectedIcon: false,
                   segments: const [
@@ -282,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Tek kişilik · Rekorunu geliştir',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontWeight: FontWeight.w700, color: AppColors.text),
+                      fontWeight: FontWeight.w800, color: AppColors.text),
                 ),
                 const SizedBox(height: 20),
               ],
@@ -295,18 +307,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       info.levelTexts[i],
                       if (info.solo)
                         'Rekor: ${_records[_recordKey(_mode, _levels[i].key)] ?? 0}'
-                      else if (_vsBot)
+                      else if (_vsBot && !info.party)
                         _levels[i].botText,
                     ].join(' · '),
                     onTap: () => _start(repo, _levels[i]),
                   ),
                 ),
               const SizedBox(height: 12),
+              TextButton.icon(
+                onPressed: () => showReportDialog(
+                    context, const DataReport(mode: 'Genel')),
+                icon: const Icon(Icons.flag_outlined, size: 16),
+                label: const Text('Hatalı veri bildir'),
+                style: TextButton.styleFrom(
+                    foregroundColor: AppColors.textMuted),
+              ),
+              const SizedBox(height: 8),
               Text(
-                '${repo.players.length} oyuncu · ${repo.clubs.length} kulüp',
+                'MUON STUDIO',
                 textAlign: TextAlign.center,
-                style:
-                    const TextStyle(fontSize: 12, color: AppColors.textMuted),
+                style: TextStyle(
+                  fontSize: 11,
+                  letterSpacing: 5,
+                  fontWeight: FontWeight.w900,
+                  color: AppColors.gold.withValues(alpha: 0.7),
+                ),
               ),
             ],
           ),
@@ -334,15 +359,10 @@ class _ModeCard extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: Ink(
-        decoration: BoxDecoration(
-          color: selected
-              ? AppColors.primary.withValues(alpha: 0.12)
-              : AppColors.surface,
-          borderRadius: radius,
-          border: Border.all(
-            color: selected ? AppColors.primary : AppColors.border,
-            width: selected ? 2 : 1,
-          ),
+        decoration: AppDecor.card(
+          radius: 16,
+          accent: selected ? AppColors.primary : null,
+          active: selected,
         ),
         child: InkWell(
           borderRadius: radius,
@@ -352,7 +372,10 @@ class _ModeCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(info.icon, color: color, size: 26),
+                Icon(info.icon, color: color, size: 28,
+                    shadows: selected ? AppShadows.glow(AppColors.primary, 0.8)
+                        .map((b) => Shadow(color: b.color, blurRadius: b.blurRadius))
+                        .toList() : null),
                 const SizedBox(height: 6),
                 FittedBox(
                   fit: BoxFit.scaleDown,
@@ -360,7 +383,7 @@ class _ModeCard extends StatelessWidget {
                     info.title,
                     style: TextStyle(
                       fontSize: 13,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w800,
                       color: selected ? AppColors.text : AppColors.textMuted,
                     ),
                   ),
@@ -391,11 +414,7 @@ class _LevelTile extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: Ink(
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: radius,
-          border: Border.all(color: level.color.withValues(alpha: 0.35)),
-        ),
+        decoration: AppDecor.card(accent: level.color),
         child: InkWell(
           borderRadius: radius,
           onTap: onTap,
@@ -404,13 +423,22 @@ class _LevelTile extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  width: 44,
-                  height: 44,
+                  width: 48,
+                  height: 48,
                   decoration: BoxDecoration(
-                    color: level.color.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(12),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        level.color.withValues(alpha: 0.35),
+                        level.color.withValues(alpha: 0.08),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: level.color.withValues(alpha: 0.5)),
+                    boxShadow: AppShadows.glow(level.color, 0.25),
                   ),
-                  child: Icon(level.icon, color: level.color),
+                  child: Icon(level.icon, color: level.color, size: 26),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -418,10 +446,11 @@ class _LevelTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        level.title,
+                        level.title.toUpperCase(),
                         style: const TextStyle(
+                          letterSpacing: 1.2,
                           fontSize: 17,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w900,
                           color: AppColors.text,
                         ),
                       ),
@@ -439,6 +468,57 @@ class _LevelTile extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Logo, altın başlık ve slogan; açılışta yumuşakça belirir.
+class _Hero extends StatelessWidget {
+  const _Hero();
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: const Duration(milliseconds: 900),
+      curve: Curves.easeOutCubic,
+      builder: (context, v, child) => Opacity(
+        opacity: v,
+        child: Transform.translate(offset: Offset(0, 24 * (1 - v)), child: child),
+      ),
+      child: Column(
+        children: [
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: const RadialGradient(
+                colors: [AppColors.surfaceHigh, AppColors.background],
+              ),
+              border: Border.all(color: AppColors.gold, width: 2.5),
+              boxShadow: [
+                ...AppShadows.glow(AppColors.gold, 0.35),
+                ...AppShadows.card,
+              ],
+            ),
+            child: const Icon(Icons.sports_soccer, size: 56, color: AppColors.text),
+          ),
+          const SizedBox(height: 18),
+          const GoldText('VOLEA', size: 72, spacing: 8),
+          const SizedBox(height: 8),
+          const Text(
+            'FUTBOL BİLGİ ARENASI',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              letterSpacing: 3.5,
+              fontWeight: FontWeight.w900,
+              color: AppColors.textMuted,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -7,8 +7,10 @@ import '../data/repository.dart';
 import '../game/ai_player.dart';
 import '../game/chain_controller.dart';
 import '../game/engine/common.dart';
+import '../reactions/reactions.dart';
+import '../report/report.dart';
 import '../theme.dart';
-import '../widgets/board.dart' show clubColor;
+import '../widgets/kit_icon.dart';
 import '../widgets/player_search_sheet.dart';
 import '../widgets/players_header.dart';
 import 'game_screen.dart' show difficultyLabels;
@@ -40,6 +42,8 @@ class _ChainScreenState extends State<ChainScreen> {
   bool _sheetOpen = false;
   int _sheetTurn = -1;
   bool _resultShown = false;
+  final _reactions = ReactionController();
+  BotReactor? _botReactor;
 
   bool get _vsBot => _bot != null;
   bool get _botTurn => _vsBot && !_game.isOver && _game.current == Mark.o;
@@ -55,6 +59,8 @@ class _ChainScreenState extends State<ChainScreen> {
     _botTimer?.cancel();
     _game.removeListener(_onGameChanged);
     _game.dispose();
+    _botReactor?.dispose();
+    _reactions.dispose();
     super.dispose();
   }
 
@@ -62,11 +68,15 @@ class _ChainScreenState extends State<ChainScreen> {
     _bot = widget.botLevel == null
         ? null
         : ChainBot(widget.botLevel!, widget.repo);
+    _botReactor?.dispose();
+    _botReactor = _bot == null ? null : BotReactor(_reactions);
     _game = ChainController(
       repo: widget.repo,
       engine: ChainEngine(
         startPlayerId: pickChainStart(widget.repo, widget.difficulty),
         clubsOf: widget.repo.clubsOf,
+        lives: chainRules(widget.difficulty).lives,
+        maxClubUses: chainRules(widget.difficulty).maxClubUses,
       ),
       onTimeout: _onTimeout,
       names: _vsBot
@@ -121,6 +131,7 @@ class _ChainScreenState extends State<ChainScreen> {
       final via = widget.repo.club(result.link!.viaClub!).name;
       _toast('Bot: ${player.name} (bağlantı: $via)',
           color: AppColors.o.withValues(alpha: 0.9));
+      _botReactor?.onBotScored();
     } else if (result.outcome == GuessResult.wrong) {
       _toast('Bot yanıldı: ${player.name}. Bot bir can kaybetti.');
     }
@@ -133,13 +144,14 @@ class _ChainScreenState extends State<ChainScreen> {
     _toast('Süre doldu! ${_game.nameOf(who)} bir can kaybetti.');
   }
 
-  void _toast(String message, {Color? color}) {
+  void _toast(String message, {Color? color, SnackBarAction? action}) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(
         content: Text(message, style: const TextStyle(color: Colors.white)),
         backgroundColor: color ?? AppColors.surfaceHigh,
-        duration: const Duration(seconds: 2),
+        duration: Duration(seconds: action == null ? 2 : 5),
+        action: action,
       ));
   }
 
@@ -168,6 +180,7 @@ class _ChainScreenState extends State<ChainScreen> {
       case GuessResult.correct:
         final via = widget.repo.club(result.link!.viaClub!).name;
         _toast('Doğru! Bağlantı: $via', color: AppColors.success);
+        _botReactor?.onPlayerScored();
       case GuessResult.wrong:
         _toast(
           result.fail == ChainFail.clubLimit
@@ -175,7 +188,19 @@ class _ChainScreenState extends State<ChainScreen> {
               : '${player.name}, ${last.name} ile listedeki kulüplerin '
                   'hiçbirinde oynamamış. Bir can kaybettin.',
           color: AppColors.danger,
+          action: result.fail == ChainFail.clubLimit
+              ? null
+              : reportAction(
+                  context,
+                  DataReport(
+                    mode: 'Zincir',
+                    player: player,
+                    clubs: last.clubs.map(widget.repo.club).toList(),
+                    claim: 'Oyun: ${last.name} ile ortak kulübü yok',
+                  ),
+                ),
         );
+        _botReactor?.onPlayerMissed();
       case GuessResult.alreadyUsed:
         _toast('Bu oyuncu zincirde zaten var.');
       case GuessResult.invalid:
@@ -189,6 +214,7 @@ class _ChainScreenState extends State<ChainScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     final winner = _game.winner!;
+    _botReactor?.onGameEnd(botWon: winner == Mark.o);
     final title = _vsBot
         ? (winner == Mark.x ? 'Kazandın!' : 'Bot kazandı')
         : '${_game.nameOf(winner)} kazandı!';
@@ -234,19 +260,20 @@ class _ChainScreenState extends State<ChainScreen> {
     final diffLabel = difficultyLabels[widget.difficulty] ?? widget.difficulty;
 
     return ListenableBuilder(
-      listenable: _game,
+      listenable: Listenable.merge([_game, _reactions]),
       builder: (context, _) {
         final current = _game.current;
         String hearts(Mark m) => '♥' * _game.livesOf(m);
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: AppColors.background,
+            backgroundColor: Colors.transparent,
             surfaceTintColor: Colors.transparent,
             centerTitle: true,
             title: Text(
               'Zincir · $modeLabel · $diffLabel',
-              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
             ),
+            actions: [if (_vsBot) ReactionButton(controller: _reactions)],
           ),
           body: SafeArea(
             child: Padding(
@@ -267,6 +294,7 @@ class _ChainScreenState extends State<ChainScreen> {
                     status: _botTurn
                         ? 'Bot düşünüyor…'
                         : 'Sıra: ${_game.nameOf(current)} · ${_game.secondsLeft} sn',
+                    bubbles: _reactions.bubbles,
                   ),
                   const SizedBox(height: 14),
                   _LastPlayerCard(game: _game),
@@ -276,7 +304,7 @@ class _ChainScreenState extends State<ChainScreen> {
                       Text(
                         'Zincir: ${_game.length}',
                         style: const TextStyle(
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w800,
                             color: AppColors.primary),
                       ),
                       const Spacer(),
@@ -375,16 +403,10 @@ class _LastPlayerCard extends StatelessWidget {
               style: TextStyle(
                   fontSize: 11,
                   letterSpacing: 1.5,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w800,
                   color: AppColors.textMuted)),
           const SizedBox(height: 4),
-          Text(
-            player.name,
-            style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w900,
-                color: AppColors.text),
-          ),
+          Text(player.name.toUpperCase(), style: displayStyle(32)),
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
@@ -422,17 +444,12 @@ class _ClubChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 10,
-              height: 10,
-              decoration: BoxDecoration(
-                  color: clubColor(club.id), shape: BoxShape.circle),
-            ),
+            KitIcon(club: club, size: 18),
             const SizedBox(width: 6),
             Text(
               club.name,
               style: TextStyle(
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
                 color: AppColors.text,
                 decoration: full ? TextDecoration.lineThrough : null,
               ),
@@ -484,7 +501,7 @@ class _ChainList extends StatelessWidget {
                 child: Text(
                   player.name,
                   style: const TextStyle(
-                      fontWeight: FontWeight.w600, color: AppColors.text),
+                      fontWeight: FontWeight.w700, color: AppColors.text),
                 ),
               ),
               Text(

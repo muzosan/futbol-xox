@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../game/engine/common.dart';
+import '../reactions/reactions.dart';
 import '../theme.dart';
 
 /// Bütün modların ortak üst bilgisi: iki oyuncu kutusu ve süre çubuğu.
@@ -16,6 +17,7 @@ class PlayersHeader extends StatelessWidget {
     required this.turnSeconds,
     required this.status,
     this.showTimer = true,
+    this.bubbles = const {},
   });
 
   final Map<Mark, String> names;
@@ -30,6 +32,9 @@ class PlayersHeader extends StatelessWidget {
   final String status;
   final bool showTimer;
 
+  /// Oyuncu kutularının üstünde gösterilecek emojiler (maç içi tepkiler)
+  final Map<Mark, String?> bubbles;
+
   @override
   Widget build(BuildContext context) {
     final lowTime = secondsLeft <= 10;
@@ -37,9 +42,9 @@ class PlayersHeader extends StatelessWidget {
       children: [
         Row(
           children: [
-            Expanded(child: _chip(Mark.x)),
+            Expanded(child: _withBubble(Mark.x)),
             const SizedBox(width: 12),
-            Expanded(child: _chip(Mark.o)),
+            Expanded(child: _withBubble(Mark.o)),
           ],
         ),
         const SizedBox(height: 14),
@@ -66,6 +71,18 @@ class PlayersHeader extends StatelessWidget {
     );
   }
 
+  Widget _withBubble(Mark mark) => Stack(
+        clipBehavior: Clip.none,
+        children: [
+          _chip(mark),
+          Positioned(
+            top: -22,
+            right: 10,
+            child: ReactionBubble(emoji: bubbles[mark]),
+          ),
+        ],
+      );
+
   Widget _chip(Mark mark) {
     final active = !isOver && showTimer && current == mark;
     final won = winner == mark;
@@ -73,23 +90,18 @@ class PlayersHeader extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-      decoration: BoxDecoration(
-        color: active || won ? color.withValues(alpha: 0.14) : AppColors.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: active || won ? color : AppColors.border,
-          width: active || won ? 2 : 1,
-        ),
-        boxShadow: active
-            ? [BoxShadow(color: color.withValues(alpha: 0.3), blurRadius: 12)]
-            : null,
+      decoration: AppDecor.card(
+        radius: 14,
+        accent: active || won ? color : null,
+        active: active || won,
       ),
       child: Row(
         children: [
           Text(
             mark.symbol,
-            style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.w900, color: color),
+            style: displayStyle(26, color: color, spacing: 0).copyWith(
+              shadows: [Shadow(color: color.withValues(alpha: 0.7), blurRadius: 12)],
+            ),
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -97,12 +109,12 @@ class PlayersHeader extends StatelessWidget {
               names[mark] ?? mark.symbol,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                  fontWeight: FontWeight.w600, color: AppColors.text),
+                  fontWeight: FontWeight.w700, color: AppColors.text),
             ),
           ),
           Text(
             values[mark] ?? '',
-            style: TextStyle(fontWeight: FontWeight.w800, color: color),
+            style: displayStyle(22, color: color, spacing: 0.5),
           ),
         ],
       ),

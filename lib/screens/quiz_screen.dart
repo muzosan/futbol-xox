@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/records.dart';
 import '../data/repository.dart';
 import '../game/quiz_controller.dart';
+import '../report/report.dart';
 import '../theme.dart';
 import '../widgets/board.dart' show ClubHeader;
 import 'game_screen.dart' show difficultyLabels;
@@ -77,13 +78,7 @@ class _QuizScreenState extends State<QuizScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              '$score',
-              style: const TextStyle(
-                  fontSize: 48,
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.primary),
-            ),
+            GoldText('$score', size: 72, spacing: 1),
             const Text('doğru cevap',
                 style: TextStyle(color: AppColors.textMuted)),
             const SizedBox(height: 16),
@@ -127,12 +122,12 @@ class _QuizScreenState extends State<QuizScreen> {
         final lowTime = engine.timeLeft <= 10;
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: AppColors.background,
+            backgroundColor: Colors.transparent,
             surfaceTintColor: Colors.transparent,
             centerTitle: true,
             title: Text(
               'Doğru mu Yanlış mı? · $diffLabel',
-              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
             ),
           ),
           body: SafeArea(
@@ -181,12 +176,9 @@ class _QuizScreenState extends State<QuizScreen> {
                   const Spacer(),
                   // Soru
                   Text(
-                    player.name,
+                    player.name.toUpperCase(),
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w900,
-                        color: AppColors.text),
+                    style: displayStyle(40),
                   ),
                   if (player.birthYear != null)
                     Text('d. ${player.birthYear}',
@@ -251,14 +243,10 @@ class _Stat extends StatelessWidget {
               style: const TextStyle(
                   fontSize: 11,
                   letterSpacing: 1.5,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w800,
                   color: AppColors.textMuted)),
           const SizedBox(height: 4),
-          Text(value,
-              style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.text)),
+          Text(value, style: displayStyle(34)),
         ],
       ),
     );
@@ -291,15 +279,35 @@ class _FeedbackLine extends StatelessWidget {
             '${fb.question.isTrue ? 'oynadı' : 'oynamadı'} (−5 sn)';
     return SizedBox(
       height: 40,
-      child: Center(
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            color: fb.correct ? AppColors.primary : AppColors.danger,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                color: fb.correct ? AppColors.primary : AppColors.danger,
+              ),
+            ),
           ),
-        ),
+          if (!fb.correct)
+            TextButton(
+              onPressed: () => showReportDialog(
+                context,
+                DataReport(
+                  mode: 'Doğru mu?',
+                  player: player,
+                  clubs: [club],
+                  claim: fb.question.isTrue
+                      ? 'Oyun: bu kulüpte oynadı'
+                      : 'Oyun: bu kulüpte oynamadı',
+                ),
+              ),
+              child: const Text('Hatalı mı?'),
+            ),
+        ],
       ),
     );
   }
@@ -341,7 +349,7 @@ class _AnswerButton extends StatelessWidget {
               Text(label,
                   style: TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w900,
                       color: color)),
             ],
           ),

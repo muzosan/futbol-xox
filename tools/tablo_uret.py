@@ -5,15 +5,14 @@ data/ klasöründeki verilerden oynanabilir 3x3 tablolar üretir.
 Kullanım:
     py tablo_uret.py
 
-Çıktı:
-    data/grids.json -> zorluk seviyelerine ayrılmış tablolar
-
-Kurallar:
-    - 6 kulüp birbirinden farklı (3 satır + 3 sütun)
-    - Her hücrede en az MIN_CEVAP doğru cevap ve en az 1 tanınmış oyuncu var
-    - Bir tabloda aynı ligden en fazla MAX_AYNI_LIG kulüp olur (hep İtalyan tablosu çıkmasın)
-    - Az kullanılan kulüpler öncelikli seçilir (kulüpler dengeli dağılsın)
-    - Tabloların yaklaşık TURK_ORANI kadarında en az bir Süper Lig kulübü olur
+Zorluklar (kulüp seviyeleri için seviye.py'ye bak):
+    kolay : sadece büyük kulüpler (seviye 1); her hücrede en az 3 ÇOK ÜNLÜ cevap
+    orta  : büyükler + tanınmış kulüpler (seviye 1-2); her hücrede en az 2 ünlü cevap
+    zor   : bütün kulüpler; her hücrede en az 1 tanınmış cevap, birkaç hücre zorlayıcı
+Ortak kurallar:
+    - 6 farklı kulüp, her hücrede en az MIN_CEVAP doğru cevap
+    - Bir tabloda aynı ligden en fazla MAX_AYNI_LIG kulüp
+    - Tabloların yaklaşık TURK_ORANI kadarında en az bir Türk kulübü
 """
 
 import json
@@ -21,38 +20,32 @@ import os
 import random
 import sys
 from collections import Counter, defaultdict
-from functools import lru_cache
 from itertools import combinations
+
+from seviye import kulup_seviyeleri
 
 sys.stdout.reconfigure(encoding="utf-8")
 
 VERI = "data"
-TANINMIS_ESIK = 15      # veri_topla.py ile aynı olmalı
-MIN_CEVAP = 3           # her hücrede en az bu kadar doğru cevap
+MIN_CEVAP = 3
 MAX_AYNI_LIG = 3
 TURK_ORANI = 0.3
-HEDEF = {"kolay": 300, "orta": 300, "zor": 300}
-DENEME = 300_000
-TOHUM = 42              # aynı sonuçları tekrar almak için sabit; değiştirirsen farklı tablolar çıkar
+TURK_LIGLER = {"Süper Lig", "TFF 1. Lig", "TFF 2. Lig", "TFF 3. Lig"}
+DENEME = 400_000
+TOHUM = 42
 
-
-# Hücre zorluğu (tanınmış cevap sayısına göre): 6+ kolay, 3-5 orta, 1-2 zor
-def zorluk_hesapla(hucreler):
-    """Tablonun zorluğu, zor ve kolay hücrelerin sayısına göre belirlenir."""
-    taninmislar = [t for satir in hucreler for _, t in satir]
-    if min(taninmislar) < 1:
-        return None
-    zor_hucre = sum(1 for t in taninmislar if t <= 2)
-    kolay_hucre = sum(1 for t in taninmislar if t >= 6)
-    if zor_hucre == 0 and kolay_hucre >= 6:
-        return "kolay"
-    if zor_hucre >= 3:
-        return "zor"
-    return "orta"
-
-
-# Hedeflenen zorluğa göre sütun seçerken her hücrede istenen en az tanınmış cevap
-HUCRE_ESIK = {"kolay": 3, "orta": 2, "zor": 1}
+# zorluk: (izinli kulüp seviyeleri, "ünlü" popülerlik eşiği, hücre başına en az ünlü cevap, hedef)
+AYAR = {
+    "kolay": ({1}, 30, 3, 400),
+    "orta": ({1, 2}, 20, 2, 500),
+    "zor": ({1, 2, 3}, 10, 1, 500),
+}
+# Bir zorlukta uzun süre tablo bulunamazsa sırayla denenecek daha gevşek şartlar
+GEVSETME = {
+    "kolay": [(25, 3), (25, 2), (20, 2)],
+    "orta": [(15, 2), (15, 1)],
+    "zor": [],
+}
 
 
 def yukle(ad):
@@ -64,151 +57,163 @@ def main():
     random.seed(TOHUM)
     kulupler = yukle("clubs.json")
     oyuncular = yukle("players.json")
-
     kulup_ad = {k["id"]: k["ad"] for k in kulupler}
     kulup_lig = {k["id"]: k["lig"] for k in kulupler}
-    tum_kulupler = list(kulup_ad)
-    turk_kulupler = [k for k in tum_kulupler if kulup_lig[k] == "Süper Lig"]
+    seviye, bulunamayan = kulup_seviyeleri(kulupler, oyuncular)
 
-    # Her kulüp çifti için ortak oyuncular (popülerliğe göre)
-    ortak = defaultdict(list)
+    esikler = sorted({a[1] for a in AYAR.values()} |
+                     {e for g in GEVSETME.values() for e, _ in g} | {20})
+    toplam = Counter()
+    unlu = {e: Counter() for e in esikler}   # eşik -> kulüp çifti -> ünlü ortak sayısı
+    ornek = defaultdict(list)
+    un = Counter()
     for o in oyuncular:
+        pop = o["populerlik"]
+        if pop >= 15:
+            un.update(o["kulupler"])
         for a, b in combinations(sorted(o["kulupler"]), 2):
-            ortak[(a, b)].append((o["populerlik"], o["ad"]))
+            toplam[(a, b)] += 1
+            for e in esikler:
+                if pop >= e:
+                    unlu[e][(a, b)] += 1
+            if len(ornek[(a, b)]) < 2:
+                ornek[(a, b)].append(o["ad"])
 
-    @lru_cache(maxsize=None)  # her çift bir kez hesaplanır, sonra hafızadan okunur
-    def hucre(a, b):
-        liste = ortak.get(tuple(sorted((a, b))), [])
-        taninmis = sum(1 for p, _ in liste if p >= TANINMIS_ESIK)
-        return len(liste), taninmis
+    def anahtar(a, b):
+        return (a, b) if a < b else (b, a)
 
-    def uygun(a, b, esik):
-        toplam, taninmis = hucre(a, b)
-        return toplam >= MIN_CEVAP and taninmis >= esik
+    def komsuluk(izinli, esik, en_az):
+        """kulüp -> birlikte geçerli hücre oluşturabileceği kulüpler"""
+        k = defaultdict(set)
+        for (a, b), n in toplam.items():
+            if n >= MIN_CEVAP and a in izinli and b in izinli and unlu[esik][(a, b)] >= en_az:
+                k[a].add(b)
+                k[b].add(a)
+        return k
 
-    # Kolay tablolar için: çok sayıda güçlü bağlantısı olan (büyük) kulüpler
-    guc = {a: sum(1 for b in tum_kulupler if b != a and hucre(a, b)[1] >= 6) for a in tum_kulupler}
-    buyuk_kulupler = [c for c in tum_kulupler if guc[c] >= 8]
-    buyuk_turk = [c for c in turk_kulupler if c in buyuk_kulupler] or turk_kulupler
+    komsu = {}
+    havuzlar = {}
+    for z, (seviyeler, esik, en_az, _) in AYAR.items():
+        izinli = {k for k in kulup_ad if seviye[k] in seviyeler and un[k] > 0}
+        havuzlar[z] = sorted(izinli)
+        komsu[z] = komsuluk(izinli, esik, en_az)
+        print(f"{z:6}: {len(izinli)} kulüp havuzda")
+    gevsetme_adimi = {z: 0 for z in AYAR}
+    son_bulunan = {z: 0 for z in AYAR}
+    if bulunamayan:
+        print("Not: şu büyük kulüpler verinizde bulunamadı: " + ", ".join(bulunamayan))
 
     kullanim = Counter()
 
-    def agirlikli_sec(adaylar, adet):
-        """Az kullanılmış kulüplere daha çok şans veren tekrarsız seçim."""
+    def sec(adaylar, adet):
         adaylar = list(adaylar)
         secilen = []
         for _ in range(adet):
             if not adaylar:
                 return None
-            agirlik = [1 / (1 + kullanim[c]) for c in adaylar]
+            agirlik = [(un[c] ** 0.5 + 1) / (1 + kullanim[c]) for c in adaylar]
             c = random.choices(adaylar, weights=agirlik, k=1)[0]
             secilen.append(c)
             adaylar.remove(c)
         return secilen
 
-    tablolar = {z: [] for z in HEDEF}
+    tablolar = {z: [] for z in AYAR}
     gorulen = set()
-
-    print("Tablolar üretiliyor...")
     son_ilerleme = 0
+    print("Tablolar üretiliyor...")
+
     for deneme in range(1, DENEME + 1):
-        if all(len(tablolar[z]) >= HEDEF[z] for z in HEDEF):
+        eksik = [z for z in AYAR if len(tablolar[z]) < AYAR[z][3]]
+        if not eksik:
             break
-        if deneme - son_ilerleme > 50_000:
+        if deneme - son_ilerleme > 60_000:
             print("   Uzun süredir yeni tablo bulunamadı, durduruluyor.")
             break
-        if deneme % 25_000 == 0:
-            durum = ", ".join(f"{z}: {len(tablolar[z])}" for z in HEDEF)
-            print(f"   {deneme} deneme -> {durum}")
+        if deneme % 50_000 == 0:
+            print("   " + str(deneme) + " deneme -> " +
+                  ", ".join(f"{z}: {len(tablolar[z])}" for z in AYAR))
 
-        # Henüz dolmamış bir zorluk seviyesini hedefle
-        hedef_z = random.choice([z for z in HEDEF if len(tablolar[z]) < HEDEF[z]])
-        esik = HUCRE_ESIK[hedef_z]
+        z = random.choice(eksik)
+        # Bu zorlukta uzun süredir tablo çıkmıyorsa şartı bir kademe gevşet
+        if deneme - son_bulunan[z] > 15_000 and gevsetme_adimi[z] < len(GEVSETME[z]):
+            esik, en_az = GEVSETME[z][gevsetme_adimi[z]]
+            gevsetme_adimi[z] += 1
+            son_bulunan[z] = deneme
+            son_ilerleme = deneme
+            komsu[z] = komsuluk(set(havuzlar[z]), esik, en_az)
+            print(f"   ! {z}: yeterli tablo bulunamıyor, şart gevşetildi "
+                  f"(hücre başına en az {en_az} oyuncu, popülerlik {esik}+)")
+        havuz = havuzlar[z]
+        turk = [c for c in havuz if kulup_lig[c] in TURK_LIGLER]
 
-        # Satırları seç (yarısında ilk satır bir Türk kulübü)
-        havuz = buyuk_kulupler if hedef_z == "kolay" else tum_kulupler
-        turk_havuz = buyuk_turk if hedef_z == "kolay" else turk_kulupler
-        if random.random() < TURK_ORANI:
-            ilk = agirlikli_sec(turk_havuz, 1)
-            kalan = agirlikli_sec([c for c in havuz if c not in ilk], 2)
+        if turk and random.random() < TURK_ORANI:
+            ilk = sec(turk, 1)
+            kalan = sec([c for c in havuz if c not in ilk], 2)
             satirlar = ilk + kalan if kalan else None
         else:
-            satirlar = agirlikli_sec(havuz, 3)
+            satirlar = sec(havuz, 3)
         if not satirlar:
             continue
 
-        # Üç satırın hepsiyle uyumlu sütun adayları
-        adaylar = [c for c in tum_kulupler
-                   if c not in satirlar and all(uygun(s, c, esik) for s in satirlar)]
-        sutunlar = agirlikli_sec(adaylar, 3)
+        k = komsu[z]
+        adaylar = (k[satirlar[0]] & k[satirlar[1]] & k[satirlar[2]]) - set(satirlar)
+        sutunlar = sec(adaylar, 3)
         if not sutunlar:
             continue
-
-        # Aynı ligden çok fazla kulüp olmasın
-        lig_sayisi = Counter(kulup_lig[c] for c in satirlar + sutunlar)
-        if max(lig_sayisi.values()) > MAX_AYNI_LIG:
+        if max(Counter(kulup_lig[c] for c in satirlar + sutunlar).values()) > MAX_AYNI_LIG:
             continue
-
-        # Aynı tablo (veya satır/sütun yer değiştirmiş hali) tekrar etmesin
         imza = frozenset([frozenset(satirlar), frozenset(sutunlar)])
         if imza in gorulen:
             continue
 
-        hucreler = [[hucre(s, c) for c in sutunlar] for s in satirlar]
-        z = zorluk_hesapla(hucreler)
-        if z is None or len(tablolar[z]) >= HEDEF[z]:
-            continue
+        # Zor tablolar gerçekten zorlasın: en az 2 hücrede en fazla 1 ünlü (20+) cevap
+        if z == "zor":
+            zor_hucre = sum(1 for s in satirlar for c in sutunlar
+                            if unlu[20][anahtar(s, c)] <= 1)
+            if zor_hucre < 2:
+                continue
 
-        # Satır/sütun sırasını karıştır ki Türk kulübü hep sol üstte olmasın
         random.shuffle(satirlar)
         random.shuffle(sutunlar)
         if random.random() < 0.5:
             satirlar, sutunlar = sutunlar, satirlar
-        hucreler = [[hucre(s, c) for c in sutunlar] for s in satirlar]
 
         gorulen.add(imza)
         son_ilerleme = deneme
+        son_bulunan[z] = deneme
         kullanim.update(satirlar + sutunlar)
         tablolar[z].append({
             "id": f"{z[0]}{len(tablolar[z]) + 1:04d}",
             "zorluk": z,
             "satirlar": satirlar,
             "sutunlar": sutunlar,
-            # İpucu için: "Bu hücrede X doğru cevap var"
-            "cevap_sayilari": [[t for t, _ in satir] for satir in hucreler],
-            "taninmis_sayilari": [[n for _, n in satir] for satir in hucreler],
+            "cevap_sayilari": [[toplam[anahtar(s, c)] for c in sutunlar] for s in satirlar],
         })
 
-    hepsi = [t for z in HEDEF for t in tablolar[z]]
+    hepsi = [t for z in AYAR for t in tablolar[z]]
     with open(os.path.join(VERI, "grids.json"), "w", encoding="utf-8") as f:
         json.dump(hepsi, f, ensure_ascii=False, indent=1)
 
-    # --- Özet ---
-    print("=== TABLO ÜRETİCİ ÖZETİ ===")
-    for z in HEDEF:
-        print(f"{z:6}: {len(tablolar[z])} / {HEDEF[z]} tablo")
-    turkler = sum(1 for t in hepsi if any(c in turk_kulupler for c in t["satirlar"] + t["sutunlar"]))
+    print("\n=== TABLO ÜRETİCİ ÖZETİ ===")
+    for z in AYAR:
+        print(f"{z:6}: {len(tablolar[z])} / {AYAR[z][3]} tablo")
+    turkler = sum(1 for t in hepsi
+                  if any(kulup_lig[c] in TURK_LIGLER for c in t["satirlar"] + t["sutunlar"]))
     print(f"Türk kulübü içeren: {turkler} / {len(hepsi)}")
+    print("Büyük kulüpler (seviye 1): " +
+          ", ".join(sorted(kulup_ad[c] for c in kulup_ad if seviye[c] == 1)))
 
-    if kullanim:
-        en_cok = kullanim.most_common(3)
-        en_az = sorted(tum_kulupler, key=lambda c: kullanim[c])[:3]
-        print("En çok kullanılan : " + ", ".join(f"{kulup_ad[c]} ({n})" for c, n in en_cok))
-        print("En az kullanılan  : " + ", ".join(f"{kulup_ad[c]} ({kullanim[c]})" for c in en_az))
-
-    # Her zorluktan bir örnek tablo, hücre başına en bilinen 2 cevapla
-    for z in HEDEF:
+    for z in AYAR:
         if not tablolar[z]:
             continue
-        t = tablolar[z][0]
+        t = random.choice(tablolar[z])
         print(f"\n--- Örnek {z.upper()} tablo ({t['id']}) ---")
         print("Sütunlar: " + " | ".join(kulup_ad[c] for c in t["sutunlar"]))
         for s in t["satirlar"]:
-            print(f"\n{kulup_ad[s]}")
+            print(f"{kulup_ad[s]}")
             for c in t["sutunlar"]:
-                liste = sorted(ortak[tuple(sorted((s, c)))], reverse=True)
-                ornek = ", ".join(ad for _, ad in liste[:2])
-                print(f"   x {kulup_ad[c]:28} {len(liste):3} cevap  örn: {ornek}")
+                key = anahtar(s, c)
+                print(f"   x {kulup_ad[c]:22} {toplam[key]:3} cevap  örn: {', '.join(ornek[key])}")
 
     print(f"\n{len(hepsi)} tablo '{VERI}/grids.json' dosyasına kaydedildi.")
 

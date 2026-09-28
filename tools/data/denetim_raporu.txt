@@ -1,0 +1,46 @@
+FUTBOL XOX VERİ DENETİM RAPORU
+========================================
+
+1) KARİYER - KULÜP TUTARSIZLIĞI: 32 kayıt
+   (Oyuncunun kariyerinde kulüp var ama oyunda o kulübün oyuncusu sayılmıyor)
+   [+] = --uygula ile otomatik düzeltilir, [?] = genel isim, elle kontrol et
+   [?] Moisés Caicedo (2001) · kariyerde: Independiente (2020) · pop 48
+   [?] Sebastián Coates (1990) · kariyerde: Nacional (2009) · pop 46
+   [?] Piero Hincapié (2002) · kariyerde: Independiente (2020) · pop 44
+   [?] Matías Vecino (1991) · kariyerde: Nacional (2011) · pop 44
+   [+] Carlos Sánchez (1986) · kariyerde: Real Madrid (2024) · pop 42
+   [?] Willian Pacho (2001) · kariyerde: Independiente (2020) · pop 38
+   [?] Mathías Olivera (1997) · kariyerde: Nacional (2016) · pop 35
+   [?] Fabián Balbuena (1991) · kariyerde: Nacional (2013) · pop 34
+   [?] Matías Viña (1997) · kariyerde: Nacional (2017) · pop 34
+   [?] Zergio Roquet (1993) · kariyerde: Nacional (2019) · pop 33
+   [?] Luis Suárez (1987) · kariyerde: Nacional (2005) · pop 30
+   [?] Carlos Gruezo (1995) · kariyerde: Independiente (2011) · pop 29
+   [?] Alan Franco (1998) · kariyerde: Independiente (2018) · pop 26
+   [?] Gastón Pereiro (1995) · kariyerde: Nacional (2013) · pop 25
+   [+] Tomás Mejías (1989) · kariyerde: Real Madrid (2011) · pop 24
+   [?] Jhegson Méndez (1997) · kariyerde: Independiente (2015) · pop 23
+   [?] Cristian Ramírez (1994) · kariyerde: Independiente (2011) · pop 23
+   [?] Łukasz Szukała (1984) · kariyerde: Metz (2003) · pop 22
+   [?] Germán Cano (1988) · kariyerde: Nacional (2012) · pop 20
+   [+] Ernesto Albarracín (1907) · kariyerde: Real Madrid (1938) · pop 19
+   [?] Sebastian Freis (1985) · kariyerde: Köln (2009) · pop 18
+   [?] Kendry Páez (2007) · kariyerde: Independiente (2023) · pop 15
+   [?] Martín Satriano (2001) · kariyerde: Nacional (2020) · pop 15
+   [?] Keny Arroyo (2006) · kariyerde: Independiente (2024) · pop 15
+   [?] Eduardo Vargas (1989) · kariyerde: Nacional (2025) · pop 15
+   [?] José Hurtado (2001) · kariyerde: Independiente (2021) · pop 13
+   [?] Luis Alfonso Espino García (1992) · kariyerde: Nacional (2014) · pop 13
+   [?] Fabián Noguera (1993) · kariyerde: Nacional (2023) · pop 12
+   [?] Juan Ignacio Ramírez (1997) · kariyerde: Nacional (2023) · pop 11
+   [?] Salvador Ichazo (1992) · kariyerde: Nacional (2023) · pop 11
+   [?] Lorenzo Faravelli (1993) · kariyerde: Independiente (2020) · pop 11
+   [?] Adam Bareiro (1996) · kariyerde: Nacional (2017) · pop 11
+
+2) AZ OYUNCULU BÜYÜK KULÜPLER: 2
+   Başakşehir: 179 oyuncu
+   Al-Hilal: 281 oyuncu
+
+3) BİLİNEN KARİYERLER TESTİ: 184/186 doğru
+   ✗ David Luiz: eksik kulüp -> Benfica, Flamengo
+   - atlandı: Roberto Carlos - Corinthians (kulüp oyunda yok)

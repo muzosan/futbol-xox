@@ -33,3 +33,21 @@ const Map<String, String> _charMap = {
   'ř': 'r', 'ý': 'y', 'ÿ': 'y', 'đ': 'd', 'ď': 'd', 'ł': 'l',
   'ß': 'ss', 'æ': 'ae', 'œ': 'oe',
 };
+
+/// Ülke kodundan bayrak emojisi: "TR" -> 🇹🇷, "GB-ENG" -> 🏴 (İngiltere).
+/// Kodu olmayan tarihi ülkelerde (Yugoslavya vb.) boş döner.
+String flagEmoji(String? code) {
+  if (code == null) return '';
+  if (RegExp(r'^[A-Z]{2}$').hasMatch(code)) {
+    return String.fromCharCodes(
+        code.codeUnits.map((c) => 0x1F1E6 + c - 0x41));
+  }
+  const subdivisions = {'GB-ENG': 'gbeng', 'GB-SCT': 'gbsct', 'GB-WLS': 'gbwls'};
+  final tag = subdivisions[code];
+  if (tag != null) {
+    return String.fromCharCodes(
+        [0x1F3F4, ...tag.codeUnits.map((c) => 0xE0000 + c), 0xE007F]);
+  }
+  if (code == 'GB-NIR') return flagEmoji('GB');
+  return '';
+}

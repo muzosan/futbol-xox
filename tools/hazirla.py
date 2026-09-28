@@ -8,7 +8,7 @@ Kullanım (tools klasöründe):
 Yaptıkları:
     1) Wikidata oyuncularının İngilizce isimlerini çeker
        -> arama kutusu hem "Mkhitaryan" hem "Mhitaryan" yazımını tanır
-    2) Kulüplere kısa, okunaklı isimler verir (FC Internazionale Milano -> Inter)
+    2) Kulüp bilgilerini uygulamanın beklediği biçime getirir
     3) Dosyaları küçültüp ../assets/data/ klasörüne yazar
 
 Çıktılar (futbol_xox/assets/data/):
@@ -20,6 +20,7 @@ import os
 import sys
 import time
 
+from seviye import GORUNEN_AD, kulup_seviyeleri
 from veri_topla import istek, API_URL  # aynı bağlantı ayarlarını (mailin dahil) kullanır
 
 sys.stdout.reconfigure(encoding="utf-8")
@@ -28,26 +29,6 @@ VERI = "data"
 CIKTI = os.path.join("..", "assets", "data")
 ISIM_CACHE = os.path.join(VERI, "cache", "isimler.json")
 
-# Oyunda görünecek kısa kulüp adları
-KISA_AD = {
-    "İstanbul Başakşehir FK": "Başakşehir", "Kasımpaşa SK": "Kasımpaşa", "Göztepe SK": "Göztepe",
-    "Manchester United FC": "Manchester United", "Liverpool FC": "Liverpool",
-    "Arsenal FC": "Arsenal", "Chelsea FC": "Chelsea", "Manchester City FC": "Manchester City",
-    "Tottenham Hotspur FC": "Tottenham", "Everton FC": "Everton",
-    "Newcastle United FC": "Newcastle", "Aston Villa FC": "Aston Villa",
-    "West Ham United FC": "West Ham", "Real Madrid CF": "Real Madrid",
-    "FC Barcelona": "Barcelona", "Sevilla FC": "Sevilla", "Valencia CF": "Valencia",
-    "Villarreal CF": "Villarreal", "Juventus FC": "Juventus", "A.C. Milan": "Milan",
-    "FC Internazionale Milano": "Inter", "AS Roma": "Roma", "SS Lazio": "Lazio",
-    "SSC Napoli": "Napoli", "ACF Fiorentina": "Fiorentina", "Atalanta BC": "Atalanta",
-    "FC Bayern Münih": "Bayern Münih", "Borussia Dortmund": "Dortmund",
-    "Bayer 04 Leverkusen": "Leverkusen", "FC Schalke 04": "Schalke 04",
-    "VfB Stuttgart": "Stuttgart", "SV Werder Bremen": "Werder Bremen",
-    "Borussia Mönchengladbach": "M'gladbach", "Eintracht Frankfurt": "Frankfurt",
-    "Paris Saint-Germain": "PSG", "Olympique de Marseille": "Marsilya",
-    "Olympique Lyonnais": "Lyon", "AS Monaco FC": "Monaco", "Lille OSC": "Lille",
-    "OGC Nice": "Nice", "Stade Rennais FC": "Rennes",
-}
 
 
 def yukle(yol):
@@ -92,12 +73,26 @@ def main():
     # yanlışsa oyun "yanlış" desin. (Transfermarkt'tan gelen "TM..." ID'lerin
     # isimleri zaten standart yazımda, onlar için Wikidata'ya sorulmaz.)
     adaylar = oyuncular
-    isimler = ingilizce_isimleri_cek([o["id"] for o in adaylar if o["id"].startswith("Q")])
+    # İngilizce isimlerin çoğu veri_topla.py'de alındı; eksik kalanlar burada çekilir
+    isimler = ingilizce_isimleri_cek(
+        [o["id"] for o in adaylar if o["id"].startswith("Q") and not o.get("en")])
+
+    # İstatistikler (istatistik_topla.py çalıştırıldıysa)
+    ist_yolu = os.path.join(VERI, "stats.json")
+    istatistikler = yukle(ist_yolu) if os.path.exists(ist_yolu) else {}
+    if not istatistikler:
+        print("Not: data/stats.json yok; Kart Düellosu ve Kadro Kur için py istatistik_topla.py")
+
+    # Mevki ve uyruk (detay_topla.py çalıştırıldıysa)
+    detay_yolu = os.path.join(VERI, "details.json")
+    detaylar = yukle(detay_yolu) if os.path.exists(detay_yolu) else {}
+    if not detaylar:
+        print("Not: data/details.json yok; mevki/uyruk eklenmeyecek (py detay_topla.py)")
 
     app_oyuncular = []
     for o in adaylar:
         tr = o["ad"]
-        en = isimler.get(o["id"]) or tr
+        en = o.get("en") or isimler.get(o["id"]) or tr
         kayit = {
             "id": o["id"],
             "ad": en,                    # ekranda görünen ad (İngilizce yazım daha standart)
@@ -106,14 +101,34 @@ def main():
         }
         if tr != en:
             kayit["tr"] = tr             # aramada Türkçe yazım da bulunsun
+        if o["id"] in istatistikler:
+            kayit["s"] = istatistikler[o["id"]]  # gol, asist, maç, kart, milli, değer
+        detay = detaylar.get(o["id"])
+        if detay:
+            if detay.get("m"):
+                kayit["m"] = detay["m"]   # mevki kısaltmaları, ör. ["CB"]
+            if detay.get("u"):
+                kayit["u"] = detay["u"]   # ülke kodu, ör. "TR"
         if o["dogum_yili"]:
             kayit["y"] = o["dogum_yili"]  # aynı isimli oyuncuları ayırmak için
         app_oyuncular.append(kayit)
 
+    seviye, bulunamayan = kulup_seviyeleri(kulupler, oyuncular)
+    if bulunamayan:
+        print("Not: şu büyük kulüpler verinizde bulunamadı: " + ", ".join(bulunamayan))
+
+    # Forma desenleri ve renkleri (forma_topla.py çalıştırıldıysa)
+    forma_yolu = os.path.join(VERI, "kits.json")
+    formalar = yukle(forma_yolu) if os.path.exists(forma_yolu) else {}
+    if not formalar:
+        print("Not: data/kits.json yok; formalar varsayılan renkte görünecek (py forma_topla.py)")
+
     app_kulupler = [{
         "id": k["id"],
-        "ad": KISA_AD.get(k["ad"], k["ad"]),
-        "tam_ad": k["ad"],
+        "ad": GORUNEN_AD.get(k["ad"], k["ad"]),
+        "tam_ad": k.get("tam_ad", k["ad"]),
+        "t": seviye[k["id"]],   # 1 = büyük kulüp, 2 = tanınmış, 3 = diğer
+        **({"f": formalar[k["id"]]} if k["id"] in formalar else {}),  # forma
         "lig": k["lig"],
     } for k in kulupler]
 
@@ -131,6 +146,8 @@ def main():
     print(f"Kulüp   : {len(app_kulupler)}")
     print(f"Oyuncu  : {len(app_oyuncular)} ({sum(1 for o in app_oyuncular if 'tr' in o)} tanesinin ayrı Türkçe yazımı var)")
     print(f"Tablo   : {len(app_tablolar)}")
+    print(f"Mevkili : {sum(1 for o in app_oyuncular if 'm' in o)} · "
+          f"Uyruklu: {sum(1 for o in app_oyuncular if 'u' in o)}")
     for ad in ("clubs.json", "players.json", "grids.json"):
         boyut = os.path.getsize(os.path.join(CIKTI, ad)) / 1024
         print(f"   {ad:13} {boyut:7.0f} KB")

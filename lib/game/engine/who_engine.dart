@@ -38,7 +38,8 @@ class WhoResult {
 }
 
 /// Kim Bu? kuralları:
-/// - Bir futbolcunun kariyerindeki kulüpler sırayla açılır; ilk kulüp açık başlar.
+/// - Bir futbolcunun kariyerindeki kulüpler sırayla açılır; ilk [startRevealed]
+///   kulüp açık başlar.
 /// - Her soru [maxPoints] puandan başlar. Açılan her ek ipucu [clueCost],
 ///   her yanlış tahmin [wrongCost] puan götürür (en az 1 puan kalır).
 /// - [maxWrong] yanlış tahminden sonra soru kaybedilir; pes etmek 0 puandır.
@@ -49,16 +50,20 @@ class WhoEngine {
     this.maxPoints = 10,
     this.clueCost = 2,
     this.wrongCost = 1,
-  });
+    this.startRevealed = 1,
+  }) : revealed = startRevealed;
 
   final List<WhoQuestion> questions;
+
+  /// Soru başında açık gelen kulüp sayısı (bunlar puandan düşmez)
+  final int startRevealed;
   final int maxWrong;
   final int maxPoints;
   final int clueCost;
   final int wrongCost;
 
   int index = 0;
-  int revealed = 1;
+  int revealed;
   int wrongGuesses = 0;
   int score = 0;
 
@@ -80,8 +85,8 @@ class WhoEngine {
       current.birthYear != null && revealed > current.steps.length;
 
   /// Şu an bilinirse kazanılacak puan
-  int get potentialPoints => max(
-      1, maxPoints - (revealed - 1) * clueCost - wrongGuesses * wrongCost);
+  int get potentialPoints => max(1,
+      maxPoints - max(0, revealed - startRevealed) * clueCost - wrongGuesses * wrongCost);
 
   void reveal() {
     if (canReveal) revealed++;
@@ -114,7 +119,7 @@ class WhoEngine {
   void nextQuestion() {
     if (!resolved || isLastQuestion) return;
     index++;
-    revealed = 1;
+    revealed = startRevealed;
     wrongGuesses = 0;
     resolved = false;
   }

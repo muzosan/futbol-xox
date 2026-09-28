@@ -6,6 +6,9 @@ class Club {
     required this.name,
     required this.fullName,
     required this.league,
+    this.tier = 3,
+    this.kitPattern = 'solid',
+    this.kitColors = const [],
   });
 
   final String id;
@@ -13,11 +16,26 @@ class Club {
   final String fullName;
   final String league;
 
+  /// Ün seviyesi: 1 = herkesin bildiği büyük kulüp, 2 = tanınmış, 3 = diğer
+  final int tier;
+
+  /// Forma deseni: solid, stripes, hoops, halves, sleeves, center, band, sash, diagonal
+  final String kitPattern;
+
+  /// Forma renkleri (0xAARRGGBB). Boşsa varsayılan renk kullanılır.
+  final List<int> kitColors;
+
   factory Club.fromJson(Map<String, dynamic> json) => Club(
         id: json['id'] as String,
         name: json['ad'] as String,
         fullName: json['tam_ad'] as String,
         league: json['lig'] as String,
+        tier: json['t'] as int? ?? 3,
+        kitPattern: (json['f'] as Map<String, dynamic>?)?['p'] as String? ?? 'solid',
+        kitColors: ((json['f'] as Map<String, dynamic>?)?['c'] as List?)
+                ?.map((h) => int.parse('FF${(h as String).substring(1)}', radix: 16))
+                .toList() ??
+            const [],
       );
 
   /// Rozet içinde yazacak kısaltma: "Real Madrid" -> "RM", "Galatasaray" -> "GAL"
@@ -40,6 +58,9 @@ class Player {
     required this.popularity,
     this.birthYear,
     required this.clubs,
+    this.positions = const [],
+    this.nationality,
+    this.stats = const {},
   }) : searchKey = ' ${normalize('$name ${trName ?? ''}')}';
 
   final String id;
@@ -48,6 +69,18 @@ class Player {
   final int popularity;
   final int? birthYear;
   final Set<String> clubs;
+
+  /// Mevki kısaltmaları, ör. ["CB"] veya ["CM", "DM"]
+  final List<String> positions;
+
+  /// Ülke kodu, ör. "TR", "BR", "GB-ENG" (bilinmiyorsa null)
+  final String? nationality;
+
+  /// İstatistikler: g gol, a asist, m maç, y sarı, r kırmızı (2012+ Avrupa),
+  /// mm milli maç, mg milli gol, pv en yüksek piyasa değeri (milyon €)
+  final Map<String, num> stats;
+
+  num stat(String key) => stats[key] ?? 0;
 
   /// Başında boşluk olan sadeleştirilmiş isim; kelime başı eşleşmesi için kullanılır.
   final String searchKey;
@@ -59,6 +92,11 @@ class Player {
         popularity: json['p'] as int,
         birthYear: json['y'] as int?,
         clubs: (json['k'] as List).cast<String>().toSet(),
+        positions: (json['m'] as List?)?.cast<String>() ?? const [],
+        nationality: json['u'] as String?,
+        stats: (json['s'] as Map<String, dynamic>?)
+                ?.map((k, v) => MapEntry(k, v as num)) ??
+            const {},
       );
 }
 

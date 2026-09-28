@@ -1,373 +1,4076 @@
 [
   {
-    "id": "Q495299",
-    "ad": "Galatasaray",
-    "arama": "Galatasaray",
-    "lig": "Süper Lig",
-    "oyuncu_sayisi": 658
-  },
-  {
-    "id": "Q6601875",
-    "ad": "Fenerbahçe",
-    "arama": "Fenerbahçe",
-    "lig": "Süper Lig",
-    "oyuncu_sayisi": 622
-  },
-  {
-    "id": "Q172567",
-    "ad": "Beşiktaş",
-    "arama": "Beşiktaş",
-    "lig": "Süper Lig",
-    "oyuncu_sayisi": 439
-  },
-  {
-    "id": "Q192641",
-    "ad": "Trabzonspor",
-    "arama": "Trabzonspor",
-    "lig": "Süper Lig",
-    "oyuncu_sayisi": 422
-  },
-  {
-    "id": "Q857938",
-    "ad": "İstanbul Başakşehir FK",
-    "arama": "İstanbul Başakşehir",
-    "lig": "Süper Lig",
-    "oyuncu_sayisi": 179
-  },
-  {
-    "id": "Q203573",
-    "ad": "Bursaspor",
-    "arama": "Bursaspor",
-    "lig": "Süper Lig",
-    "oyuncu_sayisi": 326
-  },
-  {
-    "id": "Q372599",
-    "ad": "Sivasspor",
-    "arama": "Sivasspor",
-    "lig": "Süper Lig",
-    "oyuncu_sayisi": 228
-  },
-  {
-    "id": "Q138230",
-    "ad": "Kasımpaşa SK",
-    "arama": "Kasımpaşa",
-    "lig": "Süper Lig",
-    "oyuncu_sayisi": 199
-  },
-  {
-    "id": "Q43710",
-    "ad": "Antalyaspor",
-    "arama": "Antalyaspor",
-    "lig": "Süper Lig",
-    "oyuncu_sayisi": 277
-  },
-  {
-    "id": "Q18656",
-    "ad": "Manchester United FC",
-    "arama": "Manchester United F.C.",
-    "lig": "Premier League",
-    "oyuncu_sayisi": 1226
-  },
-  {
-    "id": "Q1130849",
-    "ad": "Liverpool FC",
-    "arama": "Liverpool F.C.",
-    "lig": "Premier League",
-    "oyuncu_sayisi": 1083
-  },
-  {
-    "id": "Q9617",
-    "ad": "Arsenal FC",
-    "arama": "Arsenal F.C.",
-    "lig": "Premier League",
-    "oyuncu_sayisi": 1067
-  },
-  {
-    "id": "Q9616",
-    "ad": "Chelsea FC",
-    "arama": "Chelsea F.C.",
-    "lig": "Premier League",
-    "oyuncu_sayisi": 841
-  },
-  {
-    "id": "Q50602",
-    "ad": "Manchester City FC",
-    "arama": "Manchester City F.C.",
-    "lig": "Premier League",
-    "oyuncu_sayisi": 1109
-  },
-  {
-    "id": "Q18741",
-    "ad": "Tottenham Hotspur FC",
-    "arama": "Tottenham Hotspur F.C.",
-    "lig": "Premier League",
-    "oyuncu_sayisi": 1001
-  },
-  {
-    "id": "Q5794",
-    "ad": "Everton FC",
-    "arama": "Everton F.C.",
-    "lig": "Premier League",
-    "oyuncu_sayisi": 1059
-  },
-  {
-    "id": "Q18716",
-    "ad": "Newcastle United FC",
-    "arama": "Newcastle United F.C.",
-    "lig": "Premier League",
-    "oyuncu_sayisi": 934
-  },
-  {
-    "id": "Q18711",
-    "ad": "Aston Villa FC",
-    "arama": "Aston Villa F.C.",
-    "lig": "Premier League",
-    "oyuncu_sayisi": 1042
-  },
-  {
-    "id": "Q18747",
-    "ad": "West Ham United FC",
-    "arama": "West Ham United F.C.",
-    "lig": "Premier League",
-    "oyuncu_sayisi": 1019
-  },
-  {
-    "id": "Q8682",
-    "ad": "Real Madrid CF",
-    "arama": "Real Madrid CF",
-    "lig": "La Liga",
-    "oyuncu_sayisi": 776
+    "id": "Q631",
+    "tam_ad": "FC Internazionale Milano",
+    "ad": "Inter",
+    "lig": "Serie A",
+    "es": [
+      "Q135451504",
+      "Q3799370"
+    ],
+    "oyuncu_sayisi": 1364
   },
   {
     "id": "Q7156",
-    "ad": "FC Barcelona",
-    "arama": "FC Barcelona",
+    "tam_ad": "FC Barcelona",
+    "ad": "Barcelona",
     "lig": "La Liga",
-    "oyuncu_sayisi": 1287
+    "es": [
+      "Q111134902",
+      "Q2276386",
+      "Q2346842",
+      "Q3091261",
+      "Q3503804"
+    ],
+    "oyuncu_sayisi": 1316
   },
   {
-    "id": "Q8701",
-    "ad": "Atlético Madrid",
-    "arama": "Atlético Madrid",
-    "lig": "La Liga",
-    "oyuncu_sayisi": 762
+    "id": "Q19444",
+    "tam_ad": "Birmingham City FC",
+    "ad": "Birmingham City",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 1305
   },
   {
-    "id": "Q10329",
-    "ad": "Sevilla FC",
-    "arama": "Sevilla FC",
-    "lig": "La Liga",
-    "oyuncu_sayisi": 514
+    "id": "Q19571",
+    "tam_ad": "Brentford FC",
+    "ad": "Brentford",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 1283
   },
   {
-    "id": "Q10333",
-    "ad": "Valencia CF",
-    "arama": "Valencia CF",
-    "lig": "La Liga",
-    "oyuncu_sayisi": 452
+    "id": "Q18736",
+    "tam_ad": "Stoke City FC",
+    "ad": "Stoke City",
+    "lig": "Championship",
+    "es": [
+      "Q9208879"
+    ],
+    "oyuncu_sayisi": 1282
   },
   {
-    "id": "Q12297",
-    "ad": "Villarreal CF",
-    "arama": "Villarreal CF",
-    "lig": "La Liga",
-    "oyuncu_sayisi": 320
-  },
-  {
-    "id": "Q8723",
-    "ad": "Real Betis",
-    "arama": "Real Betis",
-    "lig": "La Liga",
-    "oyuncu_sayisi": 570
-  },
-  {
-    "id": "Q8687",
-    "ad": "Athletic Bilbao",
-    "arama": "Athletic Bilbao",
-    "lig": "La Liga",
-    "oyuncu_sayisi": 744
-  },
-  {
-    "id": "Q10315",
-    "ad": "Real Sociedad",
-    "arama": "Real Sociedad",
-    "lig": "La Liga",
-    "oyuncu_sayisi": 535
-  },
-  {
-    "id": "Q1422",
-    "ad": "Juventus FC",
-    "arama": "Juventus FC",
+    "id": "Q2074",
+    "tam_ad": "Genoa CFC",
+    "ad": "Genoa",
     "lig": "Serie A",
-    "oyuncu_sayisi": 1097
+    "es": [],
+    "oyuncu_sayisi": 1267
   },
   {
     "id": "Q1543",
-    "ad": "A.C. Milan",
-    "arama": "AC Milan",
+    "tam_ad": "A.C. Milan",
+    "ad": "Milan",
     "lig": "Serie A",
-    "oyuncu_sayisi": 1221
+    "es": [
+      "Q126923253",
+      "Q55602896"
+    ],
+    "oyuncu_sayisi": 1247
   },
   {
-    "id": "Q631",
-    "ad": "FC Internazionale Milano",
-    "arama": "Inter Milan",
-    "lig": "Serie A",
-    "oyuncu_sayisi": 1362
+    "id": "Q18656",
+    "tam_ad": "Manchester United FC",
+    "ad": "Manchester United",
+    "lig": "Premier League",
+    "es": [
+      "Q27346385"
+    ],
+    "oyuncu_sayisi": 1226
   },
   {
-    "id": "Q2739",
-    "ad": "AS Roma",
-    "arama": "AS Roma",
-    "lig": "Serie A",
-    "oyuncu_sayisi": 972
+    "id": "Q19458",
+    "tam_ad": "Burnley FC",
+    "ad": "Burnley",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 1180
   },
   {
-    "id": "Q2609",
-    "ad": "SS Lazio",
-    "arama": "SS Lazio",
+    "id": "Q1422",
+    "tam_ad": "Juventus FC",
+    "ad": "Juventus",
     "lig": "Serie A",
-    "oyuncu_sayisi": 975
+    "es": [
+      "Q56025745"
+    ],
+    "oyuncu_sayisi": 1116
   },
   {
-    "id": "Q2641",
-    "ad": "SSC Napoli",
-    "arama": "SSC Napoli",
+    "id": "Q50602",
+    "tam_ad": "Manchester City FC",
+    "ad": "Manchester City",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 1109
+  },
+  {
+    "id": "Q2768",
+    "tam_ad": "Torino FC",
+    "ad": "Torino",
     "lig": "Serie A",
-    "oyuncu_sayisi": 877
+    "es": [
+      "Q548847"
+    ],
+    "oyuncu_sayisi": 1107
+  },
+  {
+    "id": "Q1130849",
+    "tam_ad": "Liverpool FC",
+    "ad": "Liverpool",
+    "lig": "Premier League",
+    "es": [
+      "Q2005722"
+    ],
+    "oyuncu_sayisi": 1083
+  },
+  {
+    "id": "Q18732",
+    "tam_ad": "Southampton FC",
+    "ad": "Southampton",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 1068
+  },
+  {
+    "id": "Q9617",
+    "tam_ad": "Arsenal FC",
+    "ad": "Arsenal",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 1066
+  },
+  {
+    "id": "Q5794",
+    "tam_ad": "Everton FC",
+    "ad": "Everton",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 1059
+  },
+  {
+    "id": "Q18519",
+    "tam_ad": "Lincoln City FC",
+    "ad": "Lincoln City",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 1055
+  },
+  {
+    "id": "Q18711",
+    "tam_ad": "Aston Villa FC",
+    "ad": "Aston Villa",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 1042
   },
   {
     "id": "Q2052",
-    "ad": "ACF Fiorentina",
-    "arama": "ACF Fiorentina",
+    "tam_ad": "ACF Fiorentina",
+    "ad": "Fiorentina",
     "lig": "Serie A",
+    "es": [],
     "oyuncu_sayisi": 1038
   },
   {
-    "id": "Q1886",
-    "ad": "Atalanta BC",
-    "arama": "Atalanta BC",
+    "id": "Q19500",
+    "tam_ad": "Wolverhampton Wanderers FC",
+    "ad": "Wolverhampton Wanderers",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 1036
+  },
+  {
+    "id": "Q19607",
+    "tam_ad": "Sheffield United FC",
+    "ad": "Sheffield United",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 1029
+  },
+  {
+    "id": "Q2693",
+    "tam_ad": "Parma Calcio 1913",
+    "ad": "Parma",
     "lig": "Serie A",
+    "es": [],
+    "oyuncu_sayisi": 1028
+  },
+  {
+    "id": "Q17479",
+    "tam_ad": "Clube de Regatas do Flamengo",
+    "ad": "Flamengo",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 1021
+  },
+  {
+    "id": "Q18747",
+    "tam_ad": "West Ham United FC",
+    "ad": "West Ham",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 1019
+  },
+  {
+    "id": "Q18741",
+    "tam_ad": "Tottenham Hotspur FC",
+    "ad": "Tottenham",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 1001
+  },
+  {
+    "id": "Q18708",
+    "tam_ad": "Fulham FC",
+    "ad": "Fulham",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 997
+  },
+  {
+    "id": "Q1886",
+    "tam_ad": "Atalanta BC",
+    "ad": "Atalanta",
+    "lig": "Serie A",
+    "es": [],
     "oyuncu_sayisi": 984
   },
   {
-    "id": "Q15789",
-    "ad": "FC Bayern Münih",
-    "arama": "FC Bayern Munich",
-    "lig": "Bundesliga",
-    "oyuncu_sayisi": 771
+    "id": "Q19467",
+    "tam_ad": "Crystal Palace FC",
+    "ad": "Crystal Palace",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 981
   },
   {
-    "id": "Q41420",
-    "ad": "Borussia Dortmund",
-    "arama": "Borussia Dortmund",
-    "lig": "Bundesliga",
-    "oyuncu_sayisi": 463
+    "id": "Q8780",
+    "tam_ad": "RCD Espanyol",
+    "ad": "Espanyol",
+    "lig": "La Liga",
+    "es": [
+      "Q108612281",
+      "Q11941271",
+      "Q20542541"
+    ],
+    "oyuncu_sayisi": 981
   },
   {
-    "id": "Q104761",
-    "ad": "Bayer 04 Leverkusen",
-    "arama": "Bayer 04 Leverkusen",
-    "lig": "Bundesliga",
-    "oyuncu_sayisi": 456
+    "id": "Q2609",
+    "tam_ad": "SS Lazio",
+    "ad": "Lazio",
+    "lig": "Serie A",
+    "es": [
+      "Q3907390"
+    ],
+    "oyuncu_sayisi": 975
   },
   {
-    "id": "Q32494",
-    "ad": "FC Schalke 04",
-    "arama": "FC Schalke 04",
-    "lig": "Bundesliga",
-    "oyuncu_sayisi": 578
+    "id": "Q2739",
+    "tam_ad": "AS Roma",
+    "ad": "Roma",
+    "lig": "Serie A",
+    "es": [],
+    "oyuncu_sayisi": 972
   },
   {
-    "id": "Q4512",
-    "ad": "VfB Stuttgart",
-    "arama": "VfB Stuttgart",
-    "lig": "Bundesliga",
-    "oyuncu_sayisi": 733
+    "id": "Q18739",
+    "tam_ad": "Sunderland AFC",
+    "ad": "Sunderland",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 939
   },
   {
-    "id": "Q51974",
-    "ad": "Hamburger SV",
-    "arama": "Hamburger SV",
-    "lig": "Bundesliga",
-    "oyuncu_sayisi": 618
+    "id": "Q8639",
+    "tam_ad": "Hellas Verona FC",
+    "ad": "Hellas Verona",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 934
   },
   {
-    "id": "Q51976",
-    "ad": "SV Werder Bremen",
-    "arama": "SV Werder Bremen",
-    "lig": "Bundesliga",
-    "oyuncu_sayisi": 447
+    "id": "Q18716",
+    "tam_ad": "Newcastle United FC",
+    "ad": "Newcastle",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 933
   },
   {
-    "id": "Q101959",
-    "ad": "Borussia Mönchengladbach",
-    "arama": "Borussia Mönchengladbach",
-    "lig": "Bundesliga",
-    "oyuncu_sayisi": 445
+    "id": "Q18662",
+    "tam_ad": "Cardiff City FC",
+    "ad": "Cardiff City",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 933
   },
   {
-    "id": "Q38245",
-    "ad": "Eintracht Frankfurt",
-    "arama": "Eintracht Frankfurt",
-    "lig": "Bundesliga",
-    "oyuncu_sayisi": 553
+    "id": "Q19446",
+    "tam_ad": "Blackburn Rovers FC",
+    "ad": "Blackburn Rovers",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 933
   },
   {
-    "id": "Q483020",
-    "ad": "Paris Saint-Germain",
-    "arama": "Paris Saint-Germain F.C.",
-    "lig": "Ligue 1",
-    "oyuncu_sayisi": 547
+    "id": "Q19490",
+    "tam_ad": "Nottingham Forest FC",
+    "ad": "Nottingham Forest",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 902
+  },
+  {
+    "id": "Q18744",
+    "tam_ad": "West Bromwich Albion FC",
+    "ad": "West Bromwich Albion",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 899
+  },
+  {
+    "id": "Q19451",
+    "tam_ad": "Bolton Wanderers FC",
+    "ad": "Bolton Wanderers",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 890
+  },
+  {
+    "id": "Q2714",
+    "tam_ad": "Watford FC",
+    "ad": "Watford",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 889
+  },
+  {
+    "id": "Q1128631",
+    "tam_ad": "Leeds United AFC",
+    "ad": "Leeds United",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 879
+  },
+  {
+    "id": "Q19453",
+    "tam_ad": "Brighton & Hove Albion FC",
+    "ad": "Brighton & Hove Albion",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 878
+  },
+  {
+    "id": "Q2641",
+    "tam_ad": "SSC Napoli",
+    "ad": "Napoli",
+    "lig": "Serie A",
+    "es": [],
+    "oyuncu_sayisi": 877
+  },
+  {
+    "id": "Q19604",
+    "tam_ad": "Portsmouth FC",
+    "ad": "Portsmouth",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 863
+  },
+  {
+    "id": "Q81888",
+    "tam_ad": "AFC Ajax",
+    "ad": "Ajax",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 862
+  },
+  {
+    "id": "Q2674",
+    "tam_ad": "Palermo FC",
+    "ad": "Palermo",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 860
+  },
+  {
+    "id": "Q8428",
+    "tam_ad": "Calcio Padova",
+    "ad": "Padova",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 860
+  },
+  {
+    "id": "Q19580",
+    "tam_ad": "Coventry City FC",
+    "ad": "Coventry City",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 859
+  },
+  {
+    "id": "Q19456",
+    "tam_ad": "Bristol City FC",
+    "ad": "Bristol City",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 859
+  },
+  {
+    "id": "Q2798",
+    "tam_ad": "Udinese Calcio",
+    "ad": "Udinese",
+    "lig": "Serie A",
+    "es": [],
+    "oyuncu_sayisi": 856
+  },
+  {
+    "id": "Q18723",
+    "tam_ad": "Queens Park Rangers FC",
+    "ad": "Queens Park Rangers",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 855
+  },
+  {
+    "id": "Q19487",
+    "tam_ad": "Millwall FC",
+    "ad": "Millwall",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 853
+  },
+  {
+    "id": "Q19462",
+    "tam_ad": "Charlton Athletic FC",
+    "ad": "Charlton Athletic",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 851
+  },
+  {
+    "id": "Q18661",
+    "tam_ad": "Middlesbrough FC",
+    "ad": "Middlesbrough",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 850
+  },
+  {
+    "id": "Q19470",
+    "tam_ad": "Derby County FC",
+    "ad": "Derby County",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 848
+  },
+  {
+    "id": "Q19612",
+    "tam_ad": "Preston North End FC",
+    "ad": "Preston North End",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 846
+  },
+  {
+    "id": "Q1893",
+    "tam_ad": "Bologna FC 1909",
+    "ad": "Bologna",
+    "lig": "Serie A",
+    "es": [],
+    "oyuncu_sayisi": 846
+  },
+  {
+    "id": "Q80964",
+    "tam_ad": "SE Palmeiras",
+    "ad": "Palmeiras",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 845
+  },
+  {
+    "id": "Q9616",
+    "tam_ad": "Chelsea FC",
+    "ad": "Chelsea",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 841
   },
   {
     "id": "Q132885",
-    "ad": "Olympique de Marseille",
-    "arama": "Olympique de Marseille",
+    "tam_ad": "Olympique de Marseille",
+    "ad": "Marsilya",
     "lig": "Ligue 1",
+    "es": [],
     "oyuncu_sayisi": 838
   },
   {
-    "id": "Q704",
-    "ad": "Olympique Lyonnais",
-    "arama": "Olympique Lyonnais",
-    "lig": "Ligue 1",
-    "oyuncu_sayisi": 595
+    "id": "Q15799",
+    "tam_ad": "Club Atlético River Plate",
+    "ad": "River Plate",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 819
   },
   {
-    "id": "Q180305",
-    "ad": "AS Monaco FC",
-    "arama": "AS Monaco FC",
-    "lig": "Ligue 1",
-    "oyuncu_sayisi": 612
+    "id": "Q35933",
+    "tam_ad": "SC Corinthians Paulista",
+    "ad": "Corinthians Paulista",
+    "lig": "Brasileirão",
+    "es": [
+      "Q2366736",
+      "Q7579318",
+      "Q7579319"
+    ],
+    "oyuncu_sayisi": 815
   },
   {
-    "id": "Q19516",
-    "ad": "Lille OSC",
-    "arama": "Lille OSC",
-    "lig": "Ligue 1",
-    "oyuncu_sayisi": 569
+    "id": "Q1457",
+    "tam_ad": "UC Sampdoria",
+    "ad": "Sampdoria",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 800
   },
   {
-    "id": "Q185163",
-    "ad": "OGC Nice",
-    "arama": "OGC Nice",
-    "lig": "Ligue 1",
-    "oyuncu_sayisi": 576
+    "id": "Q5014111",
+    "tam_ad": "CR Vasco da Gama",
+    "ad": "CR Vasco da Gama",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 800
+  },
+  {
+    "id": "Q6641",
+    "tam_ad": "AS Bari",
+    "ad": "Bari",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 796
+  },
+  {
+    "id": "Q1120838",
+    "tam_ad": "Como Calcio",
+    "ad": "Como",
+    "lig": "Serie A",
+    "es": [
+      "Q135334608"
+    ],
+    "oyuncu_sayisi": 793
+  },
+  {
+    "id": "Q170703",
+    "tam_ad": "Boca Juniors",
+    "ad": "Boca Juniors",
+    "lig": "Arjantin Ligi",
+    "es": [
+      "Q130333681",
+      "Q30938913",
+      "Q6034278"
+    ],
+    "oyuncu_sayisi": 787
+  },
+  {
+    "id": "Q18721",
+    "tam_ad": "Norwich City FC",
+    "ad": "Norwich City",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 780
+  },
+  {
+    "id": "Q318307",
+    "tam_ad": "CA Rosario Central",
+    "ad": "Rosario Central",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 778
+  },
+  {
+    "id": "Q80958",
+    "tam_ad": "Botafogo FR",
+    "ad": "Botafogo",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 775
+  },
+  {
+    "id": "Q8682",
+    "tam_ad": "Real Madrid CF",
+    "ad": "Real Madrid",
+    "lig": "La Liga",
+    "es": [
+      "Q1079257",
+      "Q140046552",
+      "Q5552408",
+      "Q6101987",
+      "Q6101994",
+      "Q6101996",
+      "Q6102019",
+      "Q6102022",
+      "Q6102029",
+      "Q6102032",
+      "Q6362982"
+    ],
+    "oyuncu_sayisi": 774
+  },
+  {
+    "id": "Q80987",
+    "tam_ad": "Fluminense FC",
+    "ad": "Fluminense",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 773
+  },
+  {
+    "id": "Q15789",
+    "tam_ad": "FC Bayern Münih",
+    "ad": "Bayern Münih",
+    "lig": "Bundesliga",
+    "es": [],
+    "oyuncu_sayisi": 770
+  },
+  {
+    "id": "Q8408",
+    "tam_ad": "Modena FC",
+    "ad": "Modena",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 765
+  },
+  {
+    "id": "Q19477",
+    "tam_ad": "Hull City AFC",
+    "ad": "Hull City",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 764
+  },
+  {
+    "id": "Q221695",
+    "tam_ad": "Grêmio Foot-Ball Porto Alegrense",
+    "ad": "Grêmio Foot-Ball Porto Alegrense",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 764
+  },
+  {
+    "id": "Q8701",
+    "tam_ad": "Atlético Madrid",
+    "ad": "Atlético Madrid",
+    "lig": "La Liga",
+    "es": [
+      "Q757447"
+    ],
+    "oyuncu_sayisi": 762
+  },
+  {
+    "id": "Q16344",
+    "tam_ad": "Perugia Calcio",
+    "ad": "Perugia",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 761
+  },
+  {
+    "id": "Q18529",
+    "tam_ad": "Wrexham FC",
+    "ad": "Wrexham",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 759
+  },
+  {
+    "id": "Q501245",
+    "tam_ad": "Venezia F.C.",
+    "ad": "Venezia",
+    "lig": "Serie A",
+    "es": [],
+    "oyuncu_sayisi": 757
+  },
+  {
+    "id": "Q289707",
+    "tam_ad": "AC Reggiana 1919",
+    "ad": "Reggiana",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 750
+  },
+  {
+    "id": "Q80955",
+    "tam_ad": "Santos FC",
+    "ad": "Santos",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 750
+  },
+  {
+    "id": "Q8687",
+    "tam_ad": "Athletic Bilbao",
+    "ad": "Athletic Bilbao",
+    "lig": "La Liga",
+    "es": [],
+    "oyuncu_sayisi": 742
+  },
+  {
+    "id": "Q4512",
+    "tam_ad": "VfB Stuttgart",
+    "ad": "Stuttgart",
+    "lig": "Bundesliga",
+    "es": [
+      "Q113381117",
+      "Q97906005"
+    ],
+    "oyuncu_sayisi": 733
+  },
+  {
+    "id": "Q15786",
+    "tam_ad": "1. FC Nürnberg",
+    "ad": "Nürnberg",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97905881"
+    ],
+    "oyuncu_sayisi": 727
+  },
+  {
+    "id": "Q13391",
+    "tam_ad": "U.S. Lecce",
+    "ad": "U.S. Lecce",
+    "lig": "Serie A",
+    "es": [],
+    "oyuncu_sayisi": 722
+  },
+  {
+    "id": "Q6664",
+    "tam_ad": "AC Cesena",
+    "ad": "Cesena",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 718
+  },
+  {
+    "id": "Q19568",
+    "tam_ad": "AFC Bournemouth",
+    "ad": "Bournemouth",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 713
+  },
+  {
+    "id": "Q8760",
+    "tam_ad": "Deportivo La Coruña",
+    "ad": "Deportivo La Coruña",
+    "lig": "La Liga",
+    "es": [],
+    "oyuncu_sayisi": 698
+  },
+  {
+    "id": "Q38568",
+    "tam_ad": "São Paulo FC",
+    "ad": "São Paulo",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 687
   },
   {
     "id": "Q19509",
-    "ad": "Stade Rennais FC",
-    "arama": "Stade Rennais F.C.",
+    "tam_ad": "Stade Rennais FC",
+    "ad": "Rennes",
     "lig": "Ligue 1",
+    "es": [],
     "oyuncu_sayisi": 686
   },
   {
-    "id": "Q1423118",
-    "ad": "Göztepe SK",
-    "arama": "Göztepe",
+    "id": "Q289482",
+    "tam_ad": "A.C. Monza",
+    "ad": "A.C. Monza",
+    "lig": "Serie A",
+    "es": [],
+    "oyuncu_sayisi": 682
+  },
+  {
+    "id": "Q6630",
+    "tam_ad": "Ascoli Calcio 1898",
+    "ad": "Ascoli",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 680
+  },
+  {
+    "id": "Q80845",
+    "tam_ad": "SC Internacional",
+    "ad": "Internacional",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 679
+  },
+  {
+    "id": "Q131499",
+    "tam_ad": "SL Benfica",
+    "ad": "Benfica",
+    "lig": "Liga Portugal",
+    "es": [
+      "Q15284280",
+      "Q2895813"
+    ],
+    "oyuncu_sayisi": 678
+  },
+  {
+    "id": "Q18659",
+    "tam_ad": "Swansea City AFC",
+    "ad": "Swansea City",
+    "lig": "Championship",
+    "es": [],
+    "oyuncu_sayisi": 677
+  },
+  {
+    "id": "Q289613",
+    "tam_ad": "AC Pisa 1909 SSD",
+    "ad": "Pisa SSD",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 669
+  },
+  {
+    "id": "Q495299",
+    "tam_ad": "Galatasaray",
+    "ad": "Galatasaray",
     "lig": "Süper Lig",
+    "es": [
+      "Q43134"
+    ],
+    "oyuncu_sayisi": 662
+  },
+  {
+    "id": "Q8466",
+    "tam_ad": "1. FC Kaiserslautern",
+    "ad": "Kaiserslautern",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97905874"
+    ],
+    "oyuncu_sayisi": 658
+  },
+  {
+    "id": "Q1900",
+    "tam_ad": "Cagliari Calcio",
+    "ad": "Cagliari",
+    "lig": "Serie A",
+    "es": [],
+    "oyuncu_sayisi": 644
+  },
+  {
+    "id": "Q759482",
+    "tam_ad": "US Cremonese",
+    "ad": "Cremonese",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 633
+  },
+  {
+    "id": "Q188277",
+    "tam_ad": "Cruzeiro EC",
+    "ad": "Cruzeiro",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 630
+  },
+  {
+    "id": "Q9653",
+    "tam_ad": "Ipswich Town FC",
+    "ad": "Ipswich Town",
+    "lig": "Premier League",
+    "es": [],
+    "oyuncu_sayisi": 627
+  },
+  {
+    "id": "Q204675",
+    "tam_ad": "Associação Portuguesa de Desportos",
+    "ad": "Portuguesa de Desportos",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 627
+  },
+  {
+    "id": "Q6601875",
+    "tam_ad": "Fenerbahçe",
+    "ad": "Fenerbahçe",
+    "lig": "Süper Lig",
+    "es": [
+      "Q12422076"
+    ],
+    "oyuncu_sayisi": 622
+  },
+  {
+    "id": "Q51974",
+    "tam_ad": "Hamburger SV",
+    "ad": "Hamburger",
+    "lig": "Bundesliga",
+    "es": [],
+    "oyuncu_sayisi": 618
+  },
+  {
+    "id": "Q8749",
+    "tam_ad": "Celta de Vigo",
+    "ad": "Celta de Vigo",
+    "lig": "La Liga",
+    "es": [],
+    "oyuncu_sayisi": 612
+  },
+  {
+    "id": "Q180305",
+    "tam_ad": "AS Monaco FC",
+    "ad": "Monaco",
+    "lig": "Ligue 1",
+    "es": [
+      "Q16009112"
+    ],
+    "oyuncu_sayisi": 612
+  },
+  {
+    "id": "Q8476",
+    "tam_ad": "Reggina 1914",
+    "ad": "Reggina",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 600
+  },
+  {
+    "id": "Q221525",
+    "tam_ad": "FC Metz",
+    "ad": "Metz",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 595
+  },
+  {
+    "id": "Q704",
+    "tam_ad": "Olympique Lyonnais",
+    "ad": "Lyon",
+    "lig": "Ligue 1",
+    "es": [],
+    "oyuncu_sayisi": 594
+  },
+  {
+    "id": "Q126334",
+    "tam_ad": "RC Strasbourg",
+    "ad": "Strasbourg",
+    "lig": "Ligue 1",
+    "es": [
+      "Q2945325"
+    ],
+    "oyuncu_sayisi": 592
+  },
+  {
+    "id": "Q506832",
+    "tam_ad": "CA Paranaense",
+    "ad": "Paranaense",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 586
+  },
+  {
+    "id": "Q128446",
+    "tam_ad": "FC Porto",
+    "ad": "Porto",
+    "lig": "Liga Portugal",
+    "es": [],
+    "oyuncu_sayisi": 585
+  },
+  {
+    "id": "Q10329",
+    "tam_ad": "Sevilla FC",
+    "ad": "Sevilla",
+    "lig": "La Liga",
+    "es": [
+      "Q5647276",
+      "Q9076584"
+    ],
+    "oyuncu_sayisi": 584
+  },
+  {
+    "id": "Q19521",
+    "tam_ad": "AS Saint-Étienne",
+    "ad": "Saint-Étienne",
+    "lig": "Ligue 2",
+    "es": [
+      "Q118247857"
+    ],
+    "oyuncu_sayisi": 583
+  },
+  {
+    "id": "Q154293",
+    "tam_ad": "MSV Duisburg",
+    "ad": "MSV Duisburg",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q15478049",
+      "Q97905949"
+    ],
+    "oyuncu_sayisi": 580
+  },
+  {
+    "id": "Q6703",
+    "tam_ad": "Empoli FC",
+    "ad": "Empoli",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 578
+  },
+  {
+    "id": "Q32494",
+    "tam_ad": "FC Schalke 04",
+    "ad": "Schalke 04",
+    "lig": "Bundesliga",
+    "es": [
+      "Q117743307",
+      "Q97905923"
+    ],
+    "oyuncu_sayisi": 578
+  },
+  {
+    "id": "Q214978",
+    "tam_ad": "CA Independiente",
+    "ad": "Independiente",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 577
+  },
+  {
+    "id": "Q105844",
+    "tam_ad": "Arminia Bielefeld",
+    "ad": "Arminia Bielefeld",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97905889"
+    ],
+    "oyuncu_sayisi": 576
+  },
+  {
+    "id": "Q185163",
+    "tam_ad": "OGC Nice",
+    "ad": "Nice",
+    "lig": "Ligue 1",
+    "es": [],
+    "oyuncu_sayisi": 576
+  },
+  {
+    "id": "Q104770",
+    "tam_ad": "1. FC Köln",
+    "ad": "Köln",
+    "lig": "Bundesliga",
+    "es": [
+      "Q97905877"
+    ],
+    "oyuncu_sayisi": 573
+  },
+  {
+    "id": "Q8723",
+    "tam_ad": "Real Betis",
+    "ad": "Real Betis",
+    "lig": "La Liga",
+    "es": [],
+    "oyuncu_sayisi": 570
+  },
+  {
+    "id": "Q19516",
+    "tam_ad": "Lille OSC",
+    "ad": "Lille",
+    "lig": "Ligue 1",
+    "es": [],
+    "oyuncu_sayisi": 569
+  },
+  {
+    "id": "Q270995",
+    "tam_ad": "Atlético Mineiro",
+    "ad": "Atlético Mineiro",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 568
+  },
+  {
+    "id": "Q10319",
+    "tam_ad": "Real Valladolid",
+    "ad": "Real Valladolid",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 567
+  },
+  {
+    "id": "Q298217",
+    "tam_ad": "Avellino Calcio 12 SSD",
+    "ad": "Avellino 12 SSD",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 565
+  },
+  {
+    "id": "Q191843",
+    "tam_ad": "RC Lens",
+    "ad": "Lens",
+    "lig": "Ligue 1",
+    "es": [],
+    "oyuncu_sayisi": 561
+  },
+  {
+    "id": "Q38245",
+    "tam_ad": "Eintracht Frankfurt",
+    "ad": "Frankfurt",
+    "lig": "Bundesliga",
+    "es": [
+      "Q140591099",
+      "Q97905908"
+    ],
+    "oyuncu_sayisi": 557
+  },
+  {
+    "id": "Q105853",
+    "tam_ad": "Karlsruher SC",
+    "ad": "Karlsruher",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97905942"
+    ],
+    "oyuncu_sayisi": 553
+  },
+  {
+    "id": "Q75729",
+    "tam_ad": "Sporting CP",
+    "ad": "Sporting CP",
+    "lig": "Liga Portugal",
+    "es": [
+      "Q3494106"
+    ],
+    "oyuncu_sayisi": 552
+  },
+  {
+    "id": "Q33748",
+    "tam_ad": "Hannover 96",
+    "ad": "Hannover 96",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97905933"
+    ],
+    "oyuncu_sayisi": 551
+  },
+  {
+    "id": "Q276533",
+    "tam_ad": "Racing Club de Avellaneda",
+    "ad": "Racing de Avellaneda",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 550
+  },
+  {
+    "id": "Q483020",
+    "tam_ad": "Paris Saint-Germain",
+    "ad": "PSG",
+    "lig": "Ligue 1",
+    "es": [
+      "Q3365289"
+    ],
+    "oyuncu_sayisi": 548
+  },
+  {
+    "id": "Q134241",
+    "tam_ad": "Feyenoord",
+    "ad": "Feyenoord",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 546
+  },
+  {
+    "id": "Q10308",
+    "tam_ad": "Real Zaragoza",
+    "ad": "Real Zaragoza",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 545
+  },
+  {
+    "id": "Q760736",
+    "tam_ad": "Stade Lavallois",
+    "ad": "Stade Lavallois",
+    "lig": "Ligue 2",
+    "es": [
+      "Q118247861"
+    ],
+    "oyuncu_sayisi": 544
+  },
+  {
+    "id": "Q8835",
+    "tam_ad": "RCD Mallorca",
+    "ad": "Mallorca",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 538
+  },
+  {
+    "id": "Q218282",
+    "tam_ad": "CA San Lorenzo de Almagro",
+    "ad": "San Lorenzo de Almagro",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 538
+  },
+  {
+    "id": "Q19512",
+    "tam_ad": "FC Sochaux-Montbéliard",
+    "ad": "Sochaux-Montbéliard",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 537
+  },
+  {
+    "id": "Q478317",
+    "tam_ad": "Coritiba FC",
+    "ad": "Coritiba",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 537
+  },
+  {
+    "id": "Q10512",
+    "tam_ad": "Elche CF",
+    "ad": "Elche",
+    "lig": "La Liga",
+    "es": [],
+    "oyuncu_sayisi": 536
+  },
+  {
+    "id": "Q8623",
+    "tam_ad": "Ternana Calcio",
+    "ad": "Ternana",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 536
+  },
+  {
+    "id": "Q102720",
+    "tam_ad": "Hertha BSC",
+    "ad": "Hertha BSC",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q105781645",
+      "Q105781911",
+      "Q97905939"
+    ],
+    "oyuncu_sayisi": 529
+  },
+  {
+    "id": "Q10315",
+    "tam_ad": "Real Sociedad",
+    "ad": "Real Sociedad",
+    "lig": "La Liga",
+    "es": [],
+    "oyuncu_sayisi": 528
+  },
+  {
+    "id": "Q522283",
+    "tam_ad": "FC Red Star Saint-Ouen",
+    "ad": "Red Star Saint-Ouen",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 523
+  },
+  {
+    "id": "Q198032",
+    "tam_ad": "EC Bahia",
+    "ad": "Bahia",
+    "lig": "Brasileirão",
+    "es": [
+      "Q131238202"
+    ],
+    "oyuncu_sayisi": 522
+  },
+  {
+    "id": "Q19513",
+    "tam_ad": "Montpellier HSC",
+    "ad": "Montpellier HSC",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 518
+  },
+  {
+    "id": "Q430993",
+    "tam_ad": "Mantova 1911",
+    "ad": "Mantova",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 514
+  },
+  {
+    "id": "Q219120",
+    "tam_ad": "Associação Atlética Ponte Preta",
+    "ad": "Atlética Ponte Preta",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 514
+  },
+  {
+    "id": "Q192071",
+    "tam_ad": "FC Nantes",
+    "ad": "Nantes",
+    "lig": "Ligue 2",
+    "es": [
+      "Q118247864"
+    ],
+    "oyuncu_sayisi": 508
+  },
+  {
+    "id": "Q19518",
+    "tam_ad": "Toulouse FC",
+    "ad": "Toulouse",
+    "lig": "Ligue 1",
+    "es": [],
+    "oyuncu_sayisi": 502
+  },
+  {
+    "id": "Q11938",
+    "tam_ad": "PSV Eindhoven",
+    "ad": "PSV Eindhoven",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 502
+  },
+  {
+    "id": "Q10300",
+    "tam_ad": "Rayo Vallecano",
+    "ad": "Rayo Vallecano",
+    "lig": "La Liga",
+    "es": [],
+    "oyuncu_sayisi": 497
+  },
+  {
+    "id": "Q214940",
+    "tam_ad": "Estudiantes de La Plata",
+    "ad": "Estudiantes de La Plata",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 497
+  },
+  {
+    "id": "Q101859",
+    "tam_ad": "VfL Wolfsburg",
+    "ad": "Wolfsburg",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q19964966",
+      "Q285131",
+      "Q97906010"
+    ],
+    "oyuncu_sayisi": 495
+  },
+  {
+    "id": "Q328658",
+    "tam_ad": "Le Havre AC",
+    "ad": "Le Havre",
+    "lig": "Ligue 1",
+    "es": [
+      "Q118247940"
+    ],
+    "oyuncu_sayisi": 493
+  },
+  {
+    "id": "Q327172",
+    "tam_ad": "CA Huracán",
+    "ad": "Huracán",
+    "lig": "Arjantin Ligi",
+    "es": [
+      "Q6123387"
+    ],
+    "oyuncu_sayisi": 493
+  },
+  {
+    "id": "Q297430",
+    "tam_ad": "S.S. Arezzo",
+    "ad": "S.S. Arezzo",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 492
+  },
+  {
+    "id": "Q51976",
+    "tam_ad": "SV Werder Bremen",
+    "ad": "Werder Bremen",
+    "lig": "Bundesliga",
+    "es": [
+      "Q2560150",
+      "Q97906014"
+    ],
+    "oyuncu_sayisi": 492
+  },
+  {
+    "id": "Q12278",
+    "tam_ad": "Sporting Gijón",
+    "ad": "Sporting Gijón",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 489
+  },
+  {
+    "id": "Q271574",
+    "tam_ad": "Real Oviedo",
+    "ad": "Real Oviedo",
+    "lig": "La Liga 2",
+    "es": [
+      "Q3331395"
+    ],
+    "oyuncu_sayisi": 486
+  },
+  {
+    "id": "Q105861",
+    "tam_ad": "VfL Bochum",
+    "ad": "Bochum",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97906009"
+    ],
+    "oyuncu_sayisi": 484
+  },
+  {
+    "id": "Q8812",
+    "tam_ad": "Granada CF",
+    "ad": "Granada",
+    "lig": "La Liga 2",
+    "es": [
+      "Q8964927"
+    ],
+    "oyuncu_sayisi": 478
+  },
+  {
+    "id": "Q2037",
+    "tam_ad": "AC ChievoVerona",
+    "ad": "ChievoVerona",
+    "lig": "Serie B",
+    "es": [
+      "Q17486302"
+    ],
+    "oyuncu_sayisi": 477
+  },
+  {
+    "id": "Q75684",
+    "tam_ad": "SC Braga",
+    "ad": "Braga",
+    "lig": "Liga Portugal",
+    "es": [],
+    "oyuncu_sayisi": 475
+  },
+  {
+    "id": "Q501372",
+    "tam_ad": "US Catanzaro 1929",
+    "ad": "Catanzaro",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 467
+  },
+  {
+    "id": "Q274465",
+    "tam_ad": "Esporte Clube Vitória",
+    "ad": "Vitória (Brasileirão)",
+    "lig": "Brasileirão",
+    "es": [
+      "Q25442702"
+    ],
+    "oyuncu_sayisi": 466
+  },
+  {
+    "id": "Q220621",
+    "tam_ad": "Argentinos Juniors",
+    "ad": "Argentinos Juniors",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 464
+  },
+  {
+    "id": "Q41420",
+    "tam_ad": "Borussia Dortmund",
+    "ad": "Dortmund",
+    "lig": "Bundesliga",
+    "es": [
+      "Q97905894",
+      "Q99195175"
+    ],
+    "oyuncu_sayisi": 463
+  },
+  {
+    "id": "Q101959",
+    "tam_ad": "Borussia Mönchengladbach",
+    "ad": "M'gladbach",
+    "lig": "Bundesliga",
+    "es": [
+      "Q19962426"
+    ],
+    "oyuncu_sayisi": 462
+  },
+  {
+    "id": "Q212269",
+    "tam_ad": "Valenciennes FC",
+    "ad": "Valenciennes",
+    "lig": "Ligue 2",
+    "es": [
+      "Q20853625"
+    ],
+    "oyuncu_sayisi": 461
+  },
+  {
+    "id": "Q104761",
+    "tam_ad": "Bayer 04 Leverkusen",
+    "ad": "Leverkusen",
+    "lig": "Bundesliga",
+    "es": [
+      "Q97905892"
+    ],
+    "oyuncu_sayisi": 456
+  },
+  {
+    "id": "Q208228",
+    "tam_ad": "Stade de Reims",
+    "ad": "Stade de Reims",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 455
+  },
+  {
+    "id": "Q223620",
+    "tam_ad": "Deportivo Alavés",
+    "ad": "Deportivo Alavés",
+    "lig": "La Liga",
+    "es": [],
+    "oyuncu_sayisi": 452
+  },
+  {
+    "id": "Q10333",
+    "tam_ad": "Valencia CF",
+    "ad": "Valencia",
+    "lig": "La Liga",
+    "es": [],
+    "oyuncu_sayisi": 452
+  },
+  {
+    "id": "Q12236",
+    "tam_ad": "Racing Santander",
+    "ad": "Racing Santander",
+    "lig": "La Liga",
+    "es": [],
+    "oyuncu_sayisi": 447
+  },
+  {
+    "id": "Q8455",
+    "tam_ad": "US Pro Vercelli Calcio",
+    "ad": "Pro Vercelli",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 446
+  },
+  {
+    "id": "Q221882",
+    "tam_ad": "Newell's Old Boys",
+    "ad": "Newell's Old Boys",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 445
+  },
+  {
+    "id": "Q172567",
+    "tam_ad": "Beşiktaş",
+    "ad": "Beşiktaş",
+    "lig": "Süper Lig",
+    "es": [
+      "Q4086096",
+      "Q6095980"
+    ],
+    "oyuncu_sayisi": 440
+  },
+  {
+    "id": "Q8823",
+    "tam_ad": "Levante UD",
+    "ad": "Levante",
+    "lig": "La Liga",
+    "es": [
+      "Q61001608"
+    ],
+    "oyuncu_sayisi": 438
+  },
+  {
+    "id": "Q845137",
+    "tam_ad": "Angers SCO",
+    "ad": "Angers SCO",
+    "lig": "Ligue 1",
+    "es": [],
+    "oyuncu_sayisi": 434
+  },
+  {
+    "id": "Q153539",
+    "tam_ad": "SpVgg Greuther Fürth",
+    "ad": "SpVgg Greuther Fürth",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q28129489",
+      "Q39053782",
+      "Q4624238",
+      "Q4628731",
+      "Q97186170",
+      "Q97188834",
+      "Q97905976"
+    ],
+    "oyuncu_sayisi": 432
+  },
+  {
+    "id": "Q209895",
+    "tam_ad": "Sparta Rotterdam",
+    "ad": "Sparta Rotterdam",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 429
+  },
+  {
+    "id": "Q188841",
+    "tam_ad": "Fortaleza EC",
+    "ad": "Fortaleza",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 429
+  },
+  {
+    "id": "Q192641",
+    "tam_ad": "Trabzonspor",
+    "ad": "Trabzonspor",
+    "lig": "Süper Lig",
+    "es": [],
+    "oyuncu_sayisi": 422
+  },
+  {
+    "id": "Q215163",
+    "tam_ad": "CA Vélez Sársfield",
+    "ad": "Vélez Sársfield",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 420
+  },
+  {
+    "id": "Q160530",
+    "tam_ad": "VfL Osnabrück",
+    "ad": "Osnabrück",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q2521550",
+      "Q97927396"
+    ],
+    "oyuncu_sayisi": 419
+  },
+  {
+    "id": "Q1136016",
+    "tam_ad": "Cosenza Calcio",
+    "ad": "Cosenza",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 416
+  },
+  {
+    "id": "Q18640",
+    "tam_ad": "Gimnasia y Esgrima La Plata",
+    "ad": "Gimnasia y Esgrima La Plata",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 416
+  },
+  {
+    "id": "Q141931",
+    "tam_ad": "Dinamo Dresden",
+    "ad": "Dinamo Dresden",
+    "lig": "2. Bundesliga",
+    "es": [],
+    "oyuncu_sayisi": 415
+  },
+  {
+    "id": "Q219098",
+    "tam_ad": "Sport Club do Recife",
+    "ad": "do Recife",
+    "lig": "Brasileirão",
+    "es": [
+      "Q133521876"
+    ],
+    "oyuncu_sayisi": 413
+  },
+  {
+    "id": "Q10286",
+    "tam_ad": "CA Osasuna",
+    "ad": "Osasuna",
+    "lig": "La Liga",
+    "es": [],
+    "oyuncu_sayisi": 412
+  },
+  {
+    "id": "Q208399",
+    "tam_ad": "SC Bastia",
+    "ad": "Bastia",
+    "lig": "Ligue 2",
+    "es": [
+      "Q2536161"
+    ],
+    "oyuncu_sayisi": 411
+  },
+  {
+    "id": "Q216510",
+    "tam_ad": "CF Os Belenenses",
+    "ad": "Os Belenenses",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 409
+  },
+  {
+    "id": "Q19523",
+    "tam_ad": "AS Nancy",
+    "ad": "Nancy",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 405
+  },
+  {
+    "id": "Q770740",
+    "tam_ad": "SD Eibar",
+    "ad": "Eibar",
+    "lig": "La Liga 2",
+    "es": [
+      "Q61365664"
+    ],
+    "oyuncu_sayisi": 403
+  },
+  {
+    "id": "Q107818",
+    "tam_ad": "Energie Cottbus",
+    "ad": "Energie Cottbus",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97905911"
+    ],
+    "oyuncu_sayisi": 402
+  },
+  {
+    "id": "Q154053",
+    "tam_ad": "Eintracht Braunschweig",
+    "ad": "Eintracht Braunschweig",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97905906"
+    ],
+    "oyuncu_sayisi": 398
+  },
+  {
+    "id": "Q6463",
+    "tam_ad": "FC St. Pauli",
+    "ad": "St. Pauli",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97905925"
+    ],
+    "oyuncu_sayisi": 391
+  },
+  {
+    "id": "Q223450",
+    "tam_ad": "Vitória SC",
+    "ad": "Vitória (Liga Portugal)",
+    "lig": "Liga Portugal",
+    "es": [],
+    "oyuncu_sayisi": 380
+  },
+  {
+    "id": "Q318348",
+    "tam_ad": "NEC Nijmegen",
+    "ad": "NEC Nijmegen",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 377
+  },
+  {
+    "id": "Q269151",
+    "tam_ad": "PEC Zwolle",
+    "ad": "PEC Zwolle",
+    "lig": "Eredivisie",
+    "es": [
+      "Q2365649"
+    ],
+    "oyuncu_sayisi": 372
+  },
+  {
+    "id": "Q576285",
+    "tam_ad": "Albacete Balompié",
+    "ad": "Albacete Balompié",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 371
+  },
+  {
+    "id": "Q182876",
+    "tam_ad": "AJ Auxerre",
+    "ad": "AJ Auxerre",
+    "lig": "Ligue 1",
+    "es": [
+      "Q118247658"
+    ],
+    "oyuncu_sayisi": 369
+  },
+  {
+    "id": "Q19603",
+    "tam_ad": "FC Twente",
+    "ad": "Twente",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 369
+  },
+  {
+    "id": "Q216661",
+    "tam_ad": "CD Tenerife",
+    "ad": "Tenerife",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 368
+  },
+  {
+    "id": "Q370712",
+    "tam_ad": "SBV Excelsior",
+    "ad": "SBV Excelsior",
+    "lig": "Eredivisie",
+    "es": [
+      "Q29509701"
+    ],
+    "oyuncu_sayisi": 368
+  },
+  {
+    "id": "Q216503",
+    "tam_ad": "CS Marítimo",
+    "ad": "CS Marítimo",
+    "lig": "Liga Portugal",
+    "es": [
+      "Q17623352",
+      "Q18499587"
+    ],
+    "oyuncu_sayisi": 368
+  },
+  {
+    "id": "Q11979",
+    "tam_ad": "UD Las Palmas",
+    "ad": "Las Palmas",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 365
+  },
+  {
+    "id": "Q73971",
+    "tam_ad": "Clube Náutico Capibaribe",
+    "ad": "Náutico Capibaribe",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 365
+  },
+  {
+    "id": "Q460448",
+    "tam_ad": "Cádiz CF",
+    "ad": "Cádiz",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 363
+  },
+  {
+    "id": "Q105254",
+    "tam_ad": "1. FSV Mainz 05",
+    "ad": "FSV Mainz 05",
+    "lig": "Bundesliga",
+    "es": [
+      "Q97905884"
+    ],
+    "oyuncu_sayisi": 362
+  },
+  {
+    "id": "Q219233",
+    "tam_ad": "SBV Vitesse",
+    "ad": "SBV Vitesse",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 357
+  },
+  {
+    "id": "Q641373",
+    "tam_ad": "Gençlerbirliği SK",
+    "ad": "Gençlerbirliği",
+    "lig": "Süper Lig",
+    "es": [
+      "Q20473364"
+    ],
+    "oyuncu_sayisi": 356
+  },
+  {
+    "id": "Q191264",
+    "tam_ad": "AZ Alkmaar",
+    "ad": "AZ Alkmaar",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 356
+  },
+  {
+    "id": "Q324589",
+    "tam_ad": "CA Lanús",
+    "ad": "Lanús",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 356
+  },
+  {
+    "id": "Q24689",
+    "tam_ad": "VVV-Venlo",
+    "ad": "VVV-Venlo",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 352
+  },
+  {
+    "id": "Q8857",
+    "tam_ad": "Málaga CF",
+    "ad": "Málaga",
+    "lig": "La Liga",
+    "es": [],
+    "oyuncu_sayisi": 350
+  },
+  {
+    "id": "Q501693",
+    "tam_ad": "Troyes AC",
+    "ad": "Troyes",
+    "lig": "Ligue 1",
+    "es": [],
+    "oyuncu_sayisi": 349
+  },
+  {
+    "id": "Q203573",
+    "tam_ad": "Bursaspor",
+    "ad": "Bursaspor",
+    "lig": "TFF 2. Lig",
+    "es": [
+      "Q6092759",
+      "Q6096484"
+    ],
+    "oyuncu_sayisi": 347
+  },
+  {
+    "id": "Q209509",
+    "tam_ad": "Grenoble Foot 38",
+    "ad": "Grenoble Foot 38",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 346
+  },
+  {
+    "id": "Q24904",
+    "tam_ad": "ADO Den Haag",
+    "ad": "ADO Den Haag",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 346
+  },
+  {
+    "id": "Q816779",
+    "tam_ad": "Goiás EC",
+    "ad": "Goiás",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 345
+  },
+  {
+    "id": "Q10499",
+    "tam_ad": "Córdoba CF",
+    "ad": "Córdoba",
+    "lig": "La Liga 2",
+    "es": [
+      "Q108906281"
+    ],
+    "oyuncu_sayisi": 344
+  },
+  {
+    "id": "Q910453",
+    "tam_ad": "Esporte Clube Juventude",
+    "ad": "Juventude",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 343
+  },
+  {
+    "id": "Q48911",
+    "tam_ad": "FC Lorient",
+    "ad": "Lorient",
+    "lig": "Ligue 1",
+    "es": [],
+    "oyuncu_sayisi": 342
+  },
+  {
+    "id": "Q24680",
+    "tam_ad": "FC Utrecht",
+    "ad": "Utrecht",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 339
+  },
+  {
+    "id": "Q243235",
+    "tam_ad": "Associação Académica de Coimbra – OAF",
+    "ad": "Académica de Coimbra – OAF",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 338
+  },
+  {
+    "id": "Q332642",
+    "tam_ad": "NAC Breda",
+    "ad": "NAC Breda",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 336
+  },
+  {
+    "id": "Q598834",
+    "tam_ad": "Criciúma Esporte Clube",
+    "ad": "Criciúma",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 336
+  },
+  {
+    "id": "Q106394",
+    "tam_ad": "SC Freiburg",
+    "ad": "Freiburg",
+    "lig": "Bundesliga",
+    "es": [
+      "Q97905964"
+    ],
+    "oyuncu_sayisi": 335
+  },
+  {
+    "id": "Q270051",
+    "tam_ad": "AC Ajaccio",
+    "ad": "Ajaccio",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 335
+  },
+  {
+    "id": "Q459148",
+    "tam_ad": "En avant Guingamp",
+    "ad": "En avant Guingamp",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 335
+  },
+  {
+    "id": "Q430107",
+    "tam_ad": "Samsunspor",
+    "ad": "Samsunspor",
+    "lig": "Süper Lig",
+    "es": [
+      "Q85974411"
+    ],
+    "oyuncu_sayisi": 332
+  },
+  {
+    "id": "Q1051013",
+    "tam_ad": "Paris FC",
+    "ad": "Paris",
+    "lig": "Ligue 1",
+    "es": [],
+    "oyuncu_sayisi": 331
+  },
+  {
+    "id": "Q12297",
+    "tam_ad": "Villarreal CF",
+    "ad": "Villarreal",
+    "lig": "La Liga",
+    "es": [
+      "Q106651021"
+    ],
+    "oyuncu_sayisi": 329
+  },
+  {
+    "id": "Q15755",
+    "tam_ad": "FC Augsburg",
+    "ad": "Augsburg",
+    "lig": "Bundesliga",
+    "es": [],
+    "oyuncu_sayisi": 327
+  },
+  {
+    "id": "Q200321",
+    "tam_ad": "SC Heerenveen",
+    "ad": "Heerenveen",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 326
+  },
+  {
+    "id": "Q492826",
+    "tam_ad": "MKE Ankaragücü",
+    "ad": "MKE Ankaragücü",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 324
+  },
+  {
+    "id": "Q24711",
+    "tam_ad": "FC Groningen",
+    "ad": "Groningen",
+    "lig": "Eredivisie",
+    "es": [
+      "Q132315919"
+    ],
+    "oyuncu_sayisi": 323
+  },
+  {
+    "id": "Q692646",
+    "tam_ad": "CA Banfield",
+    "ad": "Banfield",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 321
+  },
+  {
+    "id": "Q743557",
+    "tam_ad": "CD Castellón",
+    "ad": "Castellón",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 320
+  },
+  {
+    "id": "Q218372",
+    "tam_ad": "Stade Brestois 29",
+    "ad": "Stade Brestois 29",
+    "lig": "Ligue 1",
+    "es": [],
+    "oyuncu_sayisi": 320
+  },
+  {
+    "id": "Q210864",
+    "tam_ad": "Le Mans FC",
+    "ad": "Le Mans",
+    "lig": "Ligue 1",
+    "es": [],
+    "oyuncu_sayisi": 318
+  },
+  {
+    "id": "Q309480",
+    "tam_ad": "Ittihad FC",
+    "ad": "Ittihad",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 317
+  },
+  {
+    "id": "Q482764",
+    "tam_ad": "En-Nasr",
+    "ad": "En-Nasr",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 314
+  },
+  {
+    "id": "Q650365",
+    "tam_ad": "Carrarese Calcio",
+    "ad": "Carrarese",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 309
+  },
+  {
+    "id": "Q141971",
+    "tam_ad": "1. FC Union Berlin",
+    "ad": "Union Berlin",
+    "lig": "Bundesliga",
+    "es": [],
+    "oyuncu_sayisi": 307
+  },
+  {
+    "id": "Q157352",
+    "tam_ad": "FSV Frankfurt",
+    "ad": "FSV Frankfurt",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97927371"
+    ],
+    "oyuncu_sayisi": 305
+  },
+  {
+    "id": "Q513840",
+    "tam_ad": "Konyaspor",
+    "ad": "Konyaspor",
+    "lig": "Süper Lig",
+    "es": [],
+    "oyuncu_sayisi": 305
+  },
+  {
+    "id": "Q643107",
+    "tam_ad": "Denizlispor",
+    "ad": "Denizlispor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 304
+  },
+  {
+    "id": "Q1052219",
+    "tam_ad": "Ceará Sporting Club",
+    "ad": "Ceará Sporting",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 302
+  },
+  {
+    "id": "Q24719",
+    "tam_ad": "Roda JC",
+    "ad": "Roda JC",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 300
+  },
+  {
+    "id": "Q221927",
+    "tam_ad": "De Graafschap",
+    "ad": "De Graafschap",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 297
+  },
+  {
+    "id": "Q316865",
+    "tam_ad": "SC Preußen Münster",
+    "ad": "Preußen Münster",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97905952"
+    ],
+    "oyuncu_sayisi": 290
+  },
+  {
+    "id": "Q1022939",
+    "tam_ad": "Talleres de Córdoba",
+    "ad": "Talleres de Córdoba",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 290
+  },
+  {
+    "id": "Q843396",
+    "tam_ad": "Racing de Ferrol",
+    "ad": "Racing de Ferrol",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 289
+  },
+  {
+    "id": "Q749589",
+    "tam_ad": "Go Ahead Eagles",
+    "ad": "Go Ahead Eagles",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 289
+  },
+  {
+    "id": "Q926438",
+    "tam_ad": "Gil Vicente FC",
+    "ad": "Gil Vicente",
+    "lig": "Liga Portugal",
+    "es": [],
+    "oyuncu_sayisi": 288
+  },
+  {
+    "id": "Q479351",
+    "tam_ad": "SV Darmstadt 98",
+    "ad": "Darmstadt 98",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97905986"
+    ],
+    "oyuncu_sayisi": 285
+  },
+  {
+    "id": "Q541744",
+    "tam_ad": "Red Bull Bragantino",
+    "ad": "Red Bull Bragantino",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 285
+  },
+  {
+    "id": "Q80899",
+    "tam_ad": "Unión de Santa Fe",
+    "ad": "Unión de Santa Fe",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 285
+  },
+  {
+    "id": "Q272712",
+    "tam_ad": "Çaykur Rizespor",
+    "ad": "Çaykur Rizespor",
+    "lig": "Süper Lig",
+    "es": [],
+    "oyuncu_sayisi": 282
+  },
+  {
+    "id": "Q652516",
+    "tam_ad": "Benevento Calcio",
+    "ad": "Benevento",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 281
+  },
+  {
+    "id": "Q608122",
+    "tam_ad": "Kayserispor",
+    "ad": "Kayserispor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 281
+  },
+  {
+    "id": "Q24699",
+    "tam_ad": "RKC Waalwijk",
+    "ad": "RKC Waalwijk",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 281
+  },
+  {
+    "id": "Q73965",
+    "tam_ad": "El-Hilâl",
+    "ad": "El-Hilâl",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 281
+  },
+  {
+    "id": "Q43710",
+    "tam_ad": "Antalyaspor",
+    "ad": "Antalyaspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 277
+  },
+  {
+    "id": "Q854167",
+    "tam_ad": "Fortuna Sittard",
+    "ad": "Fortuna Sittard",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 277
+  },
+  {
+    "id": "Q1423118",
+    "tam_ad": "Göztepe SK",
+    "ad": "Göztepe",
+    "lig": "Süper Lig",
+    "es": [],
+    "oyuncu_sayisi": 275
+  },
+  {
+    "id": "Q216459",
+    "tam_ad": "CD Nacional",
+    "ad": "Nacional",
+    "lig": "Liga Portugal",
+    "es": [
+      "Q124398825"
+    ],
+    "oyuncu_sayisi": 275
+  },
+  {
+    "id": "Q11945",
+    "tam_ad": "Girona FC",
+    "ad": "Girona",
+    "lig": "La Liga 2",
+    "es": [],
     "oyuncu_sayisi": 274
+  },
+  {
+    "id": "Q634829",
+    "tam_ad": "GD Estoril Praia",
+    "ad": "GD Estoril Praia",
+    "lig": "Liga Portugal",
+    "es": [],
+    "oyuncu_sayisi": 272
+  },
+  {
+    "id": "Q151907",
+    "tam_ad": "Club Atlético Platense",
+    "ad": "Platense",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 272
+  },
+  {
+    "id": "Q10407",
+    "tam_ad": "UD Almería",
+    "ad": "Almería",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 271
+  },
+  {
+    "id": "Q176795",
+    "tam_ad": "Karşıyaka SK",
+    "ad": "Karşıyaka",
+    "lig": "TFF 1. Lig",
+    "es": [
+      "Q118462724",
+      "Q1734764"
+    ],
+    "oyuncu_sayisi": 270
+  },
+  {
+    "id": "Q1045811",
+    "tam_ad": "FC Dordrecht",
+    "ad": "Dordrecht",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 270
+  },
+  {
+    "id": "Q876568",
+    "tam_ad": "MVV Maastricht",
+    "ad": "MVV Maastricht",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 270
+  },
+  {
+    "id": "Q211401",
+    "tam_ad": "UD Leiria",
+    "ad": "Leiria",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 270
+  },
+  {
+    "id": "Q8806",
+    "tam_ad": "Getafe CF",
+    "ad": "Getafe",
+    "lig": "La Liga",
+    "es": [],
+    "oyuncu_sayisi": 269
+  },
+  {
+    "id": "Q875169",
+    "tam_ad": "FC Den Bosch",
+    "ad": "Den Bosch",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 269
+  },
+  {
+    "id": "Q44441",
+    "tam_ad": "Al-Ahli SC",
+    "ad": "Al-Ahli",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 263
+  },
+  {
+    "id": "Q309400",
+    "tam_ad": "US Boulogne",
+    "ad": "Boulogne",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 261
+  },
+  {
+    "id": "Q352251",
+    "tam_ad": "Adana Demirspor",
+    "ad": "Adana Demirspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 261
+  },
+  {
+    "id": "Q845043",
+    "tam_ad": "Frosinone Calcio",
+    "ad": "Frosinone",
+    "lig": "Serie A",
+    "es": [],
+    "oyuncu_sayisi": 256
+  },
+  {
+    "id": "Q870182",
+    "tam_ad": "Clermont Foot 63",
+    "ad": "Clermont Foot 63",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 256
+  },
+  {
+    "id": "Q738060",
+    "tam_ad": "FC Volendam",
+    "ad": "Volendam",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 256
+  },
+  {
+    "id": "Q875120",
+    "tam_ad": "SC Cambuur",
+    "ad": "Cambuur",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 254
+  },
+  {
+    "id": "Q2035444",
+    "tam_ad": "Joinville Esporte Clube",
+    "ad": "Joinville",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 254
+  },
+  {
+    "id": "Q11961",
+    "tam_ad": "Heracles Almelo",
+    "ad": "Heracles Almelo",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 253
+  },
+  {
+    "id": "Q352270",
+    "tam_ad": "Adanaspor",
+    "ad": "Adanaspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 251
+  },
+  {
+    "id": "Q198034",
+    "tam_ad": "Atlético Clube Goianiense",
+    "ad": "Atlético Goianiense",
+    "lig": "Brasileirão",
+    "es": [
+      "Q133322190"
+    ],
+    "oyuncu_sayisi": 251
+  },
+  {
+    "id": "Q160532",
+    "tam_ad": "SC Paderborn 07",
+    "ad": "Paderborn 07",
+    "lig": "Bundesliga",
+    "es": [
+      "Q97905966"
+    ],
+    "oyuncu_sayisi": 250
+  },
+  {
+    "id": "Q157828",
+    "tam_ad": "Holstein Kiel",
+    "ad": "Holstein Kiel",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97940890"
+    ],
+    "oyuncu_sayisi": 247
+  },
+  {
+    "id": "Q1132418",
+    "tam_ad": "FC Martigues",
+    "ad": "Martigues",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 246
+  },
+  {
+    "id": "Q1071713",
+    "tam_ad": "SC Telstar",
+    "ad": "Telstar",
+    "lig": "Eredivisie",
+    "es": [],
+    "oyuncu_sayisi": 246
+  },
+  {
+    "id": "Q434929",
+    "tam_ad": "Altay SK",
+    "ad": "Altay",
+    "lig": "TFF 1. Lig",
+    "es": [
+      "Q6052432"
+    ],
+    "oyuncu_sayisi": 244
+  },
+  {
+    "id": "Q856119",
+    "tam_ad": "CD Leganés",
+    "ad": "Leganés",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 242
+  },
+  {
+    "id": "Q748445",
+    "tam_ad": "Eskişehirspor",
+    "ad": "Eskişehirspor",
+    "lig": "TFF 3. Lig",
+    "es": [
+      "Q6039559"
+    ],
+    "oyuncu_sayisi": 241
+  },
+  {
+    "id": "Q371136",
+    "tam_ad": "FC Paços de Ferreira",
+    "ad": "Paços de Ferreira",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 241
+  },
+  {
+    "id": "Q891679",
+    "tam_ad": "Boluspor",
+    "ad": "Boluspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 238
+  },
+  {
+    "id": "Q503317",
+    "tam_ad": "Dijon FCO",
+    "ad": "Dijon FCO",
+    "lig": "Ligue 2",
+    "es": [
+      "Q3027897"
+    ],
+    "oyuncu_sayisi": 236
+  },
+  {
+    "id": "Q876699",
+    "tam_ad": "FC Eindhoven",
+    "ad": "Eindhoven",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 234
+  },
+  {
+    "id": "Q22707",
+    "tam_ad": "TSG 1899 Hoffenheim",
+    "ad": "Hoffenheim",
+    "lig": "Bundesliga",
+    "es": [
+      "Q97905997"
+    ],
+    "oyuncu_sayisi": 231
+  },
+  {
+    "id": "Q623730",
+    "tam_ad": "Leixões SC",
+    "ad": "Leixões",
+    "lig": "Liga Portugal 2",
+    "es": [
+      "Q6520479"
+    ],
+    "oyuncu_sayisi": 231
+  },
+  {
+    "id": "Q627334",
+    "tam_ad": "Gazélec Ajaccio",
+    "ad": "Gazélec Ajaccio",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 229
+  },
+  {
+    "id": "Q372599",
+    "tam_ad": "Sivasspor",
+    "ad": "Sivasspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 228
+  },
+  {
+    "id": "Q8603",
+    "tam_ad": "US Sassuolo Calcio",
+    "ad": "Sassuolo",
+    "lig": "Serie A",
+    "es": [],
+    "oyuncu_sayisi": 226
+  },
+  {
+    "id": "Q622432",
+    "tam_ad": "Rio Ave FC",
+    "ad": "Rio Ave",
+    "lig": "Liga Portugal",
+    "es": [],
+    "oyuncu_sayisi": 225
+  },
+  {
+    "id": "Q291297",
+    "tam_ad": "Kayseri Erciyesspor",
+    "ad": "Kayseri Erciyesspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 222
+  },
+  {
+    "id": "Q621120",
+    "tam_ad": "Portimonense SC",
+    "ad": "Portimonense",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 222
+  },
+  {
+    "id": "Q611653",
+    "tam_ad": "FC Cartagena",
+    "ad": "Cartagena",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 217
+  },
+  {
+    "id": "Q59962",
+    "tam_ad": "Club Atlético Belgrano",
+    "ad": "Belgrano",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 217
+  },
+  {
+    "id": "Q513237",
+    "tam_ad": "Kocaelispor",
+    "ad": "Kocaelispor",
+    "lig": "Süper Lig",
+    "es": [
+      "Q116418752"
+    ],
+    "oyuncu_sayisi": 216
+  },
+  {
+    "id": "Q838134",
+    "tam_ad": "CF Estrela da Amadora",
+    "ad": "Estrela da Amadora",
+    "lig": "Liga Portugal",
+    "es": [
+      "Q108457563"
+    ],
+    "oyuncu_sayisi": 212
+  },
+  {
+    "id": "Q155730",
+    "tam_ad": "1. FC Magdeburg",
+    "ad": "Magdeburg",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97946851"
+    ],
+    "oyuncu_sayisi": 211
+  },
+  {
+    "id": "Q556570",
+    "tam_ad": "Ankaraspor",
+    "ad": "Ankaraspor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 210
+  },
+  {
+    "id": "Q80882",
+    "tam_ad": "Godoy Cruz Antonio Tomba",
+    "ad": "Godoy Cruz Antonio Tomba",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 207
+  },
+  {
+    "id": "Q6748",
+    "tam_ad": "S.S. Juve Stabia",
+    "ad": "S.S. Juve Stabia",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 206
+  },
+  {
+    "id": "Q1061627",
+    "tam_ad": "FC Emmen",
+    "ad": "Emmen",
+    "lig": "Eerste Divisie",
+    "es": [
+      "Q106990034",
+      "Q13632333",
+      "Q15875103",
+      "Q18060239",
+      "Q1880032",
+      "Q1926531",
+      "Q19967899",
+      "Q2292667",
+      "Q24204202",
+      "Q30241530",
+      "Q3261312",
+      "Q54002461",
+      "Q97097043"
+    ],
+    "oyuncu_sayisi": 204
+  },
+  {
+    "id": "Q636315",
+    "tam_ad": "Helmond Sport",
+    "ad": "Helmond Sport",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 204
+  },
+  {
+    "id": "Q138230",
+    "tam_ad": "Kasımpaşa SK",
+    "ad": "Kasımpaşa",
+    "lig": "Süper Lig",
+    "es": [],
+    "oyuncu_sayisi": 199
+  },
+  {
+    "id": "Q757422",
+    "tam_ad": "Atlético Clube de Portugal",
+    "ad": "Atlético de Portugal",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 199
+  },
+  {
+    "id": "Q2636005",
+    "tam_ad": "Eş-Şebab",
+    "ad": "Eş-Şebab",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 198
+  },
+  {
+    "id": "Q639525",
+    "tam_ad": "SV Sandhausen",
+    "ad": "Sandhausen",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97927386"
+    ],
+    "oyuncu_sayisi": 197
+  },
+  {
+    "id": "Q854141",
+    "tam_ad": "HFC Haarlem",
+    "ad": "HFC Haarlem",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 197
+  },
+  {
+    "id": "Q852079",
+    "tam_ad": "Burgos CF",
+    "ad": "Burgos",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 196
+  },
+  {
+    "id": "Q1149034",
+    "tam_ad": "TOP Oss",
+    "ad": "TOP Oss",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 196
+  },
+  {
+    "id": "Q1543501",
+    "tam_ad": "Giresunspor",
+    "ad": "Giresunspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 195
+  },
+  {
+    "id": "Q1346314",
+    "tam_ad": "Moreirense FC",
+    "ad": "Moreirense",
+    "lig": "Liga Portugal",
+    "es": [],
+    "oyuncu_sayisi": 195
+  },
+  {
+    "id": "Q344328",
+    "tam_ad": "İstanbulspor",
+    "ad": "İstanbulspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 193
+  },
+  {
+    "id": "Q543467",
+    "tam_ad": "G.D. Chaves",
+    "ad": "G.D. Chaves",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 193
+  },
+  {
+    "id": "Q12168",
+    "tam_ad": "SD Ponferradina",
+    "ad": "Ponferradina",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 192
+  },
+  {
+    "id": "Q929360",
+    "tam_ad": "Mersin İdmanyurdu",
+    "ad": "Mersin İdmanyurdu",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 191
+  },
+  {
+    "id": "Q740637",
+    "tam_ad": "CD Santa Clara",
+    "ad": "Santa Clara",
+    "lig": "Liga Portugal",
+    "es": [],
+    "oyuncu_sayisi": 191
+  },
+  {
+    "id": "Q369349",
+    "tam_ad": "US Orléans",
+    "ad": "Orléans",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 190
+  },
+  {
+    "id": "Q1421829",
+    "tam_ad": "Instituto Atlético Central Córdoba",
+    "ad": "Instituto Atlético Central Córdoba",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 187
+  },
+  {
+    "id": "Q6673",
+    "tam_ad": "AS Cittadella",
+    "ad": "Cittadella",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 184
+  },
+  {
+    "id": "Q72844",
+    "tam_ad": "Ettifaq FC",
+    "ad": "Ettifaq",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 182
+  },
+  {
+    "id": "Q857938",
+    "tam_ad": "İstanbul Başakşehir FK",
+    "ad": "Başakşehir",
+    "lig": "Süper Lig",
+    "es": [],
+    "oyuncu_sayisi": 179
+  },
+  {
+    "id": "Q692586",
+    "tam_ad": "VfR Aalen",
+    "ad": "VfR Aalen",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97927397"
+    ],
+    "oyuncu_sayisi": 177
+  },
+  {
+    "id": "Q170117",
+    "tam_ad": "FC Ingolstadt 04",
+    "ad": "Ingolstadt 04",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q55000757",
+      "Q97905920"
+    ],
+    "oyuncu_sayisi": 176
+  },
+  {
+    "id": "Q824850",
+    "tam_ad": "Gaziantep FK",
+    "ad": "Gaziantep",
+    "lig": "Süper Lig",
+    "es": [],
+    "oyuncu_sayisi": 175
+  },
+  {
+    "id": "Q2536715",
+    "tam_ad": "Chapecoense",
+    "ad": "Chapecoense",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 175
+  },
+  {
+    "id": "Q1023233",
+    "tam_ad": "C.D. Trofense",
+    "ad": "C.D. Trofense",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 171
+  },
+  {
+    "id": "Q1369461",
+    "tam_ad": "Sakaryaspor",
+    "ad": "Sakaryaspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 169
+  },
+  {
+    "id": "Q744353",
+    "tam_ad": "SC Farense",
+    "ad": "Farense",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 169
+  },
+  {
+    "id": "Q702455",
+    "tam_ad": "RB Leipzig",
+    "ad": "RB Leipzig",
+    "lig": "Bundesliga",
+    "es": [
+      "Q97905954"
+    ],
+    "oyuncu_sayisi": 168
+  },
+  {
+    "id": "Q520207",
+    "tam_ad": "Diyarbakırspor",
+    "ad": "Diyarbakırspor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 168
+  },
+  {
+    "id": "Q14551982",
+    "tam_ad": "SSV Ulm 1846 Fußball",
+    "ad": "SSV Ulm Fußball",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q701290"
+    ],
+    "oyuncu_sayisi": 167
+  },
+  {
+    "id": "Q692691",
+    "tam_ad": "SV Elversberg",
+    "ad": "Elversberg",
+    "lig": "Bundesliga",
+    "es": [
+      "Q127272988"
+    ],
+    "oyuncu_sayisi": 165
+  },
+  {
+    "id": "Q1762119",
+    "tam_ad": "C.F. União",
+    "ad": "União",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 165
+  },
+  {
+    "id": "Q388487",
+    "tam_ad": "Şanlıurfaspor",
+    "ad": "Şanlıurfaspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 164
+  },
+  {
+    "id": "Q1815297",
+    "tam_ad": "USL Dunkerque",
+    "ad": "USL Dunkerque",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 163
+  },
+  {
+    "id": "Q671042",
+    "tam_ad": "CD Feirense",
+    "ad": "Feirense",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 163
+  },
+  {
+    "id": "Q1429473",
+    "tam_ad": "Varzim SC",
+    "ad": "Varzim",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 162
+  },
+  {
+    "id": "Q653119",
+    "tam_ad": "Almere City FC",
+    "ad": "Almere City",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 159
+  },
+  {
+    "id": "Q1024338",
+    "tam_ad": "CSD Defensa y Justicia",
+    "ad": "CSD Defensa y Justicia",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 159
+  },
+  {
+    "id": "Q757470",
+    "tam_ad": "Atlético Tucumán",
+    "ad": "Atlético Tucumán",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 158
+  },
+  {
+    "id": "Q805909",
+    "tam_ad": "Balıkesirspor",
+    "ad": "Balıkesirspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 153
+  },
+  {
+    "id": "Q846008",
+    "tam_ad": "Associação Naval 1º de Maio",
+    "ad": "Naval 1º de Maio",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 151
+  },
+  {
+    "id": "Q286191",
+    "tam_ad": "El-Kadisiye",
+    "ad": "El-Kadisiye",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 148
+  },
+  {
+    "id": "Q2276413",
+    "tam_ad": "Virtus Entella",
+    "ad": "Virtus Entella",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 147
+  },
+  {
+    "id": "Q630348",
+    "tam_ad": "Bucaspor",
+    "ad": "Bucaspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 146
+  },
+  {
+    "id": "Q2986998",
+    "tam_ad": "Al-Raed FC",
+    "ad": "Al-Raed",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 145
+  },
+  {
+    "id": "Q812713",
+    "tam_ad": "Al-Wehda",
+    "ad": "Al-Wehda",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 143
+  },
+  {
+    "id": "Q1170018",
+    "tam_ad": "Kartalspor",
+    "ad": "Kartalspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 140
+  },
+  {
+    "id": "Q80921",
+    "tam_ad": "San Martín de San Juan",
+    "ad": "San Martín de San Juan",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 140
+  },
+  {
+    "id": "Q519966",
+    "tam_ad": "Club Atlético Sarmiento",
+    "ad": "Sarmiento",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 137
+  },
+  {
+    "id": "Q971490",
+    "tam_ad": "CA Aldosivi",
+    "ad": "Aldosivi",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 137
+  },
+  {
+    "id": "Q2829334",
+    "tam_ad": "El-Faysalî",
+    "ad": "El-Faysalî",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 131
+  },
+  {
+    "id": "Q2552872",
+    "tam_ad": "Clube do Remo",
+    "ad": "do Remo",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 128
+  },
+  {
+    "id": "Q2454482",
+    "tam_ad": "Independiente Rivadavia",
+    "ad": "Independiente Rivadavia",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 128
+  },
+  {
+    "id": "Q1053450",
+    "tam_ad": "RBC Roosendaal",
+    "ad": "RBC Roosendaal",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 123
+  },
+  {
+    "id": "Q288419",
+    "tam_ad": "Pau FC",
+    "ad": "Pau",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 122
+  },
+  {
+    "id": "Q417685",
+    "tam_ad": "Akhisar Belediyespor",
+    "ad": "Akhisar Belediyespor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 122
+  },
+  {
+    "id": "Q1891367",
+    "tam_ad": "S.C. Covilhã",
+    "ad": "Covilhã",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 121
+  },
+  {
+    "id": "Q1933473",
+    "tam_ad": "Sarıyer SK",
+    "ad": "Sarıyer",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 119
+  },
+  {
+    "id": "Q1023227",
+    "tam_ad": "CD Tondela",
+    "ad": "Tondela",
+    "lig": "Liga Portugal",
+    "es": [],
+    "oyuncu_sayisi": 119
+  },
+  {
+    "id": "Q648382",
+    "tam_ad": "SC Veendam",
+    "ad": "Veendam",
+    "lig": "Eerste Divisie",
+    "es": [],
+    "oyuncu_sayisi": 118
+  },
+  {
+    "id": "Q2613971",
+    "tam_ad": "Et-Teâvün",
+    "ad": "Et-Teâvün",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 118
+  },
+  {
+    "id": "Q1368064",
+    "tam_ad": "Malatyaspor",
+    "ad": "Malatyaspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 116
+  },
+  {
+    "id": "Q1528913",
+    "tam_ad": "Società Ginnastica Andrea Doria",
+    "ad": "Società Ginnastica Andrea Doria",
+    "lig": "Serie A",
+    "es": [
+      "Q110116853"
+    ],
+    "oyuncu_sayisi": 115
+  },
+  {
+    "id": "Q1628465",
+    "tam_ad": "TKİ Tavşanlı Linyitspor",
+    "ad": "TKİ Tavşanlı Linyitspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 113
+  },
+  {
+    "id": "Q292231",
+    "tam_ad": "Rodez AF",
+    "ad": "Rodez AF",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 112
+  },
+  {
+    "id": "Q340133",
+    "tam_ad": "Hacettepe SK",
+    "ad": "Hacettepe",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 112
+  },
+  {
+    "id": "Q1963926",
+    "tam_ad": "Najran SC",
+    "ad": "Najran",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 112
+  },
+  {
+    "id": "Q257078",
+    "tam_ad": "Pordenone Calcio",
+    "ad": "Pordenone",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 110
+  },
+  {
+    "id": "Q1387710",
+    "tam_ad": "F.C. Südtirol",
+    "ad": "Südtirol",
+    "lig": "Serie B",
+    "es": [],
+    "oyuncu_sayisi": 109
+  },
+  {
+    "id": "Q1386869",
+    "tam_ad": "FC Arouca",
+    "ad": "Arouca",
+    "lig": "Liga Portugal",
+    "es": [],
+    "oyuncu_sayisi": 109
+  },
+  {
+    "id": "Q1636019",
+    "tam_ad": "Alanyaspor",
+    "ad": "Alanyaspor",
+    "lig": "Süper Lig",
+    "es": [],
+    "oyuncu_sayisi": 107
+  },
+  {
+    "id": "Q162251",
+    "tam_ad": "1. FC Heidenheim",
+    "ad": "Heidenheim",
+    "lig": "2. Bundesliga",
+    "es": [
+      "Q97927357"
+    ],
+    "oyuncu_sayisi": 106
+  },
+  {
+    "id": "Q447191",
+    "tam_ad": "Altınordu FK",
+    "ad": "Altınordu",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 106
+  },
+  {
+    "id": "Q1853273",
+    "tam_ad": "SCU Torreense",
+    "ad": "SCU Torreense",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 106
+  },
+  {
+    "id": "Q1110567",
+    "tam_ad": "Hatayspor",
+    "ad": "Hatayspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 105
+  },
+  {
+    "id": "Q1351072",
+    "tam_ad": "Fethiyespor",
+    "ad": "Fethiyespor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 104
+  },
+  {
+    "id": "Q1387855",
+    "tam_ad": "FC Vizela",
+    "ad": "Vizela",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 103
+  },
+  {
+    "id": "Q303121",
+    "tam_ad": "Yeni Malatyaspor",
+    "ad": "Yeni Malatyaspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 101
+  },
+  {
+    "id": "Q1387105",
+    "tam_ad": "FC Famalicão",
+    "ad": "Famalicão",
+    "lig": "Liga Portugal",
+    "es": [],
+    "oyuncu_sayisi": 101
+  },
+  {
+    "id": "Q1067737",
+    "tam_ad": "UD Logroñés",
+    "ad": "Logroñés",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 99
+  },
+  {
+    "id": "Q1386850",
+    "tam_ad": "FC Alverca",
+    "ad": "Alverca",
+    "lig": "Liga Portugal",
+    "es": [],
+    "oyuncu_sayisi": 99
+  },
+  {
+    "id": "Q2410944",
+    "tam_ad": "Académico de Viseu FC",
+    "ad": "Académico de Viseu",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 99
+  },
+  {
+    "id": "Q769204",
+    "tam_ad": "Al-Shoalah",
+    "ad": "Al-Shoalah",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 99
+  },
+  {
+    "id": "Q189847",
+    "tam_ad": "1461 Trabzon",
+    "ad": "1461 Trabzon",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 98
+  },
+  {
+    "id": "Q2701659",
+    "tam_ad": "El-Feth",
+    "ad": "El-Feth",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 98
+  },
+  {
+    "id": "Q1386854",
+    "tam_ad": "FC Andorra",
+    "ad": "Andorra",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 97
+  },
+  {
+    "id": "Q1031307",
+    "tam_ad": "SC Freamunde",
+    "ad": "Freamunde",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 96
+  },
+  {
+    "id": "Q1668605",
+    "tam_ad": "Kahramanmaraşspor",
+    "ad": "Kahramanmaraşspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 95
+  },
+  {
+    "id": "Q1398111",
+    "tam_ad": "Fatih Karagümrük SK",
+    "ad": "Fatih Karagümrük",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 93
+  },
+  {
+    "id": "Q1387573",
+    "tam_ad": "CF Reus Deportiu",
+    "ad": "Reus Deportiu",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 92
+  },
+  {
+    "id": "Q1256652",
+    "tam_ad": "Gondomar S.C.",
+    "ad": "Gondomar",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 92
+  },
+  {
+    "id": "Q2061414",
+    "tam_ad": "UD Oliveirense",
+    "ad": "Oliveirense",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 90
+  },
+  {
+    "id": "Q2359560",
+    "tam_ad": "Hajer Club",
+    "ad": "Hajer",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 90
+  },
+  {
+    "id": "Q1195376",
+    "tam_ad": "Ciudad de Murcia",
+    "ad": "Ciudad de Murcia",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 87
+  },
+  {
+    "id": "Q600232",
+    "tam_ad": "CD Eldense",
+    "ad": "Eldense",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 86
+  },
+  {
+    "id": "Q118919",
+    "tam_ad": "Eyüpspor",
+    "ad": "Eyüpspor",
+    "lig": "Süper Lig",
+    "es": [],
+    "oyuncu_sayisi": 84
+  },
+  {
+    "id": "Q4285478",
+    "tam_ad": "Şekerspor A.Ş.",
+    "ad": "Şekerspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 79
+  },
+  {
+    "id": "Q2027718",
+    "tam_ad": "Al-Khaleej FC",
+    "ad": "Al-Khaleej",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 78
+  },
+  {
+    "id": "Q179930",
+    "tam_ad": "Çanakkale Dardanel SK",
+    "ad": "Çanakkale Dardanel",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 77
+  },
+  {
+    "id": "Q1857213",
+    "tam_ad": "Uberlândia E.C.",
+    "ad": "Uberlândia E.C",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 75
+  },
+  {
+    "id": "Q343957",
+    "tam_ad": "İnegölspor",
+    "ad": "İnegölspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 74
+  },
+  {
+    "id": "Q176099",
+    "tam_ad": "C.D. Fátima",
+    "ad": "C.D. Fátima",
+    "lig": "Liga Portugal 2",
+    "es": [],
+    "oyuncu_sayisi": 73
+  },
+  {
+    "id": "Q1351037",
+    "tam_ad": "Turgutluspor",
+    "ad": "Turgutluspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 69
+  },
+  {
+    "id": "Q1046440",
+    "tam_ad": "Casa Pia AC",
+    "ad": "Casa Pia",
+    "lig": "Liga Portugal",
+    "es": [],
+    "oyuncu_sayisi": 69
+  },
+  {
+    "id": "Q3163786",
+    "tam_ad": "SpVgg Blau-Weiß 1890 Berlin",
+    "ad": "SpVgg Blau-Weiß Berlin",
+    "lig": "2. Bundesliga",
+    "es": [],
+    "oyuncu_sayisi": 68
+  },
+  {
+    "id": "Q806415",
+    "tam_ad": "Bandırmaspor",
+    "ad": "Bandırmaspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 63
+  },
+  {
+    "id": "Q1757369",
+    "tam_ad": "Yimpaş Yozgatspor",
+    "ad": "Yimpaş Yozgatspor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 62
+  },
+  {
+    "id": "Q197093",
+    "tam_ad": "Zeytinburnuspor",
+    "ad": "Zeytinburnuspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 59
+  },
+  {
+    "id": "Q916904",
+    "tam_ad": "Körfez SK",
+    "ad": "Körfez",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 59
+  },
+  {
+    "id": "Q1536956",
+    "tam_ad": "Ankara Keçiörengücü SK",
+    "ad": "Ankara Keçiörengücü",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 59
+  },
+  {
+    "id": "Q20081435",
+    "tam_ad": "el-Feyha",
+    "ad": "el-Feyha",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 59
+  },
+  {
+    "id": "Q483741",
+    "tam_ad": "Konya Şekerspor",
+    "ad": "Konya Şekerspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 58
+  },
+  {
+    "id": "Q2857911",
+    "tam_ad": "Anápolis Futebol Clube",
+    "ad": "Anápolis",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 57
+  },
+  {
+    "id": "Q2655899",
+    "tam_ad": "Al-Riyadh SC",
+    "ad": "Al-Riyadh",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 55
+  },
+  {
+    "id": "Q2619514",
+    "tam_ad": "AS Béziers",
+    "ad": "Béziers",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 54
+  },
+  {
+    "id": "Q1347349",
+    "tam_ad": "Pendikspor",
+    "ad": "Pendikspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 53
+  },
+  {
+    "id": "Q792916",
+    "tam_ad": "Aydınspor 1923",
+    "ad": "Aydınspor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 53
+  },
+  {
+    "id": "Q2945011",
+    "tam_ad": "Cuiabá Esporte Clube",
+    "ad": "Cuiabá",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 52
+  },
+  {
+    "id": "Q994224",
+    "tam_ad": "Extremadura UD",
+    "ad": "Extremadura",
+    "lig": "La Liga 2",
+    "es": [],
+    "oyuncu_sayisi": 51
+  },
+  {
+    "id": "Q556437",
+    "tam_ad": "Ankara Demirspor",
+    "ad": "Ankara Demirspor",
+    "lig": "TFF 3. Lig",
+    "es": [
+      "Q116418778"
+    ],
+    "oyuncu_sayisi": 51
+  },
+  {
+    "id": "Q516795",
+    "tam_ad": "FC Wageningen",
+    "ad": "Wageningen",
+    "lig": "Eerste Divisie",
+    "es": [
+      "Q18655394"
+    ],
+    "oyuncu_sayisi": 51
+  },
+  {
+    "id": "Q1351085",
+    "tam_ad": "Tarsus İdman Yurdu",
+    "ad": "Tarsus İdman Yurdu",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 50
+  },
+  {
+    "id": "Q915883",
+    "tam_ad": "Tokatspor",
+    "ad": "Tokatspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 50
+  },
+  {
+    "id": "Q2656362",
+    "tam_ad": "Al-Ansar",
+    "ad": "Al-Ansar",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 47
+  },
+  {
+    "id": "Q2470164",
+    "tam_ad": "Al-Tai FC",
+    "ad": "Al-Tai",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 46
+  },
+  {
+    "id": "Q15060070",
+    "tam_ad": "Beykoz Anadoluspor",
+    "ad": "Beykoz Anadoluspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 45
+  },
+  {
+    "id": "Q1676156",
+    "tam_ad": "İzmirspor",
+    "ad": "İzmirspor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 45
+  },
+  {
+    "id": "Q1584904",
+    "tam_ad": "Siirtspor",
+    "ad": "Siirtspor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 44
+  },
+  {
+    "id": "Q219935",
+    "tam_ad": "Zonguldakspor",
+    "ad": "Zonguldakspor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 44
+  },
+  {
+    "id": "Q1231804",
+    "tam_ad": "Amed SFK",
+    "ad": "Amed SFK",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 43
+  },
+  {
+    "id": "Q6062228",
+    "tam_ad": "Ümraniyespor",
+    "ad": "Ümraniyespor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 43
+  },
+  {
+    "id": "Q384005",
+    "tam_ad": "Türk Telekom GSK",
+    "ad": "Türk Telekom GSK",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 42
+  },
+  {
+    "id": "Q4869413",
+    "tam_ad": "Batman Petrolspor",
+    "ad": "Batman Petrolspor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 42
+  },
+  {
+    "id": "Q585487",
+    "tam_ad": "İstanbul Güngörenspor",
+    "ad": "İstanbul Güngörenspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 41
+  },
+  {
+    "id": "Q1140695",
+    "tam_ad": "F.C. Annecy",
+    "ad": "Annecy",
+    "lig": "Ligue 2",
+    "es": [],
+    "oyuncu_sayisi": 40
+  },
+  {
+    "id": "Q2426819",
+    "tam_ad": "Erzurumspor FK",
+    "ad": "Erzurumspor",
+    "lig": "TFF 1. Lig",
+    "es": [],
+    "oyuncu_sayisi": 40
+  },
+  {
+    "id": "Q961059",
+    "tam_ad": "Gaziosmanpaşaspor",
+    "ad": "Gaziosmanpaşaspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 40
+  },
+  {
+    "id": "Q302263",
+    "tam_ad": "Menemen FK",
+    "ad": "Menemen",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 40
+  },
+  {
+    "id": "Q1347927",
+    "tam_ad": "Tepecikspor",
+    "ad": "Tepecikspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 39
+  },
+  {
+    "id": "Q1351045",
+    "tam_ad": "Nazilli Belediyespor",
+    "ad": "Nazilli Belediyespor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 39
+  },
+  {
+    "id": "Q1797544",
+    "tam_ad": "Kızılcahamamspor",
+    "ad": "Kızılcahamamspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 39
+  },
+  {
+    "id": "Q1640452",
+    "tam_ad": "Mardinspor",
+    "ad": "Mardinspor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 38
+  },
+  {
+    "id": "Q815349",
+    "tam_ad": "Vanspor FK",
+    "ad": "Vanspor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 38
+  },
+  {
+    "id": "Q4826180",
+    "tam_ad": "Gümüşhanespor",
+    "ad": "Gümüşhanespor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 37
+  },
+  {
+    "id": "Q1534448",
+    "tam_ad": "Goiânia Esporte Clube",
+    "ad": "Goiânia",
+    "lig": "Brasileirão",
+    "es": [],
+    "oyuncu_sayisi": 37
+  },
+  {
+    "id": "Q344068",
+    "tam_ad": "İskenderun Demir Çelikspor",
+    "ad": "İskenderun Demir Çelikspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 36
+  },
+  {
+    "id": "Q896220",
+    "tam_ad": "Bozüyükspor",
+    "ad": "Bozüyükspor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 36
+  },
+  {
+    "id": "Q933897",
+    "tam_ad": "Denizli Belediyespor",
+    "ad": "Denizli Belediyespor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 36
+  },
+  {
+    "id": "Q5060684",
+    "tam_ad": "Central Córdoba de Santiago del Estero",
+    "ad": "Central Córdoba de Santiago del Estero",
+    "lig": "Arjantin Ligi",
+    "es": [],
+    "oyuncu_sayisi": 36
+  },
+  {
+    "id": "Q472707",
+    "tam_ad": "Pazarspor",
+    "ad": "Pazarspor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 35
+  },
+  {
+    "id": "Q2620016",
+    "tam_ad": "Abha FC",
+    "ad": "Abha",
+    "lig": "Suudi Pro Lig",
+    "es": [],
+    "oyuncu_sayisi": 34
+  },
+  {
+    "id": "Q853182",
+    "tam_ad": "Beylerbeyi SK",
+    "ad": "Beylerbeyi",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 33
+  },
+  {
+    "id": "Q989553",
+    "tam_ad": "Muğlaspor",
+    "ad": "Muğlaspor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 33
+  },
+  {
+    "id": "Q1797516",
+    "tam_ad": "Kırklarelispor",
+    "ad": "Kırklarelispor",
+    "lig": "TFF 2. Lig",
+    "es": [],
+    "oyuncu_sayisi": 32
+  },
+  {
+    "id": "Q812593",
+    "tam_ad": "Bayrampaşaspor",
+    "ad": "Bayrampaşaspor",
+    "lig": "TFF 3. Lig",
+    "es": [],
+    "oyuncu_sayisi": 31
   }
 ]

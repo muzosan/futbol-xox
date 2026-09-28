@@ -9,7 +9,8 @@ import 'text_utils.dart';
 
 /// assets/data içindeki JSON dosyalarını yükler ve arama yapar.
 class Repository {
-  Repository._(this.clubs, this.players, this.grids, this.careers);
+  Repository._(
+      this.clubs, this.players, this.grids, this.careers, this.countries);
 
   final Map<String, Club> clubs;
   final List<Player> players; // popülerliğe göre sıralı (en bilinen başta)
@@ -17,6 +18,20 @@ class Repository {
 
   /// Kim Bu? modu için kronolojik kariyerler (dosya yoksa boş)
   final List<Career> careers;
+
+  /// Ülke kodu -> Türkçe ülke adı (dosya yoksa boş)
+  final Map<String, String> countries;
+
+  String countryName(String code) => countries[code] ?? code;
+
+  /// Arama listesindeki alt satır için: "CB · 🇹🇷 Türkiye"
+  String playerInfo(Player p) {
+    final nat = p.nationality;
+    return [
+      if (p.positions.isNotEmpty) p.positions.join('/'),
+      if (nat != null) '${flagEmoji(nat)} ${countryName(nat)}'.trim(),
+    ].join(' · ');
+  }
 
   final Random _random = Random();
   String? _lastGridId;
@@ -30,16 +45,43 @@ class Repository {
       rootBundle
           .loadString('assets/data/careers.json')
           .catchError((_) => '[]'), // kariyer dosyası henüz yoksa
+      rootBundle
+          .loadString('assets/data/countries.json')
+          .catchError((_) => '{}'), // ülke dosyası henüz yoksa
     ]);
     // JSON çözme ve 32.000 oyuncunun arama anahtarlarını hazırlama işi ayrı bir
     // iş parçacığında (isolate) yapılır; böylece açılışta arayüz donmaz.
     // (Web'de isolate olmadığı için aynı iş normal şekilde çalışır.)
     final parsed = await compute(_parseAll, files);
-    return Repository._(
-        parsed.clubs, parsed.players, parsed.grids, parsed.careers);
+    return Repository._(parsed.clubs, parsed.players, parsed.grids,
+        parsed.careers, parsed.countries);
   }
 
   Club club(String id) => clubs[id]!;
+
+  int tierOf(String clubId) => clubs[clubId]?.tier ?? 3;
+
+  /// Oyuncunun en tanınmış kulübü (kartta forması gösterilir)
+  Club? mainClub(Player p) {
+    if (p.clubs.isEmpty) return null;
+    final list = p.clubs.map(club).toList()
+      ..sort((a, b) {
+        final t = a.tier.compareTo(b.tier);
+        return t != 0 ? t : playersOf(b.id).length.compareTo(playersOf(a.id).length);
+      });
+    return list.first;
+  }
+
+  /// Kartlardaki "Yıldız Puanı" (45-99): şöhret ve en yüksek piyasa değerinden.
+  /// Gerçek bir performans puanı değil; oyuncunun ününü ve değerini yansıtır.
+  int starRating(Player p) {
+    final r = 45 + 8 * log(1 + p.popularity) + 3 * log(1 + p.stat('pv'));
+    return r.round().clamp(45, 99).toInt();
+  }
+
+  /// Oyuncunun, seviyesi en fazla [maxTier] olan kaç kulüpte oynadığı
+  int bigClubCount(Player p, int maxTier) =>
+      p.clubs.where((c) => tierOf(c) <= maxTier).length;
 
   late final Map<String, Player> _byId = {for (final p in players) p.id: p};
 
@@ -129,11 +171,13 @@ class Repository {
 }
 
 class _ParsedData {
-  const _ParsedData(this.clubs, this.players, this.grids, this.careers);
+  const _ParsedData(
+      this.clubs, this.players, this.grids, this.careers, this.countries);
   final Map<String, Club> clubs;
   final List<Player> players;
   final List<PuzzleGrid> grids;
   final List<Career> careers;
+  final Map<String, String> countries;
 }
 
 /// compute() ile çağrılabilmesi için sınıf dışında (top-level) tanımlı.
@@ -150,6 +194,8 @@ _ParsedData _parseAll(List<String> files) {
   final careerList = (jsonDecode(files[3]) as List)
       .map((e) => Career.fromJson(e as Map<String, dynamic>))
       .toList();
-  return _ParsedData(
-      {for (final c in clubList) c.id: c}, playerList, gridList, careerList);
+  final countryMap =
+      (jsonDecode(files[4]) as Map<String, dynamic>).cast<String, String>();
+  return _ParsedData({for (final c in clubList) c.id: c}, playerList,
+      gridList, careerList, countryMap);
 }

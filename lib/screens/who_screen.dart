@@ -4,6 +4,7 @@ import '../data/models.dart';
 import '../data/records.dart';
 import '../data/repository.dart';
 import '../game/who_controller.dart';
+import '../report/report.dart';
 import '../theme.dart';
 import '../widgets/player_search_sheet.dart';
 import 'game_screen.dart' show difficultyLabels;
@@ -41,7 +42,10 @@ class _WhoScreenState extends State<WhoScreen> {
         ? null
         : WhoController(
             repo: widget.repo,
-            engine: WhoEngine(questions: questions),
+            engine: WhoEngine(
+              questions: questions,
+              startRevealed: whoStartRevealed(widget.difficulty),
+            ),
           );
   }
 
@@ -110,13 +114,7 @@ class _WhoScreenState extends State<WhoScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              '$score',
-              style: const TextStyle(
-                  fontSize: 48,
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.primary),
-            ),
+            GoldText('$score', size: 72, spacing: 1),
             Text(
               '${game.engine.totalQuestions * game.engine.maxPoints} puan üzerinden',
               style: const TextStyle(color: AppColors.textMuted),
@@ -172,11 +170,11 @@ class _WhoScreenState extends State<WhoScreen> {
   Widget build(BuildContext context) {
     final diffLabel = difficultyLabels[widget.difficulty] ?? widget.difficulty;
     final appBar = AppBar(
-      backgroundColor: AppColors.background,
+      backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       centerTitle: true,
       title: Text('Kim Bu? · $diffLabel',
-          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
+          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
     );
 
     final game = _game;
@@ -302,13 +300,13 @@ class _TopBar extends StatelessWidget {
           child: Text(
             'Soru ${engine.index + 1}/${engine.totalQuestions}',
             style: const TextStyle(
-                fontWeight: FontWeight.w700, color: AppColors.primary),
+                fontWeight: FontWeight.w800, color: AppColors.primary),
           ),
         ),
         const SizedBox(width: 12),
         Text('Toplam: ${engine.score}',
             style: const TextStyle(
-                fontWeight: FontWeight.w700, color: AppColors.text)),
+                fontWeight: FontWeight.w800, color: AppColors.text)),
         const Spacer(),
         if (!engine.resolved)
           Text(
@@ -345,7 +343,7 @@ class _CareerCard extends StatelessWidget {
               style: TextStyle(
                   fontSize: 11,
                   letterSpacing: 1.5,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w800,
                   color: AppColors.textMuted)),
           const SizedBox(height: 10),
           Expanded(
@@ -407,7 +405,7 @@ class _StepRow extends StatelessWidget {
               child: Text(
                 open ? (step.year?.toString() ?? '—') : '····',
                 style: TextStyle(
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w800,
                   color: open ? AppColors.primary : AppColors.border,
                 ),
               ),
@@ -453,7 +451,7 @@ class _StepRow extends StatelessWidget {
                     child: Text(
                       open ? step.club : 'Gizli kulüp',
                       style: TextStyle(
-                        fontWeight: open ? FontWeight.w700 : FontWeight.w400,
+                        fontWeight: open ? FontWeight.w800 : FontWeight.w600,
                         color: open ? AppColors.text : AppColors.textMuted,
                       ),
                     ),
@@ -500,9 +498,24 @@ class _AnswerBanner extends StatelessWidget {
                   ? '${player.name} · +${result.points} puan'
                   : 'Cevap: ${player.name}',
               style: const TextStyle(
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w900,
                   fontSize: 16,
                   color: AppColors.text),
+            ),
+          ),
+          IconButton(
+            tooltip: 'Kariyer bilgisi hatalı mı?',
+            icon: const Icon(Icons.flag_outlined, color: AppColors.textMuted),
+            onPressed: () => showReportDialog(
+              context,
+              DataReport(
+                mode: 'Kim Bu?',
+                player: player,
+                claim: 'Kariyer: ' +
+                    game.engine.current.steps
+                        .map((st) => '${st.club}${st.year != null ? ' (${st.year})' : ''}')
+                        .join(' → '),
+              ),
             ),
           ),
         ],

@@ -4,6 +4,7 @@ import '../data/models.dart';
 import '../data/repository.dart';
 import '../game/game_controller.dart';
 import '../theme.dart';
+import 'kit_icon.dart';
 import 'players_header.dart';
 
 const List<Color> _clubPalette = [
@@ -90,33 +91,7 @@ class ClubHeader extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                width: 42,
-                height: 42,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: clubColor(club.id),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.18),
-                    width: 2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: clubColor(club.id).withValues(alpha: 0.35),
-                      blurRadius: 10,
-                    ),
-                  ],
-                ),
-                child: Text(
-                  club.initials,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+              KitIcon(club: club, size: 46),
               const SizedBox(height: 5),
               Text(
                 club.name,
@@ -125,7 +100,7 @@ class ClubHeader extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 12,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w700,
                   height: 1.1,
                   color: AppColors.text,
                 ),
@@ -160,11 +135,8 @@ class _Corner extends StatelessWidget {
     return Center(
       child: Text(
         game.current.symbol,
-        style: TextStyle(
-          fontSize: 38,
-          fontWeight: FontWeight.w900,
-          color: color,
-          shadows: [Shadow(color: color.withValues(alpha: 0.6), blurRadius: 16)],
+        style: displayStyle(48, color: color, spacing: 0).copyWith(
+          shadows: [Shadow(color: color.withValues(alpha: 0.8), blurRadius: 18)],
         ),
       ),
     );
@@ -194,22 +166,31 @@ class _Cell extends StatelessWidget {
       final color = markColor(filled!.owner);
       decoration = BoxDecoration(
         borderRadius: radius,
-        color: color.withValues(alpha: highlighted ? 0.32 : 0.12),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            color.withValues(alpha: highlighted ? 0.45 : 0.22),
+            color.withValues(alpha: highlighted ? 0.22 : 0.06),
+          ],
+        ),
         border: Border.all(
-          color: color.withValues(alpha: highlighted ? 1 : 0.55),
+          color: color.withValues(alpha: highlighted ? 1 : 0.6),
           width: highlighted ? 2.5 : 1.5,
         ),
-        boxShadow: highlighted
-            ? [BoxShadow(color: color.withValues(alpha: 0.45), blurRadius: 16)]
-            : null,
+        boxShadow: [
+          ...AppShadows.card,
+          if (highlighted) ...AppShadows.glow(color, 0.55),
+        ],
       );
       child = Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             filled!.owner.symbol,
-            style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.w900, color: color),
+            style: displayStyle(28, color: color, spacing: 0).copyWith(
+              shadows: [Shadow(color: color.withValues(alpha: 0.8), blurRadius: 14)],
+            ),
           ),
           const SizedBox(height: 2),
           Text(
@@ -225,7 +206,7 @@ class _Cell extends StatelessWidget {
     } else if (example != null) {
       decoration = BoxDecoration(
         borderRadius: radius,
-        color: AppColors.surface,
+        color: AppColors.surface.withValues(alpha: 0.8),
         border: Border.all(color: AppColors.border),
       );
       child = Text(
@@ -242,8 +223,13 @@ class _Cell extends StatelessWidget {
     } else {
       decoration = BoxDecoration(
         borderRadius: radius,
-        color: AppColors.surfaceHigh,
-        border: Border.all(color: AppColors.border),
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFF1D2948), Color(0xFF111A2D)],
+        ),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+        boxShadow: AppShadows.card,
       );
       child = Icon(Icons.add,
           color: onTap == null
@@ -270,10 +256,16 @@ class _Cell extends StatelessWidget {
 
 /// XOX için üst bilgi: oyuncu kutuları (dolu hücre sayısı) ve süre.
 class TurnBar extends StatelessWidget {
-  const TurnBar({super.key, required this.game, this.botThinking = false});
+  const TurnBar({
+    super.key,
+    required this.game,
+    this.botThinking = false,
+    this.bubbles = const {},
+  });
 
   final GameController game;
   final bool botThinking;
+  final Map<Mark, String?> bubbles;
 
   @override
   Widget build(BuildContext context) {
@@ -291,6 +283,7 @@ class TurnBar extends StatelessWidget {
       status: botThinking
           ? '${game.nameOf(game.current)} düşünüyor…'
           : 'Sıra: ${game.nameOf(game.current)} · ${game.secondsLeft} sn',
+      bubbles: bubbles,
     );
   }
 }

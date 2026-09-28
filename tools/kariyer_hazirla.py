@@ -23,8 +23,8 @@ import re
 import sys
 from collections import defaultdict
 
-from tm_birlestir import csv_oku, isim_anahtar, kaydet, yukle
-from veri_topla import qid, sparql
+from tm_birlestir import csv_oku, isim_anahtar, kaydet, tm_kulup_haritasi, yukle
+from veri_topla import kisalt, qid, sparql, tm_kulup_idleri
 
 sys.stdout.reconfigure(encoding="utf-8")
 
@@ -40,7 +40,7 @@ WD_MIN_POP = 15    # Wikidata'dan tamamlanacak oyuncular için eşik
 GENC = re.compile(
     r"(\bU-?\d{2}\b|\bunder[- ]?\d{2}\b|\byouth\b|\byth\b|\bjgd\b|\bjugend|"
     r"\bjuvenil|\bprimavera\b|\breserves?\b|\bres\.|\bacademy\b|\bakademi|"
-    r"\bcastilla\b|\byou\.|\bjug\.|\bjuv\.|\bsub-?\d{2}\b|(?:^|\s)(b|ii|c)$)",
+    r"\bcastilla\b|\byou\b\.?|\byth\b\.?|\bjug\b\.?|\bjuv\b\.?|\bsub-?\d{2}\b|(?:^|\s)(b|ii|c)$)",
     re.I,
 )
 MILLI = re.compile(r"national|milli|olympic|olimpik", re.I)
@@ -51,16 +51,29 @@ KONTROL = ["Mauro Icardi", "Arda Turan", "Mesut Özil", "Gheorghe Hagi",
            "Zlatan Ibrahimović", "Edin Džeko"]
 
 
-def gecerli_kulup(ad):
-    ad = (ad or "").strip()
-    return bool(ad) and ad.lower() not in BOS and not GENC.search(ad) \
-        and not MILLI.search(ad)
+ALTYAPI = " (Altyapı)"
+
+
+def altyapi_adi(ad):
+    """'FC Barcelona U19' -> 'Barcelona (Altyapı)', 'Vecindario You.' -> 'Vecindario (Altyapı)'"""
+    temiz = GENC.sub(" ", ad)
+    temiz = re.sub(r"\s+[A-Z]$", " ", temiz.strip())      # 'Juvenil A' -> ''
+    temiz = kisalt(" ".join(temiz.split()).strip(" .-"))
+    return temiz + ALTYAPI if temiz else None
 
 
 def adim_ekle(adimlar, ad, yil):
-    """Kariyere bir kulüp ekler; kayıt kaynaklı tekrarları ayıklar."""
-    if not gecerli_kulup(ad):
+    """Kariyere bir kulüp ekler; kayıt kaynaklı tekrarları ayıklar.
+    Altyapı kayıtları sadece profesyonel kariyer başlamadan önceyse eklenir."""
+    ad = (ad or "").strip()
+    if not ad or ad.lower() in BOS or MILLI.search(ad):
         return
+    if GENC.search(ad):
+        if any(not a[0].endswith(ALTYAPI) for a in adimlar):
+            return  # profesyonel kariyer başlamış; B takımı / U21 kaydı atlanır
+        ad = altyapi_adi(ad)
+        if not ad:
+            return
     # Aynı kulüp art arda gelirse (ör. kiralıktan dönüş kaydı) tekrar ekleme
     if adimlar and adimlar[-1][0] == ad:
         return
@@ -89,10 +102,10 @@ def tm_kariyerler(tm_kulup_ad):
         satirlar.sort(key=lambda r: r["transfer_date"])
         adimlar = []
         ilk = satirlar[0]
-        adim_ekle(adimlar, tm_kulup_ad.get(ilk["from_club_id"], ilk["from_club_name"]), None)
+        adim_ekle(adimlar, tm_kulup_ad.get(ilk["from_club_id"], kisalt(ilk["from_club_name"])), None)
         for r in satirlar:
             yil = r["transfer_date"][:4]
-            adim_ekle(adimlar, tm_kulup_ad.get(r["to_club_id"], r["to_club_name"]),
+            adim_ekle(adimlar, tm_kulup_ad.get(r["to_club_id"], kisalt(r["to_club_name"])),
                       int(yil) if yil.isdigit() else None)
         sonuc[tm_id] = adimlar
     print(f"   {len(sonuc)} oyuncunun transfer geçmişi işlendi")
@@ -121,7 +134,7 @@ def wd_kariyerler(wd_idler, wd_kulup_ad):
             if not yil.isdigit():
                 continue  # yılı olmayan kaydı sıralayamayız
             kulup = qid(s["club"]["value"])
-            ad = wd_kulup_ad.get(kulup, s.get("clubLabel", {}).get("value", ""))
+            ad = wd_kulup_ad.get(kulup, kisalt(s.get("clubLabel", {}).get("value", "")))
             if re.fullmatch(r"Q\d+", ad):
                 continue
             kayit[qid(s["o"]["value"])].append((int(yil), ad))
@@ -148,12 +161,15 @@ def main():
     # Bizim kulüplerin kısa adları (uygulamadaki gibi görünsün)
     app_kulupler = yukle(os.path.join(CIKTI, "clubs.json"))
     wd_kulup_ad = {k["id"]: k["ad"] for k in app_kulupler}
-    values = " ".join(f"wd:{k}" for k in wd_kulup_ad)
-    tm_kulup_ad = {
-        s["tm"]["value"]: wd_kulup_ad[qid(s["kulup"]["value"])]
-        for s in sparql(f"SELECT ?kulup ?tm WHERE {{ VALUES ?kulup {{ {values} }} "
-                        f"?kulup wdt:P7223 ?tm . }}")
-    }
+    # Kulübün ek Wikidata kayıtları da aynı adla görünsün
+    for k in yukle(os.path.join(VERI, "clubs.json")):
+        for e in k.get("es", []):
+            if k["id"] in wd_kulup_ad:
+                wd_kulup_ad[e] = wd_kulup_ad[k["id"]]
+    tm_kulup_ad = {tm: wd_kulup_ad[kid]
+                   for tm, kid in tm_kulup_haritasi(
+                       yukle(os.path.join(VERI, "clubs.json")), rapor=False).items()
+                   if kid in wd_kulup_ad}
 
     tm = tm_kariyerler(tm_kulup_ad)
 

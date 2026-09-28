@@ -64,7 +64,7 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 17,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w900,
                   color: AppColors.text,
                 ),
               ),
@@ -115,7 +115,9 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
                       itemBuilder: (context, i) {
                         final p = _results[i];
                         final used = widget.usedIds.contains(p.id);
+                        final info = widget.repo.playerInfo(p);
                         final details = [
+                          if (info.isNotEmpty) info,
                           if (p.birthYear != null) 'd. ${p.birthYear}',
                           if (used) 'Bu maçta kullanıldı',
                         ].join(' · ');

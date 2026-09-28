@@ -27,7 +27,9 @@ import sys
 import unicodedata
 from collections import defaultdict
 
-from veri_topla import qid, sparql
+from duzeltme import uygula as duzeltmeleri_uygula
+from seviye import GENEL_ADLAR, anahtar, kulup_anahtarlari
+from veri_topla import kisalt, qid, sparql, tm_kulup_idleri
 
 sys.stdout.reconfigure(encoding="utf-8")
 csv.field_size_limit(10_000_000)
@@ -95,6 +97,56 @@ def csv_oku(ad, gerekli):
     return f, okuyucu
 
 
+def tm_kulup_haritasi(kulupler, rapor=True):
+    """Transfermarkt kulüp ID -> bizim kulüp ID.
+    1) Wikidata'daki Transfermarkt ID'leri (kulübün ek kayıtları dahil)
+    2) Bulunamayanlar için Transfermarkt transferlerindeki kulüp adıyla birebir eşleştirme
+       (birden fazla ülkede kullanılan genel adlar hariç)"""
+    ana = {}
+    for k in kulupler:
+        ana[k["id"]] = k["id"]
+        for e in k.get("es", []):
+            ana[e] = k["id"]
+    harita = {tm: ana[q] for tm, q in tm_kulup_idleri(ana).items()}
+    wikidata_ile = set(harita.values())
+
+    # Transfermarkt'taki kulüp adları (en sık geçen yazım)
+    f, okuyucu = csv_oku("transfers.csv", ["from_club_id", "to_club_id",
+                                           "from_club_name", "to_club_name"])
+    ad_sayisi = defaultdict(lambda: defaultdict(int))  # anahtar -> TM ID -> sayı
+    for r in okuyucu:
+        for kid, ad in ((r["from_club_id"], r["from_club_name"]),
+                        (r["to_club_id"], r["to_club_name"])):
+            if kid and ad:
+                for a in {anahtar(ad), anahtar(kisalt(ad))}:
+                    ad_sayisi[a][kid] += 1
+    f.close()
+
+    isimle = []
+    for k in kulupler:
+        adaylar = defaultdict(int)
+        for a in kulup_anahtarlari(k):
+            if len(a) < 5 or a in GENEL_ADLAR:
+                continue
+            for tm, n in ad_sayisi.get(a, {}).items():
+                if tm not in harita:
+                    adaylar[tm] += n
+        if adaylar:
+            tm = max(adaylar, key=adaylar.get)
+            harita[tm] = k["id"]
+            isimle.append(k["ad"] + ("" if k["id"] not in wikidata_ile else " (+ek ID)"))
+
+    if rapor:
+        eslesen = set(harita.values())
+        eksik = [k["ad"] for k in kulupler if k["id"] not in eslesen]
+        print(f"   Transfermarkt eşleşmesi: {len(wikidata_ile)} kulüp Wikidata ID'siyle, "
+              f"{len(isimle)} kulüp isimle, {len(eksik)} kulüp eşleşmedi")
+        if isimle:
+            print("   İsimle eşleşenler: " + ", ".join(sorted(isimle)[:40]) +
+                  (" ..." if len(isimle) > 40 else ""))
+    return harita
+
+
 def wikidata_oyunculari():
     """Wikidata'dan gelen orijinal oyuncu listesini döndürür (birleştirmeyi tekrar
     çalıştırınca birleşmiş dosyayı değil, orijinali kullanmak için yedekler)."""
@@ -116,11 +168,13 @@ def main():
 
     # 1) Kulüplerin Transfermarkt ID'leri
     print("1) Kulüplerin Transfermarkt ID'leri alınıyor...")
-    values = " ".join(f"wd:{k['id']}" for k in kulupler)
-    satirlar = sparql(f"SELECT ?kulup ?tm WHERE {{ VALUES ?kulup {{ {values} }} ?kulup wdt:P7223 ?tm . }}")
-    tm_kulup = {}  # TM kulüp ID -> Wikidata kulüp ID
-    for s in satirlar:
-        tm_kulup[s["tm"]["value"]] = qid(s["kulup"]["value"])
+    # Kulübün ek Wikidata kayıtları da (veri_topla.py'nin "es" alanı) aynı kulübe sayılır
+    ana = {}
+    for k in kulupler:
+        ana[k["id"]] = k["id"]
+        for e in k.get("es", []):
+            ana[e] = k["id"]
+    tm_kulup = tm_kulup_haritasi(kulupler)  # TM ID -> kulüp
     for wd_id, tm_idler in KULUP_TM_DUZELTME.items():
         for t in tm_idler:
             tm_kulup[t] = wd_id
@@ -165,17 +219,18 @@ def main():
     # 3) Wikidata oyuncularının Transfermarkt ID'leri (kulüp kulüp, önbellekli)
     print("3) Wikidata oyuncularının Transfermarkt ID'leri alınıyor...")
     tm_wd = {}  # TM oyuncu ID -> Wikidata oyuncu ID
-    for i, k in enumerate(kulupler, 1):
-        yol = os.path.join(ONBELLEK, f"tm_oyuncu_{k['id']}.json")
+    kayitlar = list(ana)
+    for i, kayit in enumerate(kayitlar, 1):
+        yol = os.path.join(ONBELLEK, f"tm_oyuncu_{kayit}.json")
         if os.path.exists(yol):
             satirlar = yukle(yol)
         else:
-            satirlar = sparql(f"SELECT ?o ?tm WHERE {{ ?o wdt:P54 wd:{k['id']} ; wdt:P2446 ?tm . }}")
+            satirlar = sparql(f"SELECT ?o ?tm WHERE {{ ?o wdt:P54 wd:{kayit} ; wdt:P2446 ?tm . }}")
             kaydet(yol, satirlar, kompakt=True)
         for s in satirlar:
             tm_wd[s["tm"]["value"]] = qid(s["o"]["value"])
-        if i % 10 == 0 or i == len(kulupler):
-            print(f"   {i}/{len(kulupler)} kulüp")
+        if i % 50 == 0 or i == len(kayitlar):
+            print(f"   {i}/{len(kayitlar)} kayıt")
 
     # İsim + doğum yılı yedek eşleştirmesi
     isim_index = {}
@@ -220,6 +275,13 @@ def main():
             }
 
     liste = sorted(wd_oyuncular.values(), key=lambda o: -o["populerlik"])
+
+    # Elle (duzeltmeler.json) ve denetimle bulunan (denetle.py --uygula) düzeltmeler
+    n_duzeltme, cozulemeyen = duzeltmeleri_uygula(liste, kulupler)
+    if n_duzeltme or cozulemeyen:
+        print(f"   {n_duzeltme} veri düzeltmesi uygulandı")
+    for islem, d, sebep in cozulemeyen:
+        print(f"   ! duzeltmeler.json: {d} -> {sebep}")
     kaydet(os.path.join(VERI, "players.json"), liste, kompakt=True)
 
     print("\n=== BİRLEŞTİRME ÖZETİ ===")
