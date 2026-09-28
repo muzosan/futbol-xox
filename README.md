@@ -1,11 +1,14 @@
-# ⚽ Futbol XOX
+# ⚽ Volea: Futbol Bilgi Arenası
 
-Tic-tac-toe mantığında bir futbol bilgi oyunu. Tablonun satırlarında ve sütunlarında kulüpler var; bir hücreyi almak için **o satırdaki ve sütundaki iki kulüpte de oynamış bir futbolcuyu** bulman gerekiyor. Üç hücreyi yan yana, alt alta ya da çapraz dizen kazanır.
+Futbol bilgini 8 farklı oyun moduyla sınayan, gerçek oyuncu verileriyle oynanan bir bilgi ve strateji oyunu. Bota karşı, arkadaşınla aynı telefonda ya da kalabalık bir grupla oynayabilirsin.
 
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-0175C2?logo=dart&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
-![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Web-2EE59D)
+![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-F5C451)
+![Durum](https://img.shields.io/badge/Durum-Kapal%C4%B1%20Test-2EE59D)
+
+> Yakında **App Store** ve **Google Play**'de.
 
 ## Ekran Görüntüleri
 
@@ -13,50 +16,72 @@ Tic-tac-toe mantığında bir futbol bilgi oyunu. Tablonun satırlarında ve sü
 |:---:|:---:|:---:|
 | <img src="docs/screenshots/home.png" width="250"> | <img src="docs/screenshots/game.png" width="250"> | <img src="docs/screenshots/search.png" width="250"> |
 
-## Özellikler
+## Oyun Modları
 
-- **32.000+ futbolcu**, 53 kulüp (Süper Lig ve Avrupa'nın 5 büyük ligi) ve **900 hazır tablo**
-- **Bota karşı mod:** Üç seviyeli yapay zeka rakip. Bot, seviyesine göre farklı sayıda oyuncu "bilir", bazen unutur, bazen yanılır, kazanma fırsatlarını ve rakibini bloklamayı seviyesine göre görür
-- **2 kişilik mod:** Aynı telefonda elden ele oyun
-- **Akıllı arama:** Türkçe karakter ve aksanlardan bağımsız, kelime başı eşleşmesi ("slim" → Islam Slimani, "mkhit" / "mhit" → Mkhitaryan)
-- **Kurallar:** Hamle başına 30 saniye, aynı oyuncu bir maçta tekrar kullanılamaz, 6 tur üst üste doğru cevap gelmezse beraberlik
-- Oyun sonunda boş kalan hücreler için **örnek doğru cevaplar**
-- Gece maçı temalı **koyu arayüz**
+| Mod | Nasıl oynanır | Kiminle |
+|---|---|---|
+| **XOX** | 3×3 tablonun satır ve sütunundaki iki kulüpte de oynamış futbolcuyu bul, üçlüyü ilk yapan kazansın. | Bot · 2 kişi |
+| **Kart Düellosu** | Futbolcu kartından bir istatistik seç (gol, asist, piyasa değeri…). Yüksek olan turu alır. | Bot · 2 kişi |
+| **Kadro Kur** | Her maç bir ölçüt (ör. en çok kırmızı kart). 5 turda gelen takımlardan birer oyuncu seçip en güçlü kadroyu kur. | Bot · 2 kişi |
+| **Sahtekâr** | Herkes gizli futbolcuyu görür, biri hariç. İpuçları ve gizli oylamayla sahtekârı yakala. | 3-8 kişi, tek telefon |
+| **Kulüp Avı** | Gelen 5 kulübün en çoğunda oynamış futbolcuyu bul. Kulüp sayısı arttıkça puan katlanır. | Bot · 2 kişi |
+| **Zincir** | Son futbolcuyla aynı kulüpte oynamış birini yaz, zinciri uzat. Canı biten kaybeder. | Bot · 2 kişi |
+| **Doğru mu?** | 60 saniyede "Bu futbolcu bu kulüpte oynadı mı?" sorularını bil. | Tek kişilik, rekor |
+| **Kim Bu?** | Kariyerdeki kulüpler sırayla açılır. Ne kadar az ipucuyla bilirsen o kadar çok puan. | Tek kişilik, rekor |
+
+Her mod **Kolay / Orta / Zor** seviyelerinde oynanır. Kolay seviyede herkesin bildiği büyük kulüpler ve yıldız oyuncular, zor seviyede az bilinen eşleşmeler çıkar.
+
+## Öne Çıkanlar
+
+- **~100 bin futbolcu, 477 kulüp, 21 lig:** Premier League, La Liga, Serie A, Bundesliga, Ligue 1 ve ikinci ligleri; Süper Lig ve TFF 1-2-3. Lig; Hollanda, Portekiz, Brezilya, Arjantin ve Suudi Arabistan ligleri
+- **Üç seviyeli yapay zekâ rakip:** Botlar insan gibi davranır; bazen unutur, bazen yanılır, seviyesine göre stratejik oynar
+- **Premium arayüz:** Gece maçı temalı koyu tasarım, altın vurgular, FIFA tarzı futbolcu kartları, 3B kart çevirme animasyonları
+- **Kulüp formaları:** Her kulüp, renkleri ve deseniyle (çubuklu, parçalı, şeritli…) kodla çizilmiş küçük bir formayla gösterilir
+- **Akıllı arama:** Türkçe karakter ve aksanlardan bağımsız; oyuncunun mevkisi, uyruğu ve doğum yılı gösterilir
+- **Maç içi emoji tepkileri:** Hazır emojilerle, taciz riski olmadan
+- **Hatalı veri bildir:** Oyuncular gördükleri hatayı tek dokunuşla bildirir
 
 ## Proje Yapısı
 
 ```
-futbol_xox/
-├── lib/
-│   ├── data/          # Veri modelleri, yükleme ve arama
-│   ├── game/          # Oyun kuralları ve yapay zeka rakip
-│   ├── screens/       # Ana menü ve oyun ekranı
-│   ├── widgets/       # Tahta, kulüp rozetleri, arama paneli
-│   └── theme.dart     # Renk paleti ve tema
-├── assets/data/       # Uygulamanın kullandığı hazır veri (JSON)
-└── tools/             # Veri hattı (Python)
+lib/
+├── data/          # Veri modelleri, yükleme (arka planda), arama
+├── game/
+│   ├── engine/    # Saf kural motorları (Flutter'dan bağımsız, JSON'a çevrilebilir)
+│   └── ...        # Denetleyiciler, botlar, tur üreticileri
+├── screens/       # Mod ekranları
+├── widgets/       # Kartlar, formalar, tahta, arama paneli
+├── reactions/     # Emoji tepkileri
+├── report/        # Hatalı veri bildirimi
+└── theme.dart     # Tema, renkler, yazı tipleri
+assets/data/       # Uygulamanın kullandığı hazır veri (JSON)
+tools/             # Veri hattı (Python)
 ```
+
+Kural motorları bilerek arayüzden ayrı tutuldu. Online moda geçildiğinde aynı kurallar sunucu tarafında hakem olarak kullanılacak.
 
 ## Veri Hattı
 
-Oyunun verisi, `tools/` klasöründeki Python scriptleriyle iki açık kaynaktan üretilir:
-
-| Script | Görevi |
-|---|---|
-| `veri_topla.py` | Wikidata'dan 53 kulübü eşleştirir ve bu kulüplerde oynamış tüm futbolcuları çeker (eski dönem ve efsaneler için güçlü) |
-| `tm_birlestir.py` | Transfermarkt veri setiyle birleştirir (2012 sonrası ve güncel transferler). Eşleştirme, Wikidata'daki Transfermarkt ID'leri üzerinden birebir yapılır |
-| `tablo_uret.py` | Her hücrede en az 3 doğru cevap olan, zorluk seviyelerine ayrılmış tablolar üretir |
-| `hazirla.py` | İngilizce isimleri ekler, kulüp adlarını kısaltır ve dosyaları `assets/data/` klasörüne yazar |
-
-Veriyi yeniden üretmek için (`tools/` klasöründe):
+Bütün veri `tools/` klasöründeki scriptlerle iki açık kaynaktan üretilir. Tek komutla çalışır:
 
 ```bash
 pip install requests
-python veri_topla.py
-python tm_birlestir.py   # tools/tm_data/ içinde Transfermarkt CSV'leri gerekir
-python tablo_uret.py
-python hazirla.py
+python hepsi.py
 ```
+
+| Adım | Script | Görevi |
+|---|---|---|
+| 1 | `veri_topla.py` | 21 ligin kulüplerini ve bu kulüplerde oynamış futbolcuları Wikidata'dan çeker; aynı kulübün kopya kayıtlarını birleştirir |
+| 2 | `tm_birlestir.py` | Transfermarkt veri setiyle birleştirir (güncel transferler) |
+| 3 | `detay_topla.py` | Mevki ve uyruk |
+| 4 | `forma_topla.py` | Forma renkleri ve desenleri |
+| 5 | `istatistik_topla.py` | Gol, asist, maç, kart ve piyasa değeri |
+| 6 | `tablo_uret.py` | Zorluk seviyelerine ayrılmış XOX tabloları |
+| 7 | `hazirla.py` | Uygulama verisini `assets/data/` klasörüne yazar |
+| 8 | `kariyer_hazirla.py` | Kronolojik kariyerler (Kim Bu?) |
+| 9 | `denetle.py` | Veri denetimi: tutarsızlıkları bulur, bilinen kariyerlerle doğruluk testi yapar |
+
+Her adım önbellekli çalışır; yarıda kalırsa kaldığı yerden devam eder. Elle düzeltmeler `tools/duzeltmeler.json` dosyasına yazılır ve her yenilemede otomatik uygulanır.
 
 ## Çalıştırma
 
@@ -67,22 +92,26 @@ flutter run
 
 ## Yol Haritası
 
-- [x] Veri hattı (Wikidata + Transfermarkt)
-- [x] 2 kişilik mod
-- [x] Yapay zeka rakip
-- [x] Koyu tema
-- [ ] Online mod (Firebase): eşleştirme, arkadaş odası, sunucu tarafı cevap kontrolü
-- [ ] Liderlik tablosu ve rütbe sistemi
-- [ ] Günün bulmacası
+- [x] 8 oyun modu
+- [x] Üç seviyeli yapay zekâ rakip
+- [x] Premium tema ve futbolcu kartları
+- [x] Veri denetimi ve hatalı veri bildirimi
+- [ ] 8 dil desteği
+- [ ] Online mod (Firebase): eşleştirme, arkadaş odası, sunucu tarafı hakem
+- [ ] Liderlik tablosu ve rütbeler
 - [ ] Google Play ve App Store yayını
 
 ## Veri Kaynakları
 
-- [Wikidata](https://www.wikidata.org/) — CC0 lisanslı
-- [Football Data from Transfermarkt](https://www.kaggle.com/datasets/davidcariboo/player-scores) ([transfermarkt-datasets](https://github.com/dcaribou/transfermarkt-datasets)) — CC0 lisanslı
+- [Wikidata](https://www.wikidata.org/): CC0 lisanslı
+- [Football Data from Transfermarkt](https://www.kaggle.com/datasets/davidcariboo/player-scores) ([transfermarkt-datasets](https://github.com/dcaribou/transfermarkt-datasets)): CC0 lisanslı
 
-Bu proje hiçbir kulüp, lig veya Transfermarkt ile bağlantılı değildir. Kulüp ve oyuncu isimleri yalnızca bilgi amaçlı kullanılmıştır; resmi logo veya görsel kullanılmamaktadır.
+Gol, asist, maç ve kart istatistikleri 2012 sonrası Avrupa ligleri ve kupalarını kapsar.
+
+Volea hiçbir kulüp, lig, oyuncu veya Transfermarkt ile bağlantılı değildir. Kulüp ve oyuncu isimleri yalnızca bilgi amaçlı kullanılır; resmi logo veya görsel kullanılmaz.
 
 ## Geliştirici
 
-**Muaz Onurluer** · [@muzosan](https://github.com/muzosan)
+**MUON Studio** · Muaz Onurluer · [@muzosan](https://github.com/muzosan)
+
+© 2026 MUON Studio. Tüm hakları saklıdır.
