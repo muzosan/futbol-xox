@@ -89,11 +89,11 @@ class QuizController extends ChangeNotifier {
         if (clubs.isEmpty) continue;
         return QuizQuestion(p.id, clubs[_random.nextInt(clubs.length)], true);
       }
-      final leagues = p.clubs.map((c) => repo.club(c).league).toSet();
+      final leagues = p.clubs.map((c) => repo.club(c).leagueRaw).toSet();
       var options = repo.clubs.values
           .where((c) =>
               c.tier <= _maxTier &&
-              leagues.contains(c.league) &&
+              leagues.contains(c.leagueRaw) &&
               !p.clubs.contains(c.id))
           .toList();
       if (options.isEmpty) {

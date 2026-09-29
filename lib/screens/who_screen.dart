@@ -8,6 +8,7 @@ import '../report/report.dart';
 import '../theme.dart';
 import '../widgets/player_search_sheet.dart';
 import 'game_screen.dart' show difficultyLabels;
+import '../l10n/l10n.dart';
 
 class WhoScreen extends StatefulWidget {
   const WhoScreen({super.key, required this.repo, required this.difficulty});
@@ -72,21 +73,21 @@ class _WhoScreenState extends State<WhoScreen> {
       useSafeArea: true,
       builder: (_) => PlayerSearchSheet(
         repo: widget.repo,
-        title: 'Bu kariyer kimin?',
-        hint: 'Tahmin ettiğin futbolcunun adını yaz',
+        title: t('who.whose'),
+        hint: t('who.search_hint'),
         usedIds: const <String>{},
       ),
     );
     if (player == null || !mounted) return;
     final correct = game.guess(player);
     if (correct) {
-      _toast('Doğru! +${game.engine.lastResult!.points} puan',
+      _toast(t('who.correct', {'p': game.engine.lastResult!.points}),
           color: AppColors.success);
     } else if (game.engine.resolved) {
-      _toast('Tahmin hakkın bitti.', color: AppColors.danger);
+      _toast(t('who.no_guesses'), color: AppColors.danger);
     } else {
       final left = game.engine.maxWrong - game.engine.wrongGuesses;
-      _toast('Yanlış, ${player.name} değil. $left tahmin hakkın kaldı.',
+      _toast(t('who.wrong', {'name': player.name, 'n': left}),
           color: AppColors.danger);
     }
   }
@@ -110,13 +111,13 @@ class _WhoScreenState extends State<WhoScreen> {
           size: 40,
           color: isRecord ? AppColors.amber : AppColors.primary,
         ),
-        title: Text(isRecord ? 'Yeni rekor!' : 'Oyun bitti'),
+        title: Text(isRecord ? t('common.new_record') : t('common.game_over')),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             GoldText('$score', size: 72, spacing: 1),
             Text(
-              '${game.engine.totalQuestions * game.engine.maxPoints} puan üzerinden',
+              t('who.out_of', {'n': game.engine.totalQuestions * game.engine.maxPoints}),
               style: const TextStyle(color: AppColors.textMuted),
             ),
             const SizedBox(height: 14),
@@ -142,7 +143,7 @@ class _WhoScreenState extends State<WhoScreen> {
                 ),
               ),
             const SizedBox(height: 10),
-            Text('Rekor: ${isRecord ? score : oldBest}',
+            Text(t('common.record', {'n': isRecord ? score : oldBest}),
                 style: const TextStyle(color: AppColors.text)),
           ],
         ),
@@ -152,14 +153,14 @@ class _WhoScreenState extends State<WhoScreen> {
               Navigator.pop(ctx);
               Navigator.pop(context);
             },
-            child: const Text('Ana Menü'),
+            child: Text(t('common.main_menu')),
           ),
           FilledButton(
             onPressed: () {
               Navigator.pop(ctx);
               _restart();
             },
-            child: const Text('Tekrar Oyna'),
+            child: Text(t('common.play_again')),
           ),
         ],
       ),
@@ -173,7 +174,7 @@ class _WhoScreenState extends State<WhoScreen> {
       backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       centerTitle: true,
-      title: Text('Kim Bu? · $diffLabel',
+      title: Text(t('who.title', {'diff': diffLabel}),
           style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
     );
 
@@ -181,13 +182,11 @@ class _WhoScreenState extends State<WhoScreen> {
     if (game == null) {
       return Scaffold(
         appBar: appBar,
-        body: const Center(
+        body: Center(
           child: Padding(
             padding: EdgeInsets.all(24),
             child: Text(
-              'Kariyer verisi bulunamadı.\n'
-              'tools klasöründe "py kariyer_hazirla.py" çalıştırıp '
-              'uygulamayı yeniden başlat.',
+              t('who.no_data'),
               textAlign: TextAlign.center,
               style: TextStyle(color: AppColors.textMuted),
             ),
@@ -235,7 +234,7 @@ class _WhoScreenState extends State<WhoScreen> {
         child: FilledButton.icon(
           onPressed: e.isOver ? _showFinal : game.nextQuestion,
           icon: Icon(e.isOver ? Icons.flag : Icons.arrow_forward),
-          label: Text(e.isOver ? 'Sonuçlar' : 'Sonraki Soru'),
+          label: Text(e.isOver ? t('who.results') : t('who.next')),
           style: FilledButton.styleFrom(shape: shape),
         ),
       );
@@ -248,7 +247,7 @@ class _WhoScreenState extends State<WhoScreen> {
               child: OutlinedButton.icon(
                 onPressed: e.canReveal ? game.reveal : null,
                 icon: const Icon(Icons.lock_open),
-                label: Text('İpucu (−${e.clueCost})'),
+                label: Text(t('who.clue', {'n': e.clueCost})),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.text,
                   side: const BorderSide(color: AppColors.border),
@@ -263,7 +262,7 @@ class _WhoScreenState extends State<WhoScreen> {
               child: FilledButton.icon(
                 onPressed: _openGuess,
                 icon: const Icon(Icons.search),
-                label: const Text('Tahmin Et'),
+                label: Text(t('who.guess')),
                 style: FilledButton.styleFrom(
                   shape: shape,
                   minimumSize: const Size.fromHeight(52),
@@ -274,7 +273,7 @@ class _WhoScreenState extends State<WhoScreen> {
         ),
         TextButton(
           onPressed: game.giveUp,
-          child: const Text('Pes et, cevabı göster',
+          child: Text(t('who.give_up'),
               style: TextStyle(color: AppColors.textMuted)),
         ),
       ],
@@ -298,20 +297,19 @@ class _TopBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
-            'Soru ${engine.index + 1}/${engine.totalQuestions}',
+            t('who.question_of', {'n': engine.index + 1, 'total': engine.totalQuestions}),
             style: const TextStyle(
                 fontWeight: FontWeight.w800, color: AppColors.primary),
           ),
         ),
         const SizedBox(width: 12),
-        Text('Toplam: ${engine.score}',
+        Text(t('who.total', {'n': engine.score}),
             style: const TextStyle(
                 fontWeight: FontWeight.w800, color: AppColors.text)),
         const Spacer(),
         if (!engine.resolved)
           Text(
-            'Bu soru: ${engine.potentialPoints} puan · '
-            'Hak: ${engine.maxWrong - engine.wrongGuesses}',
+            t('who.this_q', {'p': engine.potentialPoints, 'n': engine.maxWrong - engine.wrongGuesses}),
             style: const TextStyle(fontSize: 13, color: AppColors.textMuted),
           ),
       ],
@@ -339,7 +337,7 @@ class _CareerCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('KARİYER',
+          Text(t('who.career'),
               style: TextStyle(
                   fontSize: 11,
                   letterSpacing: 1.5,
@@ -351,7 +349,7 @@ class _CareerCard extends StatelessWidget {
               children: [
                 for (var i = 0; i < q.steps.length; i++)
                   _StepRow(
-                    step: q.steps[i],
+                    step: CareerStep(game.repo.localClubName(q.steps[i].club), q.steps[i].year),
                     open: i < e.revealed,
                     isLast: i == q.steps.length - 1 && q.birthYear == null,
                   ),
@@ -365,8 +363,8 @@ class _CareerCard extends StatelessWidget {
                         const SizedBox(width: 10),
                         Text(
                           e.birthYearRevealed
-                              ? 'Doğum yılı: ${q.birthYear}'
-                              : 'Doğum yılı: ????',
+                              ? t('who.birth', {'y': q.birthYear})
+                              : t('who.birth', {'y': '????'}),
                           style: TextStyle(
                             color: e.birthYearRevealed
                                 ? AppColors.text
@@ -449,7 +447,7 @@ class _StepRow extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      open ? step.club : 'Gizli kulüp',
+                      open ? step.club : t('who.hidden'),
                       style: TextStyle(
                         fontWeight: open ? FontWeight.w800 : FontWeight.w600,
                         color: open ? AppColors.text : AppColors.textMuted,
@@ -495,8 +493,8 @@ class _AnswerBanner extends StatelessWidget {
           Expanded(
             child: Text(
               result.solved
-                  ? '${player.name} · +${result.points} puan'
-                  : 'Cevap: ${player.name}',
+                  ? t('who.solved', {'name': player.name, 'p': result.points})
+                  : t('who.answer', {'name': player.name}),
               style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 16,
@@ -504,17 +502,18 @@ class _AnswerBanner extends StatelessWidget {
             ),
           ),
           IconButton(
-            tooltip: 'Kariyer bilgisi hatalı mı?',
+            tooltip: t('who.report_tip'),
             icon: const Icon(Icons.flag_outlined, color: AppColors.textMuted),
             onPressed: () => showReportDialog(
               context,
               DataReport(
-                mode: 'Kim Bu?',
+                mode: t('mode.who.title'),
                 player: player,
-                claim: 'Kariyer: ' +
-                    game.engine.current.steps
-                        .map((st) => '${st.club}${st.year != null ? ' (${st.year})' : ''}')
-                        .join(' → '),
+                claim: t('who.claim', {
+                  'c': game.engine.current.steps
+                      .map((st) => '${st.club}${st.year != null ? ' (${st.year})' : ''}')
+                      .join(' → '),
+                }),
               ),
             ),
           ),

@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:flutter/foundation.dart' show compute;
 import 'package:flutter/services.dart' show rootBundle;
 
+import '../l10n/lang_state.dart';
+import '../l10n/translate.dart';
 import 'models.dart';
 import 'text_utils.dart';
 
@@ -19,10 +21,29 @@ class Repository {
   /// Kim Bu? modu için kronolojik kariyerler (dosya yoksa boş)
   final List<Career> careers;
 
-  /// Ülke kodu -> Türkçe ülke adı (dosya yoksa boş)
-  final Map<String, String> countries;
+  /// Ülke kodu -> {dil: ülke adı} (dosya yoksa boş)
+  final Map<String, Map<String, String>> countries;
 
-  String countryName(String code) => countries[code] ?? code;
+  /// Ülke adı geçerli dilde (yoksa İngilizce, o da yoksa Türkçe)
+  String countryName(String code) {
+    final m = countries[code];
+    return m?[currentLang] ?? m?['en'] ?? m?['tr'] ?? code;
+  }
+
+  late final Map<String, Club> _clubByTrName = {
+    for (final c in clubs.values) c.nameTr: c,
+  };
+
+  /// Kariyer verisindeki kulüp adını (Türkçe kaydedilmiş) geçerli dile çevirir
+  String localClubName(String name) {
+    // Kariyer verisinde altyapı dönemleri "Barcelona (Altyapı)" şeklinde tutulur
+    const youth = ' (Altyapı)';
+    if (name.endsWith(youth)) {
+      final base = name.substring(0, name.length - youth.length);
+      return '${_clubByTrName[base]?.name ?? base} (${t('who.youth')})';
+    }
+    return _clubByTrName[name]?.name ?? name;
+  }
 
   /// Arama listesindeki alt satır için: "CB · 🇹🇷 Türkiye"
   String playerInfo(Player p) {
@@ -37,7 +58,12 @@ class Repository {
   String? _lastGridId;
   final Map<String, List<Player>> _answerCache = {};
 
-  static Future<Repository> load() async {
+  static Future<Repository>? _cache;
+
+  /// Veri bir kez yüklenir; sonraki çağrılar (ör. dil değişince) aynı sonucu döndürür
+  static Future<Repository> load() => _cache ??= _load();
+
+  static Future<Repository> _load() async {
     final files = await Future.wait([
       rootBundle.loadString('assets/data/clubs.json'),
       rootBundle.loadString('assets/data/players.json'),
@@ -177,7 +203,7 @@ class _ParsedData {
   final List<Player> players;
   final List<PuzzleGrid> grids;
   final List<Career> careers;
-  final Map<String, String> countries;
+  final Map<String, Map<String, String>> countries;
 }
 
 /// compute() ile çağrılabilmesi için sınıf dışında (top-level) tanımlı.
@@ -194,8 +220,13 @@ _ParsedData _parseAll(List<String> files) {
   final careerList = (jsonDecode(files[3]) as List)
       .map((e) => Career.fromJson(e as Map<String, dynamic>))
       .toList();
-  final countryMap =
-      (jsonDecode(files[4]) as Map<String, dynamic>).cast<String, String>();
+  // Eski biçim {kod: ad} veya yeni biçim {kod: {dil: ad}}
+  final countryMap = (jsonDecode(files[4]) as Map<String, dynamic>).map(
+    (k, v) => MapEntry(
+      k,
+      v is String ? {'tr': v} : (v as Map<String, dynamic>).cast<String, String>(),
+    ),
+  );
   return _ParsedData({for (final c in clubList) c.id: c}, playerList,
       gridList, careerList, countryMap);
 }

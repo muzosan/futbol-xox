@@ -6,6 +6,7 @@ import '../game/game_controller.dart';
 import '../theme.dart';
 import 'kit_icon.dart';
 import 'players_header.dart';
+import '../l10n/l10n.dart';
 
 const List<Color> _clubPalette = [
   Color(0xFF7E57C2), Color(0xFF3F51B5), Color(0xFF00897B), Color(0xFFE64A19),
@@ -210,7 +211,7 @@ class _Cell extends StatelessWidget {
         border: Border.all(color: AppColors.border),
       );
       child = Text(
-        'Örn:\n${example!.name}',
+        t('xox.example', {'name': example!.name}),
         textAlign: TextAlign.center,
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
@@ -281,8 +282,8 @@ class TurnBar extends StatelessWidget {
       secondsLeft: game.secondsLeft,
       turnSeconds: game.turnSeconds,
       status: botThinking
-          ? '${game.nameOf(game.current)} düşünüyor…'
-          : 'Sıra: ${game.nameOf(game.current)} · ${game.secondsLeft} sn',
+          ? t('common.thinking', {'name': game.nameOf(game.current)})
+          : t('common.turn_of', {'name': game.nameOf(game.current), 's': game.secondsLeft}),
       bubbles: bubbles,
     );
   }

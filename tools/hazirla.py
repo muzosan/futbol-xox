@@ -21,7 +21,7 @@ import sys
 import time
 
 from seviye import GORUNEN_AD, kulup_seviyeleri
-from veri_topla import istek, API_URL  # aynı bağlantı ayarlarını (mailin dahil) kullanır
+from veri_topla import API_URL, KISA_AD, istek, kisalt  # aynı bağlantı ayarlarını (mailin dahil) kullanır
 
 sys.stdout.reconfigure(encoding="utf-8")
 
@@ -62,6 +62,34 @@ def ingilizce_isimleri_cek(idler):
             print(f"   {biten}/{len(eksik)}")
         time.sleep(0.5)
     return isimler
+
+
+KULUP_EN_CACHE = os.path.join(VERI, "cache", "kulup_en.json")
+
+# KISA_AD'daki Türkçeye özgü kısaltmaların İngilizcesi
+TR_OZEL_EN = {"Marsilya": "Marseille", "Bayern Münih": "Bayern Munich"}
+
+
+def kulup_ingilizce_adlari(kulupler):
+    """Kulüplerin İngilizce kısa adları (diğer dillerde gösterilir)."""
+    cache = yukle(KULUP_EN_CACHE) if os.path.exists(KULUP_EN_CACHE) else {}
+    eksik = [k["id"] for k in kulupler if k["id"] not in cache]
+    for bas in range(0, len(eksik), 50):
+        grup = eksik[bas:bas + 50]
+        cevap = istek(API_URL, {"action": "wbgetentities", "ids": "|".join(grup),
+                                "props": "labels", "languages": "en", "format": "json"})
+        for q in grup:
+            e = cevap.get("entities", {}).get(q, {}).get("labels", {}).get("en")
+            cache[q] = e["value"] if e else ""
+        yaz(KULUP_EN_CACHE, cache)
+    adlar = {}
+    for k in kulupler:
+        etiket = cache.get(k["id"], "")
+        if not etiket:
+            continue
+        kisa = KISA_AD.get(etiket) or kisalt(etiket)
+        adlar[k["id"]] = TR_OZEL_EN.get(kisa, kisa)
+    return adlar
 
 
 def main():
@@ -123,9 +151,11 @@ def main():
     if not formalar:
         print("Not: data/kits.json yok; formalar varsayılan renkte görünecek (py forma_topla.py)")
 
+    en_adlar = kulup_ingilizce_adlari(kulupler)
     app_kulupler = [{
         "id": k["id"],
         "ad": GORUNEN_AD.get(k["ad"], k["ad"]),
+        **({"en": en_adlar[k["id"]]} if en_adlar.get(k["id"]) else {}),  # diğer diller için
         "tam_ad": k.get("tam_ad", k["ad"]),
         "t": seviye[k["id"]],   # 1 = büyük kulüp, 2 = tanınmış, 3 = diğer
         **({"f": formalar[k["id"]]} if k["id"] in formalar else {}),  # forma

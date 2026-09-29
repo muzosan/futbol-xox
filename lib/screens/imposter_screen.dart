@@ -9,6 +9,7 @@ import '../theme.dart';
 import '../widgets/kit_icon.dart';
 import '../widgets/player_card.dart' show CardBack, FlipCard, PlayerCard;
 import '../widgets/player_search_sheet.dart';
+import '../l10n/l10n.dart';
 
 const _red = Color(0xFFE5484D);
 
@@ -67,11 +68,11 @@ class _ImposterScreenState extends State<ImposterScreen> {
           context: context,
           builder: (ctx) => AlertDialog(
             backgroundColor: AppColors.surface,
-            title: const Text('Oyundan çıkılsın mı?'),
-            content: const Text('Skorlar kaybolacak.'),
+            title: Text(t('imp.leave_q')),
+            content: Text(t('imp.leave_desc')),
             actions: [
-              TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Vazgeç')),
-              FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Çık')),
+              TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(t('common.cancel'))),
+              FilledButton(onPressed: () => Navigator.pop(ctx, true), child: Text(t('imp.leave'))),
             ],
           ),
         );
@@ -82,7 +83,7 @@ class _ImposterScreenState extends State<ImposterScreen> {
           backgroundColor: Colors.transparent,
           surfaceTintColor: Colors.transparent,
           centerTitle: true,
-          title: Text('Sahtekâr · Tur ${_e.roundNumber}',
+          title: Text(t('imp.round_title', {'n': _e.roundNumber}),
               style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w900)),
         ),
         body: SafeArea(
@@ -108,14 +109,14 @@ class _ImposterScreenState extends State<ImposterScreen> {
     final isImpostor = i == _e.impostor;
     return Column(
       children: [
-        _PhaseTitle('ROLLER', '${i + 1}/${_e.playerCount}'),
+        _PhaseTitle(t('imp.roles'), '${i + 1}/${_e.playerCount}'),
         const SizedBox(height: 8),
-        Text(_cardOpen ? name.toUpperCase() : 'TELEFONU ${name.toUpperCase()} ALSIN',
+        Text(_cardOpen ? upper(name) : upper(t('imp.pass_phone', {'name': name})),
             textAlign: TextAlign.center, style: displayStyle(30)),
         Text(
           _cardOpen
-              ? 'Kimseye gösterme!'
-              : 'Diğerleri bakmasın. Hazır olunca karta dokun.',
+              ? t('imp.dont_show')
+              : t('imp.no_peek'),
           style: const TextStyle(color: AppColors.textMuted),
         ),
         const SizedBox(height: 16),
@@ -152,9 +153,9 @@ class _ImposterScreenState extends State<ImposterScreen> {
             icon: Icon(_cardOpen ? Icons.visibility_off : Icons.touch_app),
             label: Text(_cardOpen
                 ? (i + 1 < _e.playerCount
-                    ? 'GÖRDÜM · SIRADAKİ: ${_e.names[i + 1].toUpperCase()}'
-                    : 'GÖRDÜM · İPUÇLARINA GEÇ')
-                : 'KARTIMI GÖSTER'),
+                    ? upper(t('imp.seen_next', {'name': _e.names[i + 1]}))
+                    : t('imp.seen_clues'))
+                : t('imp.show_card')),
           ),
         ),
       ],
@@ -166,7 +167,7 @@ class _ImposterScreenState extends State<ImposterScreen> {
     final speaker = _e.currentSpeaker;
     return Column(
       children: [
-        _PhaseTitle('İPUCU TURU', '${_e.clueRound + 1}/${_e.clueRounds}'),
+        _PhaseTitle(t('imp.clue_round'), '${_e.clueRound + 1}/${_e.clueRounds}'),
         const SizedBox(height: 14),
         Container(
           width: double.infinity,
@@ -176,9 +177,9 @@ class _ImposterScreenState extends State<ImposterScreen> {
             children: [
               const Icon(Icons.record_voice_over, color: AppColors.primary, size: 36),
               const SizedBox(height: 6),
-              Text(_e.names[speaker].toUpperCase(), style: displayStyle(36)),
+              Text(upper(_e.names[speaker]), style: displayStyle(36)),
               const SizedBox(height: 4),
-              const Text('Futbolcuyla ilgili TEK KELİMELİK bir ipucu söyle',
+              Text(t('imp.clue_prompt'),
                   textAlign: TextAlign.center,
                   style: TextStyle(color: AppColors.textMuted)),
             ],
@@ -203,7 +204,7 @@ class _ImposterScreenState extends State<ImposterScreen> {
           child: FilledButton.icon(
             onPressed: () => setState(_e.nextClue),
             icon: const Icon(Icons.check),
-            label: const Text('SÖYLEDİ'),
+            label: Text(t('imp.said')),
           ),
         ),
       ],
@@ -215,11 +216,11 @@ class _ImposterScreenState extends State<ImposterScreen> {
     final voter = _e.voterIndex;
     return Column(
       children: [
-        _PhaseTitle('GİZLİ OYLAMA', '${voter + 1}/${_e.playerCount}'),
+        _PhaseTitle(t('imp.voting'), '${voter + 1}/${_e.playerCount}'),
         const SizedBox(height: 8),
-        Text('TELEFON ${_e.names[voter].toUpperCase()}\'DA',
+        Text(upper(t('imp.phone_with', {'name': _e.names[voter]})),
             textAlign: TextAlign.center, style: displayStyle(30)),
-        const Text('Sence sahtekâr kim? Kimse görmesin.',
+        Text(t('imp.who'),
             style: TextStyle(color: AppColors.textMuted)),
         const SizedBox(height: 16),
         Expanded(
@@ -229,17 +230,17 @@ class _ImposterScreenState extends State<ImposterScreen> {
             crossAxisSpacing: 10,
             childAspectRatio: 2.4,
             children: [
-              for (var t = 0; t < _e.playerCount; t++)
-                if (t != voter)
+              for (var target = 0; target < _e.playerCount; target++)
+                if (target != voter)
                   Material(
                     color: Colors.transparent,
                     child: Ink(
                       decoration: AppDecor.card(accent: _red, radius: 14),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(14),
-                        onTap: () => _confirmVote(t),
+                        onTap: () => _confirmVote(target),
                         child: Center(
-                          child: Text(_e.names[t].toUpperCase(),
+                          child: Text(upper(_e.names[target]),
                               textAlign: TextAlign.center,
                               style: displayStyle(22)),
                         ),
@@ -258,11 +259,11 @@ class _ImposterScreenState extends State<ImposterScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: AppColors.surface,
-        title: Text('${_e.names[target]} mı?'),
-        content: const Text('Oyun geri alınamaz.'),
+        title: Text(t('imp.confirm', {'name': _e.names[target]})),
+        content: Text(t('imp.final')),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Değiştir')),
-          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Oyla')),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(t('imp.change'))),
+          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: Text(t('imp.vote'))),
         ],
       ),
     );
@@ -274,15 +275,15 @@ class _ImposterScreenState extends State<ImposterScreen> {
     final imp = _e.names[_e.impostor];
     return Column(
       children: [
-        const _PhaseTitle('SONUÇ', ''),
+        _PhaseTitle(t('imp.result'), ''),
         const SizedBox(height: 12),
         _TallyList(engine: _e),
         const Spacer(),
         const Icon(Icons.gpp_bad, color: _red, size: 64),
-        Text('${imp.toUpperCase()} SAHTEKÂRDI!', textAlign: TextAlign.center,
+        Text(upper(t('imp.was_impostor', {'name': imp})), textAlign: TextAlign.center,
             style: displayStyle(38, color: _red)),
         const SizedBox(height: 8),
-        Text('$imp, son şansın: futbolcuyu doğru tahmin edersen kurtulursun!',
+        Text(t('imp.last_chance', {'name': imp}),
             textAlign: TextAlign.center,
             style: const TextStyle(color: AppColors.textMuted)),
         const Spacer(),
@@ -293,7 +294,7 @@ class _ImposterScreenState extends State<ImposterScreen> {
             style: FilledButton.styleFrom(backgroundColor: _red, foregroundColor: Colors.white),
             onPressed: _impostorGuess,
             icon: const Icon(Icons.search),
-            label: const Text('FUTBOLCUYU TAHMİN ET'),
+            label: Text(t('imp.guess_btn')),
           ),
         ),
       ],
@@ -307,8 +308,8 @@ class _ImposterScreenState extends State<ImposterScreen> {
       useSafeArea: true,
       builder: (_) => PlayerSearchSheet(
         repo: widget.repo,
-        title: 'Gizli futbolcu kim?',
-        hint: 'Tek tahmin hakkın var',
+        title: t('imp.guess_title'),
+        hint: t('imp.one_guess'),
         usedIds: const <String>{},
       ),
     );
@@ -322,22 +323,22 @@ class _ImposterScreenState extends State<ImposterScreen> {
     final String headline;
     final Color color;
     if (_e.accused != _e.impostor) {
-      headline = 'SAHTEKÂR KAÇTI!';
+      headline = t('imp.escaped');
       color = _red;
     } else if (_e.impostorGuessedRight == true) {
-      headline = 'SAHTEKÂR KURTULDU!';
+      headline = t('imp.saved');
       color = _red;
     } else {
-      headline = 'SAHTEKÂR YAKALANDI!';
+      headline = t('imp.caught');
       color = AppColors.primary;
     }
     final detail = _e.accused == null
-        ? 'Oylar eşit çıktı, kimse suçlanmadı. Sahtekâr: $imp'
+        ? t('imp.tie', {'name': imp})
         : _e.accused != _e.impostor
-            ? '${_e.names[_e.accused!]} masumdu. Sahtekâr: $imp'
+            ? t('imp.innocent', {'acc': _e.names[_e.accused!], 'name': imp})
             : _e.impostorGuessedRight == true
-                ? '$imp futbolcuyu doğru tahmin etti.'
-                : '$imp futbolcuyu bilemedi.';
+                ? t('imp.guessed', {'name': imp})
+                : t('imp.missed', {'name': imp});
 
     return Column(
       children: [
@@ -350,7 +351,7 @@ class _ImposterScreenState extends State<ImposterScreen> {
             children: [
               Center(child: _SecretCard(player: _secret, repo: widget.repo, width: 170)),
               const SizedBox(height: 16),
-              Text('SKOR TABLOSU', textAlign: TextAlign.center,
+              Text(t('imp.scores'), textAlign: TextAlign.center,
                   style: displayStyle(22, color: AppColors.gold)),
               const SizedBox(height: 8),
               ..._scoreRows(),
@@ -364,7 +365,7 @@ class _ImposterScreenState extends State<ImposterScreen> {
               child: OutlinedButton(
                 onPressed: () => Navigator.pop(context),
                 style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(54)),
-                child: const Text('Bitir'),
+                child: Text(t('imp.finish')),
               ),
             ),
             const SizedBox(width: 12),
@@ -374,7 +375,7 @@ class _ImposterScreenState extends State<ImposterScreen> {
                 onPressed: () => setState(_newRound),
                 style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(54)),
                 icon: const Icon(Icons.refresh),
-                label: const Text('YENİ TUR'),
+                label: Text(t('imp.new_round')),
               ),
             ),
           ],
@@ -480,8 +481,8 @@ class _TallyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = engine.tally;
-    final entries = t.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
+    final tally = engine.tally;
+    final entries = tally.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
     return Wrap(
       spacing: 8,
       runSpacing: 8,
@@ -489,7 +490,7 @@ class _TallyList extends StatelessWidget {
       children: [
         for (final e in entries)
           Chip(
-            label: Text('${engine.names[e.key]} · ${e.value} oy',
+            label: Text(t('imp.votes', {'name': engine.names[e.key], 'n': e.value}),
                 style: const TextStyle(fontWeight: FontWeight.w800)),
           ),
       ],
@@ -527,7 +528,7 @@ class _SecretCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('GİZLİ FUTBOLCU',
+          Text(t('imp.secret'),
               style: TextStyle(
                   fontSize: w * 0.06,
                   letterSpacing: 2,
@@ -536,7 +537,7 @@ class _SecretCard extends StatelessWidget {
           SizedBox(height: w * 0.06),
           if (club != null) KitIcon(club: club, size: w * 0.42),
           SizedBox(height: w * 0.06),
-          Text(player.name.toUpperCase(),
+          Text(upper(player.name),
               textAlign: TextAlign.center,
               maxLines: 2,
               style: displayStyle(w * 0.15)),
@@ -584,9 +585,9 @@ class _ImpostorCard extends StatelessWidget {
         children: [
           Icon(Icons.theater_comedy, color: _red, size: w * 0.35),
           SizedBox(height: w * 0.05),
-          Text('SAHTEKÂRSIN', style: displayStyle(w * 0.16, color: _red)),
+          Text(t('imp.you_are'), textAlign: TextAlign.center, style: displayStyle(w * 0.16, color: _red)),
           SizedBox(height: w * 0.04),
-          Text('Futbolcuyu bilmiyorsun. Diğerlerini dinle, belli etme!',
+          Text(t('imp.you_are_desc'),
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: w * 0.065, color: AppColors.textMuted)),
           if (hint != null) ...[
@@ -598,7 +599,7 @@ class _ImpostorCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: _red.withValues(alpha: 0.5)),
               ),
-              child: Text('İPUCU: $hint',
+              child: Text(t('imp.hint', {'h': hint}),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: w * 0.06, fontWeight: FontWeight.w900, color: AppColors.text)),

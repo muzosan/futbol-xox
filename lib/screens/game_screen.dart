@@ -11,12 +11,14 @@ import '../report/report.dart';
 import '../theme.dart';
 import '../widgets/board.dart';
 import '../widgets/player_search_sheet.dart';
+import '../l10n/l10n.dart';
 
-const Map<String, String> difficultyLabels = {
-  'kolay': 'Kolay',
-  'orta': 'Orta',
-  'zor': 'Zor',
-};
+/// Zorluk adları geçerli dilde (her okunuşta yeniden çevrilir)
+Map<String, String> get difficultyLabels => {
+      'kolay': t('diff.kolay'),
+      'orta': t('diff.orta'),
+      'zor': t('diff.zor'),
+    };
 
 class GameScreen extends StatefulWidget {
   const GameScreen({
@@ -76,8 +78,8 @@ class _GameScreenState extends State<GameScreen> {
       grid: widget.repo.randomGrid(widget.difficulty),
       onTimeout: _onTimeout,
       names: _vsBot
-          ? const {Mark.x: 'Sen', Mark.o: 'Bot'}
-          : const {Mark.x: 'Oyuncu 1', Mark.o: 'Oyuncu 2'},
+          ? {Mark.x: t('common.you'), Mark.o: t('common.bot')}
+          : {Mark.x: t('common.player_n', {'n': 1}), Mark.o: t('common.player_n', {'n': 2})},
     );
     _game.addListener(_onGameChanged);
     _resultShown = false;
@@ -121,19 +123,19 @@ class _GameScreenState extends State<GameScreen> {
 
     if (move.isPass) {
       _game.pass();
-      _toast('Bot pas geçti. Sıra sende!');
+      _toast(t('common.bot_passed_you'));
       return;
     }
     final cell = move.cell!;
     final player = move.player!;
     final result = _game.guess(cell, player);
     if (result == GuessResult.correct) {
-      _toast('Bot: ${player.name}', color: AppColors.o.withValues(alpha: 0.9));
+      _toast(t('xox.bot_played', {'name': player.name}), color: AppColors.o.withValues(alpha: 0.9));
       _botReactor?.onBotScored();
     } else if (result == GuessResult.wrong) {
       final row = widget.repo.club(_game.rowClubId(cell)).name;
       final col = widget.repo.club(_game.colClubId(cell)).name;
-      _toast('Bot yanıldı: ${player.name} ($row × $col). Sıra sende!');
+      _toast(t('xox.bot_wrong', {'name': player.name, 'row': row, 'col': col}));
     }
   }
 
@@ -141,7 +143,7 @@ class _GameScreenState extends State<GameScreen> {
 
   void _onTimeout(Mark who) {
     if (!mounted || _game.isOver) return;
-    _toast('Süre doldu! Sıra: ${_game.nameOf(who.other)}');
+    _toast(t('common.time_up_turn', {'name': _game.nameOf(who.other)}));
   }
 
   void _toast(String message, {Color? color, SnackBarAction? action}) {
@@ -172,7 +174,7 @@ class _GameScreenState extends State<GameScreen> {
       builder: (_) => PlayerSearchSheet(
         repo: widget.repo,
         title: '${rowClub.name}  ×  ${colClub.name}',
-        hint: 'İki kulüpte de oynamış bir futbolcu yaz',
+        hint: t('xox.search_hint'),
         usedIds: _game.usedPlayerIds,
       ),
     );
@@ -182,26 +184,25 @@ class _GameScreenState extends State<GameScreen> {
     final result = _game.guess(cell, player);
     switch (result) {
       case GuessResult.correct:
-        _toast('Doğru! ${player.name}', color: AppColors.success);
+        _toast(t('common.correct_name', {'name': player.name}), color: AppColors.success);
         _botReactor?.onPlayerScored();
       case GuessResult.wrong:
         _toast(
-          'Yanlış! ${player.name}, ${rowClub.name} ve ${colClub.name} '
-          'kulüplerinin ikisinde birden oynamamış.',
+          t('xox.wrong', {'name': player.name, 'row': rowClub.name, 'col': colClub.name}),
           color: AppColors.danger,
           action: reportAction(
             context,
             DataReport(
-              mode: 'XOX',
+              mode: t('mode.xox.title'),
               player: player,
               clubs: [rowClub, colClub],
-              claim: 'Oyun: iki kulüpte birden oynamamış',
+              claim: t('xox.claim'),
             ),
           ),
         );
         _botReactor?.onPlayerMissed();
       case GuessResult.alreadyUsed:
-        _toast('Bu oyuncu bu maçta zaten kullanıldı.');
+        _toast(t('common.already_used'));
       case GuessResult.invalid:
         break;
     }
@@ -219,21 +220,20 @@ class _GameScreenState extends State<GameScreen> {
     if (winner != null) _botReactor?.onGameEnd(botWon: winner == Mark.o);
     if (winner != null) {
       if (_vsBot) {
-        title = winner == Mark.x ? 'Kazandın!' : 'Bot kazandı';
+        title = winner == Mark.x ? t('common.you_won') : t('common.bot_won');
         message = winner == Mark.x
-            ? 'Üç hücreyi yan yana dizdin.'
-            : 'Bu sefer bot daha iyi bildi. Rövanş?';
+            ? t('xox.you_line')
+            : t('xox.bot_line');
       } else {
-        title = '${_game.nameOf(winner)} kazandı!';
-        message = 'Üç hücreyi yan yana dizdi.';
+        title = t('common.x_won', {'name': _game.nameOf(winner)});
+        message = t('xox.other_line');
       }
     } else if (_game.endReason == EndReason.stalemate) {
-      title = 'Berabere';
-      message = 'Üst üste ${GameController.maxTurnsWithoutProgress} tur '
-          'kimse doğru cevap veremedi.';
+      title = t('common.draw_plain');
+      message = t('xox.stalemate', {'n': GameController.maxTurnsWithoutProgress});
     } else {
-      title = 'Berabere';
-      message = 'Tablo doldu ama kimse üçlü yapamadı.';
+      title = t('common.draw_plain');
+      message = t('xox.full');
     }
 
     await showDialog<void>(
@@ -248,20 +248,20 @@ class _GameScreenState extends State<GameScreen> {
         ),
         title: Text(title),
         content: Text(
-          '$message\n\nBoş kalan hücrelerde örnek cevapları görebilirsin.',
+          '$message\n\n${t('xox.see_examples')}',
           style: const TextStyle(color: AppColors.textMuted),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Tabloyu Gör'),
+            child: Text(t('common.see_board')),
           ),
           FilledButton(
             onPressed: () {
               Navigator.pop(ctx);
               _restart();
             },
-            child: Text(_vsBot ? 'Rövanş' : 'Yeni Oyun'),
+            child: Text(_vsBot ? t('common.rematch') : t('common.new_game')),
           ),
         ],
       ),
@@ -272,7 +272,7 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final modeLabel = _vsBot ? 'Bota Karşı' : '2 Kişilik';
+    final modeLabel = _vsBot ? t('common.vs_bot') : t('common.two_players');
     final diffLabel =
         difficultyLabels[widget.difficulty] ?? widget.difficulty;
 
@@ -322,7 +322,7 @@ class _GameScreenState extends State<GameScreen> {
                         ? FilledButton.icon(
                             onPressed: _restart,
                             icon: const Icon(Icons.refresh),
-                            label: Text(_vsBot ? 'Rövanş' : 'Yeni Oyun'),
+                            label: Text(_vsBot ? t('common.rematch') : t('common.new_game')),
                             style: FilledButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(14)),
@@ -331,7 +331,7 @@ class _GameScreenState extends State<GameScreen> {
                         : OutlinedButton.icon(
                             onPressed: _botTurn ? null : _game.pass,
                             icon: const Icon(Icons.skip_next),
-                            label: const Text('Pas Geç'),
+                            label: Text(t('common.pass_turn')),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: AppColors.text,
                               side: const BorderSide(color: AppColors.border),

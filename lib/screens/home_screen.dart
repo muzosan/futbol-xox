@@ -13,87 +13,38 @@ import 'hunt_screen.dart';
 import 'imposter_setup_screen.dart';
 import 'quiz_screen.dart';
 import 'who_screen.dart';
+import '../l10n/l10n.dart';
 
 enum GameMode { xox, duel, draft, imposter, hunt, chain, quiz, who }
 
 class _ModeInfo {
-  const _ModeInfo(this.title, this.icon, this.description, this.levelTexts,
-      {this.solo = false, this.party = false});
+  const _ModeInfo(this.id, this.icon, {this.solo = false, this.party = false});
 
-  final String title;
+  final String id;
   final IconData icon;
-  final String description;
-
-  /// Kolay / orta / zor alt yazıları
-  final List<String> levelTexts;
 
   /// Tek kişilik mod (bot veya 2 kişilik seçimi yok)
   final bool solo;
 
   /// Kalabalık grup modu (3-8 kişi, tek telefon)
   final bool party;
+
+  // Metinler her seferinde geçerli dilde okunur
+  String get title => t('mode.$id.title');
+  String get description => t('mode.$id.desc');
+  List<String> get levelTexts =>
+      [t('mode.$id.l1'), t('mode.$id.l2'), t('mode.$id.l3')];
 }
 
 const Map<GameMode, _ModeInfo> _modes = {
-  GameMode.xox: _ModeInfo(
-    'XOX',
-    Icons.grid_3x3,
-    'Satırdaki ve sütundaki iki kulüpte de oynamış bir futbolcu bul. Üç '
-        'hücreyi yan yana, alt alta ya da çapraz dizen kazanır!',
-    ['Büyük kulüpler, ünlü oyuncular', 'Tanınmış kulüpler', 'Az bilinen eşleşmeler'],
-  ),
-  GameMode.duel: _ModeInfo(
-    'Kart Düellosu',
-    Icons.style,
-    'Futbolcu kartınla rakibini istatistikte yen! Sıran gelince kartından bir '
-        'istatistik seç: gol, asist, milli maç... Yüksek olan turu alır, 7 tur.',
-    ['Yıldız kartlar', 'Tanınmış oyuncular', 'Bütün oyuncular'],
-  ),
-  GameMode.draft: _ModeInfo(
-    'Kadro Kur',
-    Icons.groups,
-    'Her maç bir ölçüt: en çok gol, asist, kırmızı kart... 5 turda gelen '
-        'takımlardan birer oyuncu seç, ölçüte göre en güçlü kadroyu kur!',
-    ['Büyük kulüpler', 'Tanınmış kulüpler', 'Bütün kulüpler'],
-  ),
-  GameMode.imposter: _ModeInfo(
-    'Sahtekâr',
-    Icons.theater_comedy,
-    'Herkes gizli futbolcuyu görür, biri hariç: sahtekâr! Sırayla tek kelimelik '
-        'ipuçları verin, gizli oylamayla sahtekârı yakalayın. 3-8 kişi, tek telefon.',
-    ['Çok ünlü futbolcular', 'Tanınmış futbolcular', 'Az bilinen futbolcular'],
-    party: true,
-  ),
-  GameMode.hunt: _ModeInfo(
-    'Kulüp Avı',
-    Icons.hub_outlined,
-    'Ekrana gelen 5 kulübün en çoğunda oynamış futbolcuyu bul. Ne kadar çok '
-        'kulüp, o kadar çok puan! 3 turun sonunda en çok puanı toplayan kazanır.',
-    ['Büyük kulüpler, ünlü oyuncular', 'Tanınmış kulüpler', 'Az bilinen kulüpler'],
-  ),
-  GameMode.chain: _ModeInfo(
-    'Zincir',
-    Icons.link,
-    'Son futbolcuyla aynı kulüpte oynamış başka bir futbolcu yaz, zinciri '
-        'uzat. Yanlış cevap bir can götürür; canı biten kaybeder!',
-    ['Yıldız başlangıç · 4 can', 'Tanınmış başlangıç', 'Az bilinen başlangıç'],
-  ),
-  GameMode.quiz: _ModeInfo(
-    'Doğru mu?',
-    Icons.bolt,
-    '60 saniyede olabildiğince çok soruyu bil: "Bu futbolcu bu kulüpte oynadı '
-        'mı?" Yanlış cevap süreden 5 saniye götürür.',
-    ['Yıldızlar ve büyük kulüpler', 'Tanınmış oyuncular', 'Az bilinen oyuncular'],
-    solo: true,
-  ),
-  GameMode.who: _ModeInfo(
-    'Kim Bu?',
-    Icons.person_search,
-    'Bir futbolcunun kariyerindeki kulüpler sırayla açılır. Ne kadar az '
-        'ipucuyla bilirsen o kadar çok puan! 5 soru, soru başına 10 puan.',
-    ['Yıldızlar · 2 kulüp açık', 'Tanınmış oyuncular', 'Az bilinen oyuncular'],
-    solo: true,
-  ),
+  GameMode.xox: _ModeInfo('xox', Icons.grid_3x3),
+  GameMode.duel: _ModeInfo('duel', Icons.style),
+  GameMode.draft: _ModeInfo('draft', Icons.groups),
+  GameMode.imposter: _ModeInfo('imposter', Icons.theater_comedy, party: true),
+  GameMode.hunt: _ModeInfo('hunt', Icons.hub_outlined),
+  GameMode.chain: _ModeInfo('chain', Icons.link),
+  GameMode.quiz: _ModeInfo('quiz', Icons.bolt, solo: true),
+  GameMode.who: _ModeInfo('who', Icons.person_search, solo: true),
 };
 
 /// Tek kişilik modların rekor anahtarları
@@ -104,24 +55,21 @@ String? _recordKey(GameMode mode, String difficulty) => switch (mode) {
     };
 
 class _Level {
-  const _Level(this.key, this.title, this.botText, this.color, this.icon,
-      this.bot);
+  const _Level(this.key, this.color, this.icon, this.bot);
 
   final String key;
-  final String title;
-  final String botText;
   final Color color;
   final IconData icon;
   final BotLevel bot;
+
+  String get title => t('diff.$key');
+  String get botText => t('bot.$key');
 }
 
 const List<_Level> _levels = [
-  _Level('kolay', 'Kolay', 'Acemi bot', AppColors.primary,
-      Icons.sentiment_satisfied_alt, BotLevel.easy),
-  _Level('orta', 'Orta', 'Tecrübeli bot', AppColors.amber,
-      Icons.local_fire_department_outlined, BotLevel.medium),
-  _Level('zor', 'Zor', 'Uzman bot', AppColors.o, Icons.psychology_outlined,
-      BotLevel.hard),
+  _Level('kolay', AppColors.primary, Icons.sentiment_satisfied_alt, BotLevel.easy),
+  _Level('orta', AppColors.amber, Icons.local_fire_department_outlined, BotLevel.medium),
+  _Level('zor', AppColors.o, Icons.psychology_outlined, BotLevel.hard),
 ];
 
 class HomeScreen extends StatefulWidget {
@@ -188,13 +136,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Center(
                   child: Padding(
                     padding: const EdgeInsets.all(24),
-                    child: Text('Veri yüklenemedi:\n${snapshot.error}',
+                    child: Text(t('home.load_error', {'e': snapshot.error}),
                         textAlign: TextAlign.center),
                   ),
                 );
               }
               if (!snapshot.hasData) {
-                return const Center(
+                return Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -207,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             strokeWidth: 3, color: AppColors.gold),
                       ),
                       SizedBox(height: 14),
-                      Text('Oyuncular yükleniyor…',
+                      Text(t('home.loading'),
                           style: TextStyle(
                               color: AppColors.textMuted,
                               fontWeight: FontWeight.w700)),
@@ -233,6 +181,10 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: _LangButton(),
+              ),
               const _Hero(),
               const SizedBox(height: 24),
               // Mod seçimi
@@ -264,8 +216,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 12),
               if (info.party) ...[
-                const Text(
-                  '3-8 Kişi · Tek Telefon · Elden Ele',
+                Text(
+                  t('home.party'),
                   textAlign: TextAlign.center,
                   style: TextStyle(fontWeight: FontWeight.w900, color: AppColors.text),
                 ),
@@ -273,15 +225,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ] else if (!info.solo) ...[
                 SegmentedButton<bool>(
                   showSelectedIcon: false,
-                  segments: const [
+                  segments: [
                     ButtonSegment(
                       value: true,
-                      label: Text('Bota Karşı'),
+                      label: Text(t('common.vs_bot')),
                       icon: Icon(Icons.smart_toy_outlined),
                     ),
                     ButtonSegment(
                       value: false,
-                      label: Text('2 Kişilik'),
+                      label: Text(t('common.two_players')),
                       icon: Icon(Icons.people_outline),
                     ),
                   ],
@@ -290,8 +242,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 20),
               ] else ...[
-                const Text(
-                  'Tek kişilik · Rekorunu geliştir',
+                Text(
+                  t('home.solo'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontWeight: FontWeight.w800, color: AppColors.text),
@@ -306,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     subtitle: [
                       info.levelTexts[i],
                       if (info.solo)
-                        'Rekor: ${_records[_recordKey(_mode, _levels[i].key)] ?? 0}'
+                        t('common.record', {'n': _records[_recordKey(_mode, _levels[i].key)] ?? 0})
                       else if (_vsBot && !info.party)
                         _levels[i].botText,
                     ].join(' · '),
@@ -316,9 +268,9 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 12),
               TextButton.icon(
                 onPressed: () => showReportDialog(
-                    context, const DataReport(mode: 'Genel')),
+                    context, DataReport(mode: t('home.report_mode'))),
                 icon: const Icon(Icons.flag_outlined, size: 16),
-                label: const Text('Hatalı veri bildir'),
+                label: Text(t('home.report')),
                 style: TextButton.styleFrom(
                     foregroundColor: AppColors.textMuted),
               ),
@@ -446,7 +398,7 @@ class _LevelTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        level.title.toUpperCase(),
+                        upper(level.title),
                         style: const TextStyle(
                           letterSpacing: 1.2,
                           fontSize: 17,
@@ -508,8 +460,8 @@ class _Hero extends StatelessWidget {
           const SizedBox(height: 18),
           const GoldText('VOLEA', size: 72, spacing: 8),
           const SizedBox(height: 8),
-          const Text(
-            'FUTBOL BİLGİ ARENASI',
+          Text(
+            t('home.tagline'),
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 12,
@@ -519,6 +471,68 @@ class _Hero extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Sağ üstteki dil seçme butonu (bayrak + dil kodu)
+class _LangButton extends StatelessWidget {
+  const _LangButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final lang = L10n.instance.lang;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () => _open(context),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: AppDecor.card(radius: 20, raised: false),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(lang.flag, style: const TextStyle(fontSize: 18)),
+              const SizedBox(width: 6),
+              Text(lang.code.toUpperCase(),
+                  style: const TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1)),
+              const Icon(Icons.expand_more, size: 18, color: AppColors.textMuted),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _open(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(upper(t('home.language')),
+                  style: displayStyle(24, color: AppColors.gold)),
+              const SizedBox(height: 8),
+              for (final l in kLangs)
+                ListTile(
+                  leading: Text(l.flag, style: const TextStyle(fontSize: 26)),
+                  title: Text(l.nativeName),
+                  trailing: l.code == currentLang
+                      ? const Icon(Icons.check_circle, color: AppColors.primary)
+                      : null,
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    L10n.instance.setLang(l.code);
+                  },
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

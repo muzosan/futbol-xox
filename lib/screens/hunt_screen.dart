@@ -15,6 +15,7 @@ import '../widgets/board.dart' show ClubHeader;
 import '../widgets/player_search_sheet.dart';
 import '../widgets/players_header.dart';
 import 'game_screen.dart' show difficultyLabels;
+import '../l10n/l10n.dart';
 
 class HuntScreen extends StatefulWidget {
   const HuntScreen({
@@ -81,8 +82,8 @@ class _HuntScreenState extends State<HuntScreen> {
       engine: HuntEngine(rounds: rounds, clubsOf: widget.repo.clubsOf),
       onTimeout: _onTimeout,
       names: _vsBot
-          ? const {Mark.x: 'Sen', Mark.o: 'Bot'}
-          : const {Mark.x: 'Oyuncu 1', Mark.o: 'Oyuncu 2'},
+          ? {Mark.x: t('common.you'), Mark.o: t('common.bot')}
+          : {Mark.x: t('common.player_n', {'n': 1}), Mark.o: t('common.player_n', {'n': 2})},
     );
     _game.addListener(_onGameChanged);
     _summaryRound = -1;
@@ -126,18 +127,18 @@ class _HuntScreenState extends State<HuntScreen> {
     final player = _bot!.decide(_game);
     if (player == null) {
       _game.pass();
-      _toast('Bot pas geçti.');
+      _toast(t('common.bot_passed'));
       return;
     }
     final result = _game.answer(player);
     final move = result.move;
     if (move == null) return;
     if (result.outcome == GuessResult.correct) {
-      _toast('Bot: ${player.name} · ${move.clubs.length} kulüp, +${move.points}',
+      _toast(t('hunt.bot_scored', {'name': player.name, 'n': move.clubs.length, 'p': move.points}),
           color: AppColors.o.withValues(alpha: 0.9));
       _botReactor?.onBotScored();
     } else {
-      _toast('Bot yanıldı: ${player.name} (${move.clubs.length} kulüp)');
+      _toast(t('hunt.bot_wrong', {'name': player.name, 'n': move.clubs.length}));
     }
   }
 
@@ -145,7 +146,7 @@ class _HuntScreenState extends State<HuntScreen> {
 
   void _onTimeout(Mark who) {
     if (!mounted || _game.awaitingNextRound) return;
-    _toast('Süre doldu! Sıra: ${_game.nameOf(who.other)}');
+    _toast(t('common.time_up_turn', {'name': _game.nameOf(who.other)}));
   }
 
   void _toast(String message, {Color? color, SnackBarAction? action}) {
@@ -172,7 +173,7 @@ class _HuntScreenState extends State<HuntScreen> {
       builder: (_) => PlayerSearchSheet(
         repo: widget.repo,
         title: _game.clubs.map((c) => c.name).join(' · '),
-        hint: 'Bu kulüplerin en az ikisinde oynamış bir futbolcu yaz',
+        hint: t('hunt.search_hint'),
         usedIds: _game.usedPlayerIds,
       ),
     );
@@ -184,7 +185,7 @@ class _HuntScreenState extends State<HuntScreen> {
     switch (result.outcome) {
       case GuessResult.correct:
         _toast(
-          'Doğru! ${player.name} · ${move!.clubs.length} kulüp, +${move.points} puan',
+          t('hunt.correct', {'name': player.name, 'n': move!.clubs.length, 'p': move.points}),
           color: AppColors.success,
         );
         _botReactor?.onPlayerScored();
@@ -192,24 +193,24 @@ class _HuntScreenState extends State<HuntScreen> {
         final n = move?.clubs.length ?? 0;
         _toast(
           n == 1
-              ? '${player.name} bu kulüplerden sadece birinde oynamış. 0 puan.'
-              : '${player.name} bu kulüplerin hiçbirinde oynamamış. 0 puan.',
+              ? t('hunt.only_one', {'name': player.name})
+              : t('hunt.none', {'name': player.name}),
           color: AppColors.danger,
           action: reportAction(
             context,
             DataReport(
-              mode: 'Kulüp Avı',
+              mode: t('mode.hunt.title'),
               player: player,
               clubs: _game.clubs,
               claim: n == 1
-                  ? 'Oyun: bu kulüplerden sadece birinde oynamış'
-                  : 'Oyun: bu kulüplerin hiçbirinde oynamamış',
+                  ? t('hunt.claim_one')
+                  : t('hunt.claim_none'),
             ),
           ),
         );
         _botReactor?.onPlayerMissed();
       case GuessResult.alreadyUsed:
-        _toast('Bu oyuncu bu maçta zaten kullanıldı.');
+        _toast(t('common.already_used'));
       case GuessResult.invalid:
         break;
     }
@@ -228,13 +229,13 @@ class _HuntScreenState extends State<HuntScreen> {
     final you = _game.nameOf(Mark.x), rival = _game.nameOf(Mark.o);
     final String title;
     if (!over) {
-      title = 'Tur ${_game.round + 1} bitti';
+      title = t('hunt.round_over', {'n': _game.round + 1});
     } else if (_game.winner == null) {
-      title = 'Berabere!';
+      title = t('common.draw');
     } else if (_vsBot) {
-      title = _game.winner == Mark.x ? 'Kazandın!' : 'Bot kazandı';
+      title = _game.winner == Mark.x ? t('common.you_won') : t('common.bot_won');
     } else {
-      title = '${_game.nameOf(_game.winner!)} kazandı!';
+      title = t('common.x_won', {'name': _game.nameOf(_game.winner!)});
     }
     final missed = _game.missedAnswers();
 
@@ -269,8 +270,8 @@ class _HuntScreenState extends State<HuntScreen> {
               ),
               if (missed.isNotEmpty) ...[
                 const SizedBox(height: 18),
-                const Text(
-                  'Bu turda kaçırılanlar',
+                Text(
+                  t('hunt.missed'),
                   style: TextStyle(
                       fontWeight: FontWeight.w800, color: AppColors.textMuted),
                 ),
@@ -285,7 +286,7 @@ class _HuntScreenState extends State<HuntScreen> {
                               style: const TextStyle(color: AppColors.text)),
                         ),
                         Text(
-                          '${m.count} kulüp · +${HuntEngine.pointsFor(m.count)}',
+                          t('hunt.clubs_points', {'n': m.count, 'p': HuntEngine.pointsFor(m.count)}),
                           style: const TextStyle(color: AppColors.primary),
                         ),
                       ],
@@ -302,14 +303,14 @@ class _HuntScreenState extends State<HuntScreen> {
                     Navigator.pop(ctx);
                     Navigator.pop(context);
                   },
-                  child: const Text('Ana Menü'),
+                  child: Text(t('common.main_menu')),
                 ),
                 FilledButton(
                   onPressed: () {
                     Navigator.pop(ctx);
                     _restart();
                   },
-                  child: Text(_vsBot ? 'Rövanş' : 'Yeni Oyun'),
+                  child: Text(_vsBot ? t('common.rematch') : t('common.new_game')),
                 ),
               ]
             : [
@@ -318,7 +319,7 @@ class _HuntScreenState extends State<HuntScreen> {
                     Navigator.pop(ctx);
                     _game.nextRound();
                   },
-                  child: const Text('Sonraki Tur'),
+                  child: Text(t('common.next_round')),
                 ),
               ],
       ),
@@ -329,7 +330,7 @@ class _HuntScreenState extends State<HuntScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final modeLabel = _vsBot ? 'Bota Karşı' : '2 Kişilik';
+    final modeLabel = _vsBot ? t('common.vs_bot') : t('common.two_players');
     final diffLabel = difficultyLabels[widget.difficulty] ?? widget.difficulty;
 
     return ListenableBuilder(
@@ -342,7 +343,7 @@ class _HuntScreenState extends State<HuntScreen> {
             surfaceTintColor: Colors.transparent,
             centerTitle: true,
             title: Text(
-              'Kulüp Avı · $modeLabel · $diffLabel',
+              t('hunt.title', {'mode': modeLabel, 'diff': diffLabel}),
               style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
             ),
             actions: [if (_vsBot) ReactionButton(controller: _reactions)],
@@ -358,8 +359,8 @@ class _HuntScreenState extends State<HuntScreen> {
                       Mark.o: _game.nameOf(Mark.o),
                     },
                     values: {
-                      Mark.x: '${_game.score(Mark.x)} p',
-                      Mark.o: '${_game.score(Mark.o)} p',
+                      Mark.x: t('hunt.points_short', {'n': _game.score(Mark.x)}),
+                      Mark.o: t('hunt.points_short', {'n': _game.score(Mark.o)}),
                     },
                     current: current,
                     winner: _game.winner,
@@ -368,8 +369,8 @@ class _HuntScreenState extends State<HuntScreen> {
                     secondsLeft: _game.secondsLeft,
                     turnSeconds: _game.turnSeconds,
                     status: _botTurn
-                        ? 'Bot düşünüyor…'
-                        : 'Sıra: ${_game.nameOf(current)} · ${_game.secondsLeft} sn',
+                        ? t('common.bot_thinking')
+                        : t('common.turn_of', {'name': _game.nameOf(current), 's': _game.secondsLeft}),
                     bubbles: _reactions.bubbles,
                   ),
                   const SizedBox(height: 14),
@@ -409,7 +410,7 @@ class _HuntScreenState extends State<HuntScreen> {
         child: FilledButton.icon(
           onPressed: _restart,
           icon: const Icon(Icons.refresh),
-          label: Text(_vsBot ? 'Rövanş' : 'Yeni Oyun'),
+          label: Text(_vsBot ? t('common.rematch') : t('common.new_game')),
           style: FilledButton.styleFrom(shape: shape),
         ),
       );
@@ -423,7 +424,7 @@ class _HuntScreenState extends State<HuntScreen> {
             child: OutlinedButton.icon(
               onPressed: disabled ? null : _game.pass,
               icon: const Icon(Icons.skip_next),
-              label: const Text('Pas'),
+              label: Text(t('common.pass')),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.text,
                 side: const BorderSide(color: AppColors.border),
@@ -438,7 +439,7 @@ class _HuntScreenState extends State<HuntScreen> {
             child: FilledButton.icon(
               onPressed: disabled ? null : _openSearch,
               icon: const Icon(Icons.search),
-              label: const Text('Futbolcu Yaz'),
+              label: Text(t('common.write_player')),
               style: FilledButton.styleFrom(
                 shape: shape,
                 minimumSize: const Size.fromHeight(52),
@@ -468,15 +469,19 @@ class _RoundInfo extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
-            'Tur ${game.round + 1}/${game.totalRounds}',
+            t('common.round_of', {'n': game.round + 1, 'total': game.totalRounds}),
             style: const TextStyle(
                 fontWeight: FontWeight.w800, color: AppColors.primary),
           ),
         ),
         const Spacer(),
         Text(
-          'Kalan hamle: ${game.nameOf(Mark.x)} ${game.movesLeft(Mark.x)} · '
-          '${game.nameOf(Mark.o)} ${game.movesLeft(Mark.o)}',
+          t('hunt.moves_left', {
+            'a': game.nameOf(Mark.x),
+            'x': game.movesLeft(Mark.x),
+            'b': game.nameOf(Mark.o),
+            'o': game.movesLeft(Mark.o),
+          }),
           style: style,
         ),
       ],
@@ -490,7 +495,7 @@ class _PointsLegend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final parts = HuntEngine.pointTable.entries
-        .map((e) => '${e.key} kulüp = ${e.value}')
+        .map((e) => t('hunt.legend', {'n': e.key, 'p': e.value}))
         .join('  ·  ');
     return Text(
       parts,
@@ -510,9 +515,9 @@ class _MoveList extends StatelessWidget {
   Widget build(BuildContext context) {
     final moves = game.roundMoves.reversed.toList(); // en yeni üstte
     if (moves.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'Bu 5 kulübün en çoğunda oynamış futbolcuyu bul!',
+          t('hunt.empty'),
           textAlign: TextAlign.center,
           style: TextStyle(color: AppColors.textMuted),
         ),
@@ -550,7 +555,7 @@ class _MoveList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      player?.name ?? 'Pas geçti',
+                      player?.name ?? t('hunt.passed'),
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
                         color: player == null
@@ -561,7 +566,7 @@ class _MoveList extends StatelessWidget {
                     if (player != null)
                       Text(
                         m.clubs.isEmpty
-                            ? 'Bu kulüplerde oynamamış'
+                            ? t('hunt.not_here')
                             : clubNames.join(', '),
                         style: const TextStyle(
                             fontSize: 12, color: AppColors.textMuted),

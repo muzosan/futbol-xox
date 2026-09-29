@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../data/models.dart';
 import '../data/repository.dart';
 import '../theme.dart';
+import '../l10n/l10n.dart';
 
 /// Oyuncu arama paneli. Seçilen oyuncuyla kapanır (Navigator.pop ile döner).
 /// Not: Liste cevabı ele vermez; aranan isimle eşleşen herkesi gösterir.
@@ -78,7 +79,7 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
                 textInputAction: TextInputAction.search,
                 style: const TextStyle(color: AppColors.text),
                 decoration: InputDecoration(
-                  hintText: 'Oyuncu ara...',
+                  hintText: t('common.search_player'),
                   hintStyle: const TextStyle(color: AppColors.textMuted),
                   prefixIcon:
                       const Icon(Icons.search, color: AppColors.textMuted),
@@ -104,7 +105,7 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
                         child: Text(
                           _controller.text.trim().length < 2
                               ? widget.hint
-                              : 'Oyuncu bulunamadı',
+                              : t('common.no_player'),
                           textAlign: TextAlign.center,
                           style: const TextStyle(color: AppColors.textMuted),
                         ),
@@ -118,8 +119,8 @@ class _PlayerSearchSheetState extends State<PlayerSearchSheet> {
                         final info = widget.repo.playerInfo(p);
                         final details = [
                           if (info.isNotEmpty) info,
-                          if (p.birthYear != null) 'd. ${p.birthYear}',
-                          if (used) 'Bu maçta kullanıldı',
+                          if (p.birthYear != null) t('common.born', {'y': p.birthYear}),
+                          if (used) t('common.used_in_match'),
                         ].join(' · ');
                         return ListTile(
                           enabled: !used,

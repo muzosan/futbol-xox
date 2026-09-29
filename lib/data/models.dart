@@ -1,20 +1,34 @@
+import '../l10n/lang_state.dart';
 import 'text_utils.dart';
 
 class Club {
   const Club({
     required this.id,
-    required this.name,
+    required String name,
+    this.nameEn,
     required this.fullName,
-    required this.league,
+    required String league,
     this.tier = 3,
     this.kitPattern = 'solid',
     this.kitColors = const [],
-  });
+  })  : nameTr = name,
+        leagueRaw = league;
 
   final String id;
-  final String name;
+
+  /// Veriden gelen Türkçe ad (ör. "Bayern Münih") ve İngilizce ad (ör. "Bayern Munich")
+  final String nameTr;
+  final String? nameEn;
   final String fullName;
-  final String league;
+
+  /// Veriden gelen lig adı (Türkçe, ör. "Arjantin Ligi")
+  final String leagueRaw;
+
+  /// Ekranda gösterilen kulüp adı: Türkçede Türkçe ad, diğer dillerde İngilizce ad
+  String get name => currentLang == 'tr' || nameEn == null ? nameTr : nameEn!;
+
+  /// Ekranda gösterilen lig adı (geçerli dilde)
+  String get league => leagueName(leagueRaw);
 
   /// Ün seviyesi: 1 = herkesin bildiği büyük kulüp, 2 = tanınmış, 3 = diğer
   final int tier;
@@ -28,6 +42,7 @@ class Club {
   factory Club.fromJson(Map<String, dynamic> json) => Club(
         id: json['id'] as String,
         name: json['ad'] as String,
+        nameEn: json['en'] as String?,
         fullName: json['tam_ad'] as String,
         league: json['lig'] as String,
         tier: json['t'] as int? ?? 3,

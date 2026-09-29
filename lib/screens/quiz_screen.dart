@@ -7,6 +7,7 @@ import '../report/report.dart';
 import '../theme.dart';
 import '../widgets/board.dart' show ClubHeader;
 import 'game_screen.dart' show difficultyLabels;
+import '../l10n/l10n.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key, required this.repo, required this.difficulty});
@@ -74,17 +75,17 @@ class _QuizScreenState extends State<QuizScreen> {
           size: 40,
           color: isRecord ? AppColors.amber : AppColors.textMuted,
         ),
-        title: Text(isRecord ? 'Yeni rekor!' : 'Süre bitti'),
+        title: Text(isRecord ? t('common.new_record') : t('common.time_up')),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             GoldText('$score', size: 72, spacing: 1),
-            const Text('doğru cevap',
+            Text(t('quiz.correct_answers'),
                 style: TextStyle(color: AppColors.textMuted)),
             const SizedBox(height: 16),
             Text(
-              'En uzun seri: ${_game.engine.bestStreak}\n'
-              'Rekor: ${isRecord ? score : oldBest}',
+              '${t('quiz.best_streak', {'n': _game.engine.bestStreak})}\n'
+              '${t('common.record', {'n': isRecord ? score : oldBest})}',
               textAlign: TextAlign.center,
               style: const TextStyle(color: AppColors.text),
             ),
@@ -96,14 +97,14 @@ class _QuizScreenState extends State<QuizScreen> {
               Navigator.pop(ctx);
               Navigator.pop(context);
             },
-            child: const Text('Ana Menü'),
+            child: Text(t('common.main_menu')),
           ),
           FilledButton(
             onPressed: () {
               Navigator.pop(ctx);
               _restart();
             },
-            child: const Text('Tekrar Oyna'),
+            child: Text(t('common.play_again')),
           ),
         ],
       ),
@@ -126,7 +127,7 @@ class _QuizScreenState extends State<QuizScreen> {
             surfaceTintColor: Colors.transparent,
             centerTitle: true,
             title: Text(
-              'Doğru mu Yanlış mı? · $diffLabel',
+              t('quiz.title', {'diff': diffLabel}),
               style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
             ),
           ),
@@ -138,7 +139,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   // Skor, süre, seri
                   Row(
                     children: [
-                      _Stat(label: 'PUAN', value: '${engine.score}'),
+                      _Stat(label: t('quiz.points'), value: '${engine.score}'),
                       const Spacer(),
                       SizedBox(
                         width: 72,
@@ -170,21 +171,21 @@ class _QuizScreenState extends State<QuizScreen> {
                         ),
                       ),
                       const Spacer(),
-                      _Stat(label: 'SERİ', value: '🔥 ${engine.streak}'),
+                      _Stat(label: t('quiz.streak'), value: '🔥 ${engine.streak}'),
                     ],
                   ),
                   const Spacer(),
                   // Soru
                   Text(
-                    player.name.toUpperCase(),
+                    upper(player.name),
                     textAlign: TextAlign.center,
                     style: displayStyle(40),
                   ),
                   if (player.birthYear != null)
-                    Text('d. ${player.birthYear}',
+                    Text(t('common.born', {'y': player.birthYear}),
                         style: const TextStyle(color: AppColors.textMuted)),
                   const SizedBox(height: 18),
-                  const Text('şu kulüpte oynadı mı?',
+                  Text(t('quiz.question'),
                       style:
                           TextStyle(fontSize: 16, color: AppColors.textMuted)),
                   const SizedBox(height: 18),
@@ -200,7 +201,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     children: [
                       Expanded(
                         child: _AnswerButton(
-                          label: 'Oynamadı',
+                          label: t('quiz.no'),
                           icon: Icons.close,
                           color: AppColors.danger,
                           onTap: _game.isOver ? null : () => _game.answer(false),
@@ -209,7 +210,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: _AnswerButton(
-                          label: 'Oynadı',
+                          label: t('quiz.yes'),
                           icon: Icons.check,
                           color: AppColors.success,
                           onTap: _game.isOver ? null : () => _game.answer(true),
@@ -263,10 +264,10 @@ class _FeedbackLine extends StatelessWidget {
   Widget build(BuildContext context) {
     final fb = game.lastFeedback;
     if (fb == null) {
-      return const SizedBox(
+      return SizedBox(
         height: 40,
         child: Center(
-          child: Text('Yanlış cevap süreden 5 saniye götürür',
+          child: Text(t('quiz.penalty_hint'),
               style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
         ),
       );
@@ -274,9 +275,9 @@ class _FeedbackLine extends StatelessWidget {
     final player = game.repo.playerById(fb.question.playerId)!;
     final club = game.repo.club(fb.question.clubId);
     final text = fb.correct
-        ? 'Doğru!'
-        : 'Yanlış! ${player.name}, ${club.name} kulübünde '
-            '${fb.question.isTrue ? 'oynadı' : 'oynamadı'} (−5 sn)';
+        ? t('quiz.correct')
+        : t(fb.question.isTrue ? 'quiz.wrong_did' : 'quiz.wrong_didnt',
+            {'name': player.name, 'club': club.name});
     return SizedBox(
       height: 40,
       child: Row(
@@ -297,15 +298,15 @@ class _FeedbackLine extends StatelessWidget {
               onPressed: () => showReportDialog(
                 context,
                 DataReport(
-                  mode: 'Doğru mu?',
+                  mode: t('mode.quiz.title'),
                   player: player,
                   clubs: [club],
                   claim: fb.question.isTrue
-                      ? 'Oyun: bu kulüpte oynadı'
-                      : 'Oyun: bu kulüpte oynamadı',
+                      ? t('quiz.claim_did')
+                      : t('quiz.claim_didnt'),
                 ),
               ),
-              child: const Text('Hatalı mı?'),
+              child: Text(t('quiz.dispute')),
             ),
         ],
       ),

@@ -15,6 +15,7 @@ import '../widgets/kit_icon.dart';
 import '../widgets/player_search_sheet.dart';
 import '../widgets/players_header.dart';
 import 'game_screen.dart' show difficultyLabels;
+import '../l10n/l10n.dart';
 
 class DraftScreen extends StatefulWidget {
   const DraftScreen({
@@ -76,11 +77,11 @@ class _DraftScreenState extends State<DraftScreen> {
         statOf: (id, s) => widget.repo.playerById(id)!.stat(s),
       ),
       onTimeout: (who) {
-        if (mounted) _toast('Süre doldu! ${_game.nameOf(who)} bu turdan 0 puan aldı.');
+        if (mounted) _toast(t('draft.time_up', {'name': _game.nameOf(who)}));
       },
       names: _vsBot
-          ? const {Mark.x: 'Sen', Mark.o: 'Bot'}
-          : const {Mark.x: 'Oyuncu 1', Mark.o: 'Oyuncu 2'},
+          ? {Mark.x: t('common.you'), Mark.o: t('common.bot')}
+          : {Mark.x: t('common.player_n', {'n': 1}), Mark.o: t('common.player_n', {'n': 2})},
     );
     _game.addListener(_onChanged);
     _resultShown = false;
@@ -123,7 +124,7 @@ class _DraftScreenState extends State<DraftScreen> {
       final p = widget.repo.playerById(id)!;
       final r = _game.pick(p);
       if (r.outcome == GuessResult.correct) {
-        _toast('Bot: ${p.name} · +${_game.criterion.format(r.value)}',
+        _toast(t('draft.bot_pick', {'name': p.name, 'v': _game.criterion.format(r.value)}),
             color: AppColors.o.withValues(alpha: 0.9));
         if (r.value > 0) _botReactor?.onBotScored();
       }
@@ -153,7 +154,7 @@ class _DraftScreenState extends State<DraftScreen> {
       builder: (_) => PlayerSearchSheet(
         repo: widget.repo,
         title: '${club.name} · ${criterionTitle(_game.criterion)}',
-        hint: '${club.name} kulübünde oynamış bir futbolcu seç',
+        hint: t('draft.search_hint', {'club': club.name}),
         usedIds: _game.engine.usedPlayerIds,
       ),
     );
@@ -162,25 +163,25 @@ class _DraftScreenState extends State<DraftScreen> {
     final r = _game.pick(player);
     switch (r.outcome) {
       case GuessResult.correct:
-        _toast('${player.name} · +${_game.criterion.format(r.value)}',
+        _toast(t('draft.picked', {'name': player.name, 'v': _game.criterion.format(r.value)}),
             color: AppColors.success);
         if (r.value > 0) _botReactor?.onPlayerScored();
       case GuessResult.wrong:
         _toast(
-          '${player.name}, ${club.name} kulübünde oynamamış. Tekrar dene!',
+          t('draft.wrong', {'name': player.name, 'club': club.name}),
           color: AppColors.danger,
           action: reportAction(
             context,
             DataReport(
-              mode: 'Kadro Kur',
+              mode: t('mode.draft.title'),
               player: player,
               clubs: [club],
-              claim: 'Oyun: bu kulüpte oynamamış',
+              claim: t('draft.claim'),
             ),
           ),
         );
       case GuessResult.alreadyUsed:
-        _toast('Bu oyuncu bu maçta zaten seçildi.');
+        _toast(t('draft.already'));
       case GuessResult.invalid:
         break;
     }
@@ -193,10 +194,10 @@ class _DraftScreenState extends State<DraftScreen> {
     final crit = _game.criterion;
     final w = e.winner;
     final title = w == null
-        ? 'Berabere!'
+        ? t('common.draw')
         : _vsBot
-            ? (w == Mark.x ? 'Kazandın!' : 'Bot kazandı')
-            : '${_game.nameOf(w)} kazandı!';
+            ? (w == Mark.x ? t('common.you_won') : t('common.bot_won'))
+            : t('common.x_won', {'name': _game.nameOf(w)});
 
     await showDialog<void>(
       context: context,
@@ -230,7 +231,7 @@ class _DraftScreenState extends State<DraftScreen> {
                 ],
               ),
               const SizedBox(height: 16),
-              const Text('HER TURUN EN İYİ SEÇENEKLERİ',
+              Text(t('draft.best'),
                   style: TextStyle(
                       fontSize: 12,
                       letterSpacing: 1.2,
@@ -274,14 +275,14 @@ class _DraftScreenState extends State<DraftScreen> {
               Navigator.pop(ctx);
               Navigator.pop(context);
             },
-            child: const Text('Ana Menü'),
+            child: Text(t('common.main_menu')),
           ),
           FilledButton(
             onPressed: () {
               Navigator.pop(ctx);
               _restart();
             },
-            child: Text(_vsBot ? 'Rövanş' : 'Yeni Oyun'),
+            child: Text(_vsBot ? t('common.rematch') : t('common.new_game')),
           ),
         ],
       ),
@@ -302,7 +303,7 @@ class _DraftScreenState extends State<DraftScreen> {
             backgroundColor: Colors.transparent,
             surfaceTintColor: Colors.transparent,
             centerTitle: true,
-            title: Text('Kadro Kur · $diffLabel',
+            title: Text(t('draft.title', {'diff': diffLabel}),
                 style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w900)),
             actions: [if (_vsBot) ReactionButton(controller: _reactions)],
           ),
@@ -323,8 +324,8 @@ class _DraftScreenState extends State<DraftScreen> {
                     secondsLeft: _game.secondsLeft,
                     turnSeconds: _game.turnSeconds,
                     status: _botTurn
-                        ? 'Bot kadrosunu düşünüyor…'
-                        : 'Sıra: ${_game.nameOf(current)} · ${_game.secondsLeft} sn',
+                        ? t('draft.bot_thinking')
+                        : t('common.turn_of', {'name': _game.nameOf(current), 's': _game.secondsLeft}),
                     bubbles: _reactions.bubbles,
                   ),
                   const SizedBox(height: 12),
@@ -353,7 +354,7 @@ class _DraftScreenState extends State<DraftScreen> {
                               onPressed: _botTurn ? null : _game.skip,
                               style: OutlinedButton.styleFrom(
                                   minimumSize: const Size.fromHeight(52)),
-                              child: const Text('Pas (0)'),
+                              child: Text(t('draft.pass')),
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -364,7 +365,7 @@ class _DraftScreenState extends State<DraftScreen> {
                               style: FilledButton.styleFrom(
                                   minimumSize: const Size.fromHeight(52)),
                               icon: const Icon(Icons.person_add_alt_1),
-                              label: const Text('Oyuncu Seç'),
+                              label: Text(t('draft.pick_btn')),
                             ),
                           ),
                         ],
@@ -377,7 +378,7 @@ class _DraftScreenState extends State<DraftScreen> {
                       child: FilledButton.icon(
                         onPressed: _restart,
                         icon: const Icon(Icons.refresh),
-                        label: Text(_vsBot ? 'Rövanş' : 'Yeni Oyun'),
+                        label: Text(_vsBot ? t('common.rematch') : t('common.new_game')),
                       ),
                     ),
                 ],
@@ -411,7 +412,7 @@ class _CriterionBanner extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text('ÖLÇÜT',
+          Text(t('draft.criterion'),
               style: TextStyle(
                   fontSize: 11,
                   letterSpacing: 3,
@@ -419,7 +420,7 @@ class _CriterionBanner extends StatelessWidget {
                   color: AppColors.gold)),
           GoldText(criterionTitle(criterion), size: 30, spacing: 2),
           if (criterion.since2012)
-            const Text('2012 sonrası Avrupa ligleri ve kupaları',
+            Text(t('stat.scope'),
                 style: TextStyle(fontSize: 11, color: AppColors.textMuted)),
         ],
       ),
@@ -447,9 +448,9 @@ class _RoundClub extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('TUR ${game.engine.round + 1}/${game.engine.rounds}',
+                Text(t('common.round_of_caps', {'n': game.engine.round + 1, 'total': game.engine.rounds}),
                     style: displayStyle(18, color: AppColors.primary)),
-                Text(club.name.toUpperCase(),
+                Text(upper(club.name),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: displayStyle(30)),
@@ -481,7 +482,7 @@ class _Lineup extends StatelessWidget {
           accent: color, active: !e.isOver && game.current == mark),
       child: Column(
         children: [
-          Text(game.nameOf(mark).toUpperCase(), style: displayStyle(18, color: color)),
+          Text(upper(game.nameOf(mark)), style: displayStyle(18, color: color)),
           const SizedBox(height: 6),
           for (var r = 0; r < e.rounds; r++)
             Expanded(child: _slot(e, r, color)),
@@ -516,8 +517,8 @@ class _Lineup extends StatelessWidget {
           Expanded(
             child: Text(
               pick == null
-                  ? (active ? 'Seçiyor…' : '—')
-                  : (player?.name ?? 'Pas'),
+                  ? (active ? t('draft.picking') : '—')
+                  : (player?.name ?? t('common.pass')),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(

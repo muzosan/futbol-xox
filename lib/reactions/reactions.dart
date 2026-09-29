@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../game/engine/common.dart';
 import '../theme.dart';
+import '../l10n/l10n.dart';
 
 /// Maçta gönderilebilecek hazır emojiler. Serbest yazı bilerek yok:
 /// online maçlarda hakaret ve taciz riskini ortadan kaldırır.
@@ -133,7 +134,7 @@ class ReactionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      tooltip: 'Emoji gönder',
+      tooltip: t('emoji.send'),
       icon: const Icon(Icons.emoji_emotions_outlined),
       onPressed: () => _open(context),
     );
@@ -162,8 +163,8 @@ class ReactionButton extends StatelessWidget {
                         Navigator.pop(ctx);
                         if (!sent) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Biraz bekle, çok hızlı gönderiyorsun.'),
+                            SnackBar(
+                              content: Text(t('emoji.slow')),
                               duration: Duration(seconds: 1),
                             ),
                           );
@@ -186,7 +187,7 @@ class ReactionButton extends StatelessWidget {
               SwitchListTile(
                 value: controller.opponentMuted,
                 onChanged: (_) => controller.toggleMute(),
-                title: const Text('Rakibin emojilerini gizle'),
+                title: Text(t('emoji.hide')),
                 contentPadding: EdgeInsets.zero,
               ),
             ],

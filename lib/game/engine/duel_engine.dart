@@ -1,16 +1,19 @@
+import '../../l10n/translate.dart';
 import 'common.dart';
 
 /// Kartlarda karşılaştırılan istatistikler
 class CardStat {
-  const CardStat(this.key, this.label, this.short, {this.money = false, this.since2012 = false});
+  const CardStat(this.key, {this.money = false, this.since2012 = false});
 
   final String key;
-  final String label;
-  final String short;
   final bool money;
 
   /// Sadece 2012 sonrası Avrupa verisini kapsıyor mu (ekranda belirtilir)
   final bool since2012;
+
+  /// Geçerli dilde uzun ve kısa ad (ör. "Gol" / "GOL", "Goals" / "GLS")
+  String get label => t('stat.$key');
+  String get short => t('stat.$key.short');
 
   String format(num v) {
     if (!money) return '${v.round()}';
@@ -20,13 +23,13 @@ class CardStat {
 }
 
 const List<CardStat> kCardStats = [
-  CardStat('g', 'Gol', 'GOL', since2012: true),
-  CardStat('a', 'Asist', 'AST', since2012: true),
-  CardStat('m', 'Maç', 'MAÇ', since2012: true),
-  CardStat('r', 'Kırmızı Kart', 'KRM', since2012: true),
-  CardStat('y', 'Sarı Kart', 'SARI', since2012: true),
-  CardStat('mm', 'Milli Maç', 'MİLLİ'),
-  CardStat('pv', 'Piyasa Değeri', 'DEĞER', money: true),
+  CardStat('g', since2012: true),
+  CardStat('a', since2012: true),
+  CardStat('m', since2012: true),
+  CardStat('r', since2012: true),
+  CardStat('y', since2012: true),
+  CardStat('mm'),
+  CardStat('pv', money: true),
 ];
 
 CardStat cardStat(String key) => kCardStats.firstWhere((s) => s.key == key);

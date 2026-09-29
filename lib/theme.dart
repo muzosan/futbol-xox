@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'game/engine/common.dart';
+import 'l10n/lang_state.dart';
 
 /// Renk paleti: gece maçı + altın vurgular (premium his)
 class AppColors {
@@ -80,14 +81,42 @@ class AppDecor {
 }
 
 /// Başlıklar için dar ve güçlü yazı (Bebas Neue)
+/// Arapça seçiliyse Cairo (Montserrat ve Bebas Neue Arapça harf içermez)
+bool get _arabic => currentLang == 'ar';
+
+/// Arayüz yazı tipi: Montserrat, Arapçada Cairo
+TextStyle uiFont({
+  FontWeight? fontWeight,
+  double? fontSize,
+  double? letterSpacing,
+  Color? color,
+}) =>
+    _arabic
+        ? GoogleFonts.cairo(
+            fontWeight: fontWeight, fontSize: fontSize, letterSpacing: 0, color: color)
+        : GoogleFonts.montserrat(
+            fontWeight: fontWeight,
+            fontSize: fontSize,
+            letterSpacing: letterSpacing,
+            color: color);
+
+/// Başlıklar için dar ve güçlü yazı (Bebas Neue; Arapçada kalın Cairo)
 TextStyle displayStyle(double size, {Color color = AppColors.text, double spacing = 1.5}) =>
-    GoogleFonts.bebasNeue(
-      fontSize: size,
-      color: color,
-      letterSpacing: spacing,
-      height: 1.0,
-      shadows: AppShadows.text,
-    );
+    _arabic
+        ? GoogleFonts.cairo(
+            fontSize: size * 0.78,
+            fontWeight: FontWeight.w900,
+            color: color,
+            height: 1.25,
+            shadows: AppShadows.text,
+          )
+        : GoogleFonts.bebasNeue(
+            fontSize: size,
+            color: color,
+            letterSpacing: spacing,
+            height: 1.0,
+            shadows: AppShadows.text,
+          );
 
 /// Altın geçişli yazı (logo başlığı, rekorlar)
 class GoldText extends StatelessWidget {
@@ -210,7 +239,9 @@ ThemeData buildAppTheme() {
   );
 
   // Bütün yazılar Montserrat; en ince yazı bile yarı kalın
-  final t = GoogleFonts.montserratTextTheme(base.textTheme)
+  final t = (_arabic
+          ? GoogleFonts.cairoTextTheme(base.textTheme)
+          : GoogleFonts.montserratTextTheme(base.textTheme))
       .apply(bodyColor: AppColors.text, displayColor: AppColors.text);
   TextStyle? w(TextStyle? s, FontWeight weight) => s?.copyWith(fontWeight: weight);
   final textTheme = t.copyWith(
@@ -230,7 +261,7 @@ ThemeData buildAppTheme() {
     labelMedium: w(t.labelMedium, FontWeight.w700),
     labelSmall: w(t.labelSmall, FontWeight.w700),
   );
-  final boldLabel = GoogleFonts.montserrat(
+  final boldLabel = uiFont(
       fontWeight: FontWeight.w800, fontSize: 15, letterSpacing: 0.3);
   final radius14 = RoundedRectangleBorder(borderRadius: BorderRadius.circular(14));
 
@@ -251,7 +282,7 @@ ThemeData buildAppTheme() {
       behavior: SnackBarBehavior.floating,
       elevation: 8,
       shape: radius14,
-      contentTextStyle: GoogleFonts.montserrat(
+      contentTextStyle: uiFont(
           fontWeight: FontWeight.w700, color: Colors.white),
     ),
     bottomSheetTheme: const BottomSheetThemeData(
@@ -285,19 +316,19 @@ ThemeData buildAppTheme() {
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        textStyle: GoogleFonts.montserrat(fontWeight: FontWeight.w800),
+        textStyle: uiFont(fontWeight: FontWeight.w800),
       ),
     ),
     listTileTheme: ListTileThemeData(
-      titleTextStyle: GoogleFonts.montserrat(
+      titleTextStyle: uiFont(
           fontWeight: FontWeight.w700, fontSize: 16, color: AppColors.text),
-      subtitleTextStyle: GoogleFonts.montserrat(
+      subtitleTextStyle: uiFont(
           fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.textMuted),
     ),
     segmentedButtonTheme: SegmentedButtonThemeData(
       style: ButtonStyle(
         textStyle: WidgetStatePropertyAll(
-            GoogleFonts.montserrat(fontWeight: FontWeight.w800)),
+            uiFont(fontWeight: FontWeight.w800)),
       ),
     ),
     dividerColor: AppColors.border,

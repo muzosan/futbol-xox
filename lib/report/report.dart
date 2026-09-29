@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../data/models.dart';
 import '../theme.dart';
+import '../l10n/l10n.dart';
 
 /// Hata raporlarının gideceği adres.
 /// (Online moda geçince raporlar e-posta yerine doğrudan Firebase'e gidecek.)
@@ -26,7 +27,9 @@ class DataReport {
   final String claim;
 }
 
-const _issueTypes = [
+/// Sorun türleri (ekranda geçerli dilde; e-postada Türkçe yazılır)
+List<String> _issueTypes() => [for (var i = 1; i <= 5; i++) t('rep.t$i')];
+const _issueTypesTr = [
   'Bu oyuncu bu kulüpte oynadı (oyun yanlış dedi)',
   'Bu oyuncu bu kulüpte oynamadı (oyun doğru dedi)',
   'Oyuncu bilgisi yanlış (isim, mevki, uyruk, doğum yılı)',
@@ -37,13 +40,14 @@ const _issueTypes = [
 /// Yanlış cevap mesajlarına eklenen "Bildir" butonu.
 SnackBarAction reportAction(BuildContext context, DataReport report) =>
     SnackBarAction(
-      label: 'Bildir',
+      label: t('common.report'),
       textColor: Colors.white,
       onPressed: () => showReportDialog(context, report),
     );
 
 Future<void> showReportDialog(BuildContext context, DataReport report) async {
-  var selected = report.player == null ? _issueTypes.length - 1 : 0;
+  final issueTypes = _issueTypes();
+  var selected = report.player == null ? issueTypes.length - 1 : 0;
   final noteController = TextEditingController();
 
   final send = await showDialog<bool>(
@@ -52,7 +56,7 @@ Future<void> showReportDialog(BuildContext context, DataReport report) async {
       builder: (ctx, setState) => AlertDialog(
         backgroundColor: AppColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Hatalı veri bildir'),
+        title: Text(t('rep.title')),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -74,14 +78,14 @@ Future<void> showReportDialog(BuildContext context, DataReport report) async {
                     style: const TextStyle(color: AppColors.textMuted)),
               ],
               const SizedBox(height: 12),
-              for (var i = 0; i < _issueTypes.length; i++)
+              for (var i = 0; i < issueTypes.length; i++)
                 RadioListTile<int>(
                   value: i,
                   groupValue: selected,
                   onChanged: (v) => setState(() => selected = v!),
                   dense: true,
                   contentPadding: EdgeInsets.zero,
-                  title: Text(_issueTypes[i],
+                  title: Text(issueTypes[i],
                       style: const TextStyle(fontSize: 14)),
                 ),
               const SizedBox(height: 8),
@@ -89,7 +93,7 @@ Future<void> showReportDialog(BuildContext context, DataReport report) async {
                 controller: noteController,
                 maxLines: 3,
                 decoration: InputDecoration(
-                  hintText: 'Not (isteğe bağlı): ör. "2007-2011 arası Benfica\'da oynadı"',
+                  hintText: t('rep.note'),
                   filled: true,
                   fillColor: AppColors.surfaceHigh,
                   border: OutlineInputBorder(
@@ -104,11 +108,11 @@ Future<void> showReportDialog(BuildContext context, DataReport report) async {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Vazgeç'),
+            child: Text(t('common.cancel')),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Gönder'),
+            child: Text(t('rep.send')),
           ),
         ],
       ),
@@ -118,7 +122,7 @@ Future<void> showReportDialog(BuildContext context, DataReport report) async {
   noteController.dispose();
   if (send != true || !context.mounted) return;
 
-  final body = _buildBody(report, _issueTypes[selected], note);
+  final body = _buildBody(report, selected, note);
   final uri = Uri(
     scheme: 'mailto',
     path: kSupportEmail,
@@ -140,10 +144,10 @@ Future<void> showReportDialog(BuildContext context, DataReport report) async {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: AppColors.surface,
-        title: const Text('E-posta uygulaması açılamadı'),
+        title: Text(t('rep.no_mail')),
         content: SingleChildScrollView(
           child: SelectableText(
-            'Aşağıdaki metni $kSupportEmail adresine gönderebilirsin:\n\n$body',
+            '${t('rep.send_to', {'mail': kSupportEmail})}\n\n$body',
             style: const TextStyle(fontSize: 13),
           ),
         ),
@@ -153,19 +157,20 @@ Future<void> showReportDialog(BuildContext context, DataReport report) async {
               Clipboard.setData(ClipboardData(text: body));
               Navigator.pop(ctx);
             },
-            child: const Text('Kopyala'),
+            child: Text(t('rep.copy')),
           ),
         ],
       ),
     );
   } else if (context.mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('Teşekkürler! Bildirimin incelenecek.'),
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(t('rep.thanks')),
     ));
   }
 }
 
-String _buildBody(DataReport r, String issue, String note) {
+String _buildBody(DataReport r, int issueIndex, String note) {
+  final issue = _issueTypesTr[issueIndex];
   final p = r.player;
   final lines = <String>[
     'Mod: ${r.mode}',
@@ -178,7 +183,7 @@ String _buildBody(DataReport r, String issue, String note) {
     if (note.isNotEmpty) 'Not: $note',
   ];
   // Geliştirici için: duzeltmeler.json'a yapıştırılabilir satırlar
-  if (p != null && r.clubs.isNotEmpty && issue == _issueTypes[0]) {
+  if (p != null && r.clubs.isNotEmpty && issueIndex == 0) {
     lines.add('');
     lines.add('--- duzeltmeler.json "kulup_ekle" için öneri (doğru kulübü seç) ---');
     for (final c in r.clubs.where((c) => !p.clubs.contains(c.id))) {

@@ -33,7 +33,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 SPARQL_URL = "https://query.wikidata.org/sparql"
 API_URL = "https://www.wikidata.org/w/api.php"
 # Wikidata, isteği kimin attığını belirten bir User-Agent ister. Kendi mailini yaz.
-HEADERS = {"User-Agent": "FutbolXOX-VeriScripti/0.2 (iletisim: muazonurluer2312@gmail.com)"}
+HEADERS = {"User-Agent": "FutbolXOX-VeriScripti/0.2 (iletisim: seninmailin@example.com)"}
 
 FUTBOLCU = "Q937857"   # Wikidata: "association football player"
 FUTBOL_KULUBU = "Q476028"  # Wikidata: "association football club"

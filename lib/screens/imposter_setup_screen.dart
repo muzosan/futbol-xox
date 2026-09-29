@@ -4,6 +4,7 @@ import '../data/repository.dart';
 import '../theme.dart';
 import 'game_screen.dart' show difficultyLabels;
 import 'imposter_screen.dart';
+import '../l10n/l10n.dart';
 
 /// Sahtekâr kurulumu: oyuncu isimleri ve sahtekâra ipucu ayarı
 class ImposterSetupScreen extends StatefulWidget {
@@ -41,14 +42,14 @@ class _ImposterSetupScreenState extends State<ImposterSetupScreen> {
 
   List<String> get _finalNames => [
         for (var i = 0; i < _names.length; i++)
-          _names[i].text.trim().isEmpty ? 'Oyuncu ${i + 1}' : _names[i].text.trim(),
+          _names[i].text.trim().isEmpty ? t('common.player_n', {'n': i + 1}) : _names[i].text.trim(),
       ];
 
   void _start() {
     final names = _finalNames;
     if (names.toSet().length != names.length) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('İsimler birbirinden farklı olmalı.'),
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(t('imp.names_unique')),
       ));
       return;
     }
@@ -73,17 +74,17 @@ class _ImposterSetupScreenState extends State<ImposterSetupScreen> {
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: Text('Sahtekâr · $diffLabel',
+        title: Text(t('imp.title', {'diff': diffLabel}),
             style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w900)),
       ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
           children: [
-            Center(child: Text('OYUNCULAR', style: displayStyle(34, color: AppColors.gold))),
+            Center(child: Text(t('imp.players'), style: displayStyle(34, color: AppColors.gold))),
             const SizedBox(height: 4),
-            const Text(
-              'Telefon elden ele dolaşacak. İsimleri oturma sırasına göre yaz.',
+            Text(
+              t('imp.seating'),
               textAlign: TextAlign.center,
               style: TextStyle(color: AppColors.textMuted),
             ),
@@ -106,7 +107,7 @@ class _ImposterSetupScreenState extends State<ImposterSetupScreen> {
                           textCapitalization: TextCapitalization.words,
                           style: const TextStyle(fontWeight: FontWeight.w800),
                           decoration: InputDecoration(
-                            hintText: 'Oyuncu ${i + 1}',
+                            hintText: t('common.player_n', {'n': i + 1}),
                             border: InputBorder.none,
                           ),
                         ),
@@ -124,7 +125,7 @@ class _ImposterSetupScreenState extends State<ImposterSetupScreen> {
               OutlinedButton.icon(
                 onPressed: () => setState(_add),
                 icon: const Icon(Icons.person_add_alt_1),
-                label: const Text('Oyuncu Ekle'),
+                label: Text(t('imp.add_player')),
               ),
             const SizedBox(height: 16),
             Container(
@@ -132,8 +133,8 @@ class _ImposterSetupScreenState extends State<ImposterSetupScreen> {
               child: SwitchListTile(
                 value: _hint,
                 onChanged: (v) => setState(() => _hint = v),
-                title: const Text('Sahtekâra ipucu ver'),
-                subtitle: const Text('Sahtekâr, futbolcunun mevkisini ve ligini görür'),
+                title: Text(t('imp.hint_toggle')),
+                subtitle: Text(t('imp.hint_desc')),
               ),
             ),
             const SizedBox(height: 16),
@@ -144,7 +145,7 @@ class _ImposterSetupScreenState extends State<ImposterSetupScreen> {
               child: FilledButton.icon(
                 onPressed: _start,
                 icon: const Icon(Icons.play_arrow_rounded),
-                label: Text('BAŞLA · ${_names.length} OYUNCU'),
+                label: Text(t('imp.start', {'n': _names.length})),
               ),
             ),
           ],
@@ -158,14 +159,14 @@ class _ImposterSetupScreenState extends State<ImposterSetupScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: AppDecor.card(radius: 14, raised: false),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('NASIL OYNANIR', style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.2)),
+          Text(t('imp.how'), style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.2)),
           SizedBox(height: 6),
-          Text('1. Herkes sırayla gizli futbolcuyu görür. Biri sahtekârdır, futbolcuyu bilmez.', style: style),
-          Text('2. 3 tur boyunca herkes futbolcuyla ilgili tek kelimelik ipucu söyler.', style: style),
-          Text('3. Gizli oylamayla sahtekârı bulun. Yakalanan sahtekâr, futbolcuyu tahmin ederse yine kurtulur!', style: style),
+          Text(t('imp.rule1'), style: style),
+          Text(t('imp.rule2'), style: style),
+          Text(t('imp.rule3'), style: style),
         ],
       ),
     );

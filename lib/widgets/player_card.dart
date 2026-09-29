@@ -6,6 +6,7 @@ import '../data/models.dart';
 import '../data/repository.dart';
 import '../data/text_utils.dart';
 import '../game/engine/duel_engine.dart';
+import '../l10n/translate.dart' show upper;
 import '../theme.dart';
 import 'kit_icon.dart';
 
@@ -150,7 +151,7 @@ class PlayerCard extends StatelessWidget {
                   if (club != null) KitIcon(club: club, size: w * 0.3),
                   SizedBox(height: w * 0.02),
                   Text(
-                    player.name.toUpperCase(),
+                    upper(player.name),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: displayStyle(w * 0.12, color: ink, spacing: 0.5)

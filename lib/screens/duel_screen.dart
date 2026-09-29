@@ -13,6 +13,7 @@ import '../theme.dart';
 import '../widgets/player_card.dart';
 import '../widgets/players_header.dart';
 import 'game_screen.dart' show difficultyLabels;
+import '../l10n/l10n.dart';
 
 class DuelScreen extends StatefulWidget {
   const DuelScreen({
@@ -78,8 +79,8 @@ class _DuelScreenState extends State<DuelScreen> {
         statOf: (id, stat) => widget.repo.playerById(id)!.stat(stat),
       ),
       names: _vsBot
-          ? const {Mark.x: 'Sen', Mark.o: 'Bot'}
-          : const {Mark.x: 'Oyuncu 1', Mark.o: 'Oyuncu 2'},
+          ? {Mark.x: t('common.you'), Mark.o: t('common.bot')}
+          : {Mark.x: t('common.player_n', {'n': 1}), Mark.o: t('common.player_n', {'n': 2})},
       stats: stats,
     );
     _game!.addListener(_onChanged);
@@ -128,10 +129,10 @@ class _DuelScreenState extends State<DuelScreen> {
     final g = _game!;
     final winner = g.engine.winner;
     final title = winner == null
-        ? 'Berabere!'
+        ? t('common.draw')
         : _vsBot
-            ? (winner == Mark.x ? 'Kazandın!' : 'Bot kazandı')
-            : '${g.nameOf(winner)} kazandı!';
+            ? (winner == Mark.x ? t('common.you_won') : t('common.bot_won'))
+            : t('common.x_won', {'name': g.nameOf(winner)});
     await showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -158,14 +159,14 @@ class _DuelScreenState extends State<DuelScreen> {
               Navigator.pop(ctx);
               Navigator.pop(context);
             },
-            child: const Text('Ana Menü'),
+            child: Text(t('common.main_menu')),
           ),
           FilledButton(
             onPressed: () {
               Navigator.pop(ctx);
               _restart();
             },
-            child: Text(_vsBot ? 'Rövanş' : 'Yeni Oyun'),
+            child: Text(_vsBot ? t('common.rematch') : t('common.new_game')),
           ),
         ],
       ),
@@ -179,7 +180,7 @@ class _DuelScreenState extends State<DuelScreen> {
       backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       centerTitle: true,
-      title: Text('Kart Düellosu · $diffLabel',
+      title: Text(t('duel.title', {'diff': diffLabel}),
           style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w900)),
       actions: [if (_vsBot) ReactionButton(controller: _reactions)],
     );
@@ -188,13 +189,11 @@ class _DuelScreenState extends State<DuelScreen> {
     if (g == null) {
       return Scaffold(
         appBar: appBar,
-        body: const Center(
+        body: Center(
           child: Padding(
             padding: EdgeInsets.all(24),
             child: Text(
-              'İstatistik verisi bulunamadı.\n'
-              'tools klasöründe "py istatistik_topla.py" ve "py hazirla.py" '
-              'çalıştırıp uygulamayı yeniden başlat.',
+              t('duel.no_data'),
               textAlign: TextAlign.center,
               style: TextStyle(color: AppColors.textMuted),
             ),
@@ -210,11 +209,11 @@ class _DuelScreenState extends State<DuelScreen> {
         final chooser = g.chooser;
         final status = g.revealed
             ? (round!.winner == null
-                ? 'Berabere'
-                : '${g.nameOf(round.winner!)} turu aldı')
+                ? t('common.draw_plain')
+                : t('duel.took_round', {'name': g.nameOf(round.winner!)}))
             : _botTurn
-                ? 'Bot istatistik seçiyor…'
-                : '${g.nameOf(chooser)}: kartından bir istatistik seç · ${g.secondsLeft} sn';
+                ? t('duel.bot_picking')
+                : t('duel.pick', {'name': g.nameOf(chooser), 's': g.secondsLeft});
         return Scaffold(
           appBar: appBar,
           body: SafeArea(
@@ -240,7 +239,7 @@ class _DuelScreenState extends State<DuelScreen> {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      Text('TUR ${g.engine.index + 1}/${g.engine.rounds}',
+                      Text(t('common.round_of_caps', {'n': g.engine.index + 1, 'total': g.engine.rounds}),
                           style: displayStyle(22, color: AppColors.gold)),
                       const Spacer(),
                       if (g.revealed)
@@ -256,8 +255,8 @@ class _DuelScreenState extends State<DuelScreen> {
                   const SizedBox(height: 10),
                   Expanded(child: _cards(g)),
                   const SizedBox(height: 6),
-                  const Text(
-                    'Gol, asist, maç ve kartlar: 2012 sonrası Avrupa ligleri ve kupaları',
+                  Text(
+                    t('stat.scope_long'),
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 11, color: AppColors.textMuted),
                   ),
@@ -318,7 +317,7 @@ class _DuelScreenState extends State<DuelScreen> {
         height: 48,
         child: Center(
           child: Text(
-            _botTurn ? '' : 'Seçmek için kartındaki bir satıra dokun',
+            _botTurn ? '' : t('duel.tap_hint'),
             style: const TextStyle(color: AppColors.textMuted),
           ),
         ),
@@ -328,12 +327,12 @@ class _DuelScreenState extends State<DuelScreen> {
     return Row(
       children: [
         IconButton(
-          tooltip: 'Bu istatistik hatalı mı?',
+          tooltip: t('duel.report_tip'),
           icon: const Icon(Icons.flag_outlined, color: AppColors.textMuted),
           onPressed: () => showReportDialog(
             context,
             DataReport(
-              mode: 'Kart Düellosu',
+              mode: t('mode.duel.title'),
               player: g.cardOf(Mark.x),
               claim: '${cardStat(round.stat).label}: '
                   '${g.cardOf(Mark.x).name} ${cardStat(round.stat).format(round.x)}, '
@@ -348,7 +347,7 @@ class _DuelScreenState extends State<DuelScreen> {
             child: FilledButton.icon(
               onPressed: g.isOver ? null : g.next,
               icon: const Icon(Icons.arrow_forward),
-              label: Text(g.isOver ? 'Maç bitti' : 'Sonraki Tur'),
+              label: Text(g.isOver ? t('duel.match_over') : t('common.next_round')),
             ),
           ),
         ),

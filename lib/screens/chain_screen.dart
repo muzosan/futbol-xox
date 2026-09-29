@@ -14,6 +14,7 @@ import '../widgets/kit_icon.dart';
 import '../widgets/player_search_sheet.dart';
 import '../widgets/players_header.dart';
 import 'game_screen.dart' show difficultyLabels;
+import '../l10n/l10n.dart';
 
 class ChainScreen extends StatefulWidget {
   const ChainScreen({
@@ -80,8 +81,8 @@ class _ChainScreenState extends State<ChainScreen> {
       ),
       onTimeout: _onTimeout,
       names: _vsBot
-          ? const {Mark.x: 'Sen', Mark.o: 'Bot'}
-          : const {Mark.x: 'Oyuncu 1', Mark.o: 'Oyuncu 2'},
+          ? {Mark.x: t('common.you'), Mark.o: t('common.bot')}
+          : {Mark.x: t('common.player_n', {'n': 1}), Mark.o: t('common.player_n', {'n': 2})},
     );
     _game.addListener(_onGameChanged);
     _resultShown = false;
@@ -123,17 +124,17 @@ class _ChainScreenState extends State<ChainScreen> {
     final player = _bot!.decide(_game);
     if (player == null) {
       _game.pass();
-      _toast('Bot pas geçti ve bir can kaybetti.');
+      _toast(t('chain.bot_passed'));
       return;
     }
     final result = _game.answer(player);
     if (result.outcome == GuessResult.correct) {
       final via = widget.repo.club(result.link!.viaClub!).name;
-      _toast('Bot: ${player.name} (bağlantı: $via)',
+      _toast(t('chain.bot_link', {'name': player.name, 'via': via}),
           color: AppColors.o.withValues(alpha: 0.9));
       _botReactor?.onBotScored();
     } else if (result.outcome == GuessResult.wrong) {
-      _toast('Bot yanıldı: ${player.name}. Bot bir can kaybetti.');
+      _toast(t('chain.bot_wrong', {'name': player.name}));
     }
   }
 
@@ -141,7 +142,7 @@ class _ChainScreenState extends State<ChainScreen> {
 
   void _onTimeout(Mark who) {
     if (!mounted || _game.isOver) return;
-    _toast('Süre doldu! ${_game.nameOf(who)} bir can kaybetti.');
+    _toast(t('chain.time_up', {'name': _game.nameOf(who)}));
   }
 
   void _toast(String message, {Color? color, SnackBarAction? action}) {
@@ -166,9 +167,8 @@ class _ChainScreenState extends State<ChainScreen> {
       useSafeArea: true,
       builder: (_) => PlayerSearchSheet(
         repo: widget.repo,
-        title: '${last.name} ile aynı kulüpte oynamış biri',
-        hint: 'Listedeki kulüplerden birinde ${last.name} ile '
-            'ortak olan bir futbolcu yaz',
+        title: t('chain.search_title', {'name': last.name}),
+        hint: t('chain.search_hint', {'name': last.name}),
         usedIds: _game.usedPlayerIds,
       ),
     );
@@ -179,30 +179,29 @@ class _ChainScreenState extends State<ChainScreen> {
     switch (result.outcome) {
       case GuessResult.correct:
         final via = widget.repo.club(result.link!.viaClub!).name;
-        _toast('Doğru! Bağlantı: $via', color: AppColors.success);
+        _toast(t('chain.correct', {'via': via}), color: AppColors.success);
         _botReactor?.onPlayerScored();
       case GuessResult.wrong:
         _toast(
           result.fail == ChainFail.clubLimit
-              ? 'Ortak kulüpleri kullanım sınırına ulaştı. Bir can kaybettin.'
-              : '${player.name}, ${last.name} ile listedeki kulüplerin '
-                  'hiçbirinde oynamamış. Bir can kaybettin.',
+              ? t('chain.limit')
+              : t('chain.wrong', {'name': player.name, 'last': last.name}),
           color: AppColors.danger,
           action: result.fail == ChainFail.clubLimit
               ? null
               : reportAction(
                   context,
                   DataReport(
-                    mode: 'Zincir',
+                    mode: t('mode.chain.title'),
                     player: player,
                     clubs: last.clubs.map(widget.repo.club).toList(),
-                    claim: 'Oyun: ${last.name} ile ortak kulübü yok',
+                    claim: t('chain.claim', {'last': last.name}),
                   ),
                 ),
         );
         _botReactor?.onPlayerMissed();
       case GuessResult.alreadyUsed:
-        _toast('Bu oyuncu zincirde zaten var.');
+        _toast(t('chain.already'));
       case GuessResult.invalid:
         break;
     }
@@ -216,8 +215,8 @@ class _ChainScreenState extends State<ChainScreen> {
     final winner = _game.winner!;
     _botReactor?.onGameEnd(botWon: winner == Mark.o);
     final title = _vsBot
-        ? (winner == Mark.x ? 'Kazandın!' : 'Bot kazandı')
-        : '${_game.nameOf(winner)} kazandı!';
+        ? (winner == Mark.x ? t('common.you_won') : t('common.bot_won'))
+        : t('common.x_won', {'name': _game.nameOf(winner)});
 
     await showDialog<void>(
       context: context,
@@ -227,8 +226,8 @@ class _ChainScreenState extends State<ChainScreen> {
         icon: Icon(Icons.emoji_events, size: 40, color: markColor(winner)),
         title: Text(title),
         content: Text(
-          '${_game.nameOf(winner.other)} canlarını tüketti.\n'
-          'Zincir uzunluğu: ${_game.length}',
+          '${t('chain.out_of_lives', {'name': _game.nameOf(winner.other)})}\n'
+          '${t('chain.length', {'n': _game.length})}',
           textAlign: TextAlign.center,
           style: const TextStyle(color: AppColors.textMuted),
         ),
@@ -238,14 +237,14 @@ class _ChainScreenState extends State<ChainScreen> {
               Navigator.pop(ctx);
               Navigator.pop(context);
             },
-            child: const Text('Ana Menü'),
+            child: Text(t('common.main_menu')),
           ),
           FilledButton(
             onPressed: () {
               Navigator.pop(ctx);
               _restart();
             },
-            child: Text(_vsBot ? 'Rövanş' : 'Yeni Oyun'),
+            child: Text(_vsBot ? t('common.rematch') : t('common.new_game')),
           ),
         ],
       ),
@@ -256,7 +255,7 @@ class _ChainScreenState extends State<ChainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final modeLabel = _vsBot ? 'Bota Karşı' : '2 Kişilik';
+    final modeLabel = _vsBot ? t('common.vs_bot') : t('common.two_players');
     final diffLabel = difficultyLabels[widget.difficulty] ?? widget.difficulty;
 
     return ListenableBuilder(
@@ -270,7 +269,7 @@ class _ChainScreenState extends State<ChainScreen> {
             surfaceTintColor: Colors.transparent,
             centerTitle: true,
             title: Text(
-              'Zincir · $modeLabel · $diffLabel',
+              t('chain.title', {'mode': modeLabel, 'diff': diffLabel}),
               style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
             ),
             actions: [if (_vsBot) ReactionButton(controller: _reactions)],
@@ -292,8 +291,8 @@ class _ChainScreenState extends State<ChainScreen> {
                     secondsLeft: _game.secondsLeft,
                     turnSeconds: _game.turnSeconds,
                     status: _botTurn
-                        ? 'Bot düşünüyor…'
-                        : 'Sıra: ${_game.nameOf(current)} · ${_game.secondsLeft} sn',
+                        ? t('common.bot_thinking')
+                        : t('common.turn_of', {'name': _game.nameOf(current), 's': _game.secondsLeft}),
                     bubbles: _reactions.bubbles,
                   ),
                   const SizedBox(height: 14),
@@ -302,14 +301,14 @@ class _ChainScreenState extends State<ChainScreen> {
                   Row(
                     children: [
                       Text(
-                        'Zincir: ${_game.length}',
+                        t('chain.count', {'n': _game.length}),
                         style: const TextStyle(
                             fontWeight: FontWeight.w800,
                             color: AppColors.primary),
                       ),
                       const Spacer(),
                       Text(
-                        'Kulüp başına en fazla ${_game.engine.maxClubUses} bağlantı',
+                        t('chain.max_uses', {'n': _game.engine.maxClubUses}),
                         style: const TextStyle(
                             fontSize: 12, color: AppColors.textMuted),
                       ),
@@ -338,7 +337,7 @@ class _ChainScreenState extends State<ChainScreen> {
         child: FilledButton.icon(
           onPressed: _restart,
           icon: const Icon(Icons.refresh),
-          label: Text(_vsBot ? 'Rövanş' : 'Yeni Oyun'),
+          label: Text(_vsBot ? t('common.rematch') : t('common.new_game')),
           style: FilledButton.styleFrom(shape: shape),
         ),
       );
@@ -356,7 +355,7 @@ class _ChainScreenState extends State<ChainScreen> {
                 shape: shape,
                 minimumSize: const Size.fromHeight(52),
               ),
-              child: const Text('Pas (−1 can)'),
+              child: Text(t('chain.pass')),
             ),
           ),
           const SizedBox(width: 12),
@@ -365,7 +364,7 @@ class _ChainScreenState extends State<ChainScreen> {
             child: FilledButton.icon(
               onPressed: _botTurn ? null : _openSearch,
               icon: const Icon(Icons.link),
-              label: const Text('Futbolcu Yaz'),
+              label: Text(t('common.write_player')),
               style: FilledButton.styleFrom(
                 shape: shape,
                 minimumSize: const Size.fromHeight(52),
@@ -399,14 +398,14 @@ class _LastPlayerCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('SON OYUNCU',
+          Text(t('chain.last'),
               style: TextStyle(
                   fontSize: 11,
                   letterSpacing: 1.5,
                   fontWeight: FontWeight.w800,
                   color: AppColors.textMuted)),
           const SizedBox(height: 4),
-          Text(player.name.toUpperCase(), style: displayStyle(32)),
+          Text(upper(player.name), style: displayStyle(32)),
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
@@ -506,8 +505,8 @@ class _ChainList extends StatelessWidget {
               ),
               Text(
                 isStart
-                    ? 'başlangıç'
-                    : 'via ${game.repo.club(link.viaClub!).name}',
+                    ? t('chain.start')
+                    : t('chain.via', {'club': game.repo.club(link.viaClub!).name}),
                 style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
               ),
             ],

@@ -58,7 +58,7 @@ List<List<String>> generateHuntRounds(
       // Aynı ligden en fazla 3 kulüp
       final leagues = <String, int>{};
       for (final c in set) {
-        final lig = repo.club(c).league;
+        final lig = repo.club(c).leagueRaw;
         leagues[lig] = (leagues[lig] ?? 0) + 1;
       }
       if (leagues.values.any((n) => n > 3)) continue;

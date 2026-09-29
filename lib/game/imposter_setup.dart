@@ -2,6 +2,7 @@ import 'dart:math';
 
 import '../data/models.dart';
 import '../data/repository.dart';
+import '../l10n/l10n.dart';
 
 /// Gizli futbolcu: herkesin ipucu verebileceği kadar tanınmış olmalı.
 /// kolay: en az 2 büyük kulüpte oynamış yıldızlar · orta: tanınmışlar · zor: daha az bilinenler
@@ -29,8 +30,8 @@ Player pickImposterSecret(Repository repo, String difficulty,
 /// Sahtekâra verilecek küçük ipucu: mevki ve en tanınmış kulübün ligi
 String imposterHint(Repository repo, Player p) {
   final parts = <String>[
-    if (p.positions.isNotEmpty) 'Mevki: ${p.positions.first}',
-    if (repo.mainClub(p) != null) 'Lig: ${repo.mainClub(p)!.league}',
+    if (p.positions.isNotEmpty) t('imp.hint_pos', {'p': p.positions.first}),
+    if (repo.mainClub(p) != null) t('imp.hint_league', {'l': repo.mainClub(p)!.league}),
   ];
-  return parts.isEmpty ? 'İpucu yok, dikkatle dinle!' : parts.join(' · ');
+  return parts.isEmpty ? t('imp.hint_none') : parts.join(' · ');
 }

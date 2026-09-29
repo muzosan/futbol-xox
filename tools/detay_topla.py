@@ -14,7 +14,7 @@ Kullanım (tools klasöründe, tm_birlestir.py ve tablo_uret.py'den sonra):
 
 Çıktılar:
     data/details.json            -> {oyuncu: {"m": ["CB"], "u": "TR"}}
-    ../assets/data/countries.json -> {ülke kodu: Türkçe ülke adı}
+    ../assets/data/countries.json -> {ülke kodu: {dil: ülke adı}} (8 dil)
 """
 
 import os
@@ -69,6 +69,10 @@ WD_MEVKI = [
 # Birleşik Krallık'ın futbol ülkeleri (ISO kodu yok, bayrak için özel kod)
 UK = {"Q21": "GB-ENG", "Q22": "GB-SCT", "Q25": "GB-WLS", "Q26": "GB-NIR"}
 
+# Wikidata'da ISO kodu sadece "krallık" kaydında olan ülkeler: yaygın adlı kaydı
+# da aynı kodla ekle ki "Hollanda Krallığı" yerine "Hollanda" seçilsin
+EK_ULKELER = {"Q55": "NL"}
+
 # Transfermarkt'ın farklı yazdığı ülke adları
 TM_ULKE = {
     "Türkiye": "TR", "Korea, South": "KR", "Korea, North": "KP",
@@ -82,6 +86,9 @@ TM_ULKE = {
     "St. Kitts & Nevis": "KN", "Moldova": "MD", "Palestine": "PS",
 }
 
+# Uygulamanın dilleri (ülke isimleri bu dillerde yazılır)
+DILLER = ["tr", "en", "es", "pt", "de", "fr", "it", "ar"]
+
 KONTROL = ["Arda Turan", "Mesut Özil", "Gheorghe Hagi", "Virgil van Dijk",
            "Mohamed Salah", "Harry Kane", "Mauro Icardi", "Berke Özer"]
 
@@ -89,7 +96,7 @@ KONTROL = ["Arda Turan", "Mesut Özil", "Gheorghe Hagi", "Virgil van Dijk",
 def ulkeleri_al():
     """ISO kodu olan bütün ülkeler + İngiltere/İskoçya/Galler/K.İrlanda."""
     print("Ülke listesi alınıyor...")
-    uk_values = " ".join(f'(wd:{q} "{k}")' for q, k in UK.items())
+    uk_values = " ".join(f'(wd:{q} "{k}")' for q, k in {**UK, **EK_ULKELER}.items())
     satirlar = sparql(f"""
       SELECT ?c ?kod ?tr ?en WHERE {{
         {{ ?c wdt:P297 ?kod . }} UNION {{ VALUES (?c ?kod) {{ {uk_values} }} }}
@@ -153,6 +160,41 @@ def wd_detaylari(wd_idler):
     return cache
 
 
+MILLI_CACHE = os.path.join(VERI, "cache", "wd_milli_ulke.json")
+A_MILLI_TAKIM = "Q6979593"  # Wikidata: "national association football team" (A takımı)
+
+
+def milli_takim_ulkeleri(wd_idler):
+    """Oyuncunun forma giydiği A milli takımların ülkeleri (100'lük gruplar, önbellekli).
+    "optimizer None" ipucu sorgunun oyuncu listesinden başlamasını sağlar (zaman aşımı olmaz)."""
+    cache = yukle(MILLI_CACHE) if os.path.exists(MILLI_CACHE) else {}
+    eksik = [i for i in wd_idler if i not in cache]
+    if eksik:
+        print(f"Belirsiz uyruk: {len(eksik)} oyuncunun A milli takımı kontrol ediliyor...")
+    for bas in range(0, len(eksik), 100):
+        grup = eksik[bas:bas + 100]
+        values = " ".join(f"wd:{i}" for i in grup)
+        satirlar = sparql(f"""
+          SELECT ?o ?ulke WHERE {{
+            hint:Query hint:optimizer "None" .
+            VALUES ?o {{ {values} }}
+            ?o wdt:P54 ?takim .
+            ?takim wdt:P31 wd:{A_MILLI_TAKIM} .
+            ?takim wdt:P17 ?ulke .
+          }}""")
+        for i in grup:
+            cache[i] = []
+        for r in satirlar:
+            o, u = qid(r["o"]["value"]), qid(r["ulke"]["value"])
+            if u not in cache[o]:
+                cache[o].append(u)
+        kaydet(MILLI_CACHE, cache, kompakt=True)
+        biten = min(bas + 100, len(eksik))
+        if biten % 1000 == 0 or biten == len(eksik):
+            print(f"   {biten}/{len(eksik)}")
+    return cache
+
+
 def wd_mevki_kisalt(etiket):
     etiket = etiket.lower()
     for desen, kisa in WD_MEVKI:
@@ -171,9 +213,11 @@ def main():
     f, okuyucu = csv_oku("players.csv", ["player_id", "position", "sub_position",
                                          "country_of_citizenship"])
     tm = {}
+    tm_dogum = {}
     for r in okuyucu:
         mevki = TM_ALT_MEVKI.get(r["sub_position"]) or TM_MEVKI.get(r["position"])
         tm[r["player_id"]] = (mevki, (r["country_of_citizenship"] or "").strip())
+        tm_dogum[r["player_id"]] = (r.get("country_of_birth") or "").strip()
     f.close()
 
     # 2) Ülkeler
@@ -201,6 +245,26 @@ def main():
         for i, e in etiketleri_al(tum_ulke, ["tr", "en"]).items():
             ulke[i] = {"kod": i, "tr": e.get("tr") or e.get("en", ""), "en": e.get("en", "")}
 
+    # Aynı ülke kodunu taşıyan birden fazla Wikidata kaydı olabilir (ör. NL: "Hollanda"
+    # ve "Hollanda Krallığı"). En kısa adlı (en yaygın kullanılan) kayıt seçilir.
+    en_iyi_kayit = {}
+    for q, u in ulke.items():
+        ad = u["tr"] or u["en"] or q
+        onceki = en_iyi_kayit.get(u["kod"])
+        if onceki is None or len(ad) < len(ulke[onceki]["tr"] or ulke[onceki]["en"] or onceki):
+            en_iyi_kayit[u["kod"]] = q
+
+    # Birden fazla ülkeyle ilişkili (belirsiz) oyuncular: A milli takımına bak
+    belirsiz = []
+    for o in oyuncular:
+        if not o["id"].startswith("Q"):
+            continue
+        d0 = wd.get(o["id"], {"s": [], "v": []})
+        kodlar = {ulke[u]["kod"] for u in d0["s"] + d0["v"] if u in ulke}
+        if len(kodlar) > 1:
+            belirsiz.append(o["id"])
+    milli = milli_takim_ulkeleri(belirsiz)
+
     # 4) Birleştir
     detaylar = {}
     ulke_adlari = {}
@@ -227,8 +291,30 @@ def main():
         # Uyruk
         kod = None
         spor = [u for u in d["s"] if u in ulke]
-        if spor:
-            kod = ulke[spor[0]]["kod"]
+        vatandaslik = {ulke[u]["kod"] for u in d["v"] if u in ulke}
+        if tm_ulke in ad_kod:
+            vatandaslik.add(ad_kod[tm_ulke])
+        dogum = ad_kod.get(tm_dogum.get(tm_id, "")) if tm_id else None
+        # Birden fazla milli takım varsa bugün var olan ülke (ISO kodlu) öne alınır
+        milli_kod = sorted({ulke[u]["kod"] for u in milli.get(o["id"], []) if u in ulke},
+                           key=lambda k: (not re.fullmatch(r"[A-Z]{2}|GB-[A-Z]{3}", k), k))
+        spor_kod = list(dict.fromkeys(ulke[u]["kod"] for u in spor))
+        if milli_kod:
+            # Forma giydiği A milli takım en kesin bilgi (ör. Icardi: Arjantin)
+            kod = milli_kod[0]
+            kaynak["uyruk_a_milli"] += 1
+        elif len(spor_kod) == 1:
+            kod = spor_kod[0]
+            kaynak["uyruk_wd_milli"] += 1
+        elif len(spor_kod) > 1 and dogum in spor_kod:
+            kod = dogum
+            kaynak["uyruk_dogum"] += 1
+        elif len(vatandaslik) > 1 and dogum in vatandaslik:
+            # Çifte vatandaşlıkta doğduğu ülke (ör. Icardi: Arjantin, İtalya değil)
+            kod = dogum
+            kaynak["uyruk_dogum"] += 1
+        elif spor_kod:
+            kod = spor_kod[0]
             kaynak["uyruk_wd_milli"] += 1
         elif tm_ulke and tm_ulke in ad_kod:
             kod = ad_kod[tm_ulke]
@@ -243,13 +329,23 @@ def main():
         if mevkiler or kod:
             detaylar[o["id"]] = {"m": mevkiler, "u": kod}
         if kod and kod not in ulke_adlari:
-            eslesen = next((u for u in ulke.values() if u["kod"] == kod), None)
-            if eslesen:
-                ulke_adlari[kod] = eslesen["tr"] or eslesen["en"]
+            q = en_iyi_kayit.get(kod)
+            if q:
+                ulke_adlari[kod] = ulke[q]["tr"] or ulke[q]["en"]
 
     kaydet(os.path.join(VERI, "details.json"), detaylar, kompakt=True)
+
+    # Ülke isimleri uygulamanın 8 dilinde (Wikidata etiketleri)
+    kod_qid = {kod: en_iyi_kayit[kod] for kod in ulke_adlari if kod in en_iyi_kayit}
+    print(f"{len(kod_qid)} ülkenin 8 dildeki adları alınıyor...")
+    cok_dilli = etiketleri_al(kod_qid.values(), DILLER)
+    ulke_dilleri = {}
+    for kod, q in kod_qid.items():
+        adlar = {d: a for d, a in cok_dilli.get(q, {}).items() if a}
+        adlar.setdefault("tr", ulke_adlari[kod])
+        ulke_dilleri[kod] = adlar
     os.makedirs(CIKTI, exist_ok=True)
-    kaydet(os.path.join(CIKTI, "countries.json"), ulke_adlari, kompakt=True)
+    kaydet(os.path.join(CIKTI, "countries.json"), ulke_dilleri, kompakt=True)
 
     n = len(oyuncular)
     mevkili = sum(1 for d in detaylar.values() if d["m"])
@@ -259,14 +355,20 @@ def main():
     print(f"Mevkisi bilinen   : {mevkili} (%{100 * mevkili // max(n, 1)}) "
           f"· TM {kaynak['mevki_tm']}, Wikidata {kaynak['mevki_wd']}")
     print(f"Uyruğu bilinen    : {uyruklu} (%{100 * uyruklu // max(n, 1)}) "
-          f"· milli takım {kaynak['uyruk_wd_milli']}, TM {kaynak['uyruk_tm']}, "
+          f"· A milli {kaynak['uyruk_a_milli']}, temsil {kaynak['uyruk_wd_milli']}, doğum ülkesi {kaynak['uyruk_dogum']}, TM {kaynak['uyruk_tm']}, "
           f"vatandaşlık {kaynak['uyruk_wd_vatandas']}")
     print(f"Farklı ülke       : {len(ulke_adlari)}")
     print(f"Mevki dağılımı    : " + ", ".join(
         f"{m} {c}" for m, c in Counter(m for d in detaylar.values() for m in d["m"][:1]).most_common()))
 
     print("\nKontrol:")
-    ada_gore = {isim_anahtar(o["ad"]): o["id"] for o in oyuncular}
+    isim_cache = os.path.join(VERI, "cache", "isimler.json")
+    ingilizce = yukle(isim_cache) if os.path.exists(isim_cache) else {}
+    ada_gore = {}
+    for o in oyuncular:
+        for ad in (o["ad"], o.get("en", ""), ingilizce.get(o["id"], "")):
+            if ad:
+                ada_gore.setdefault(isim_anahtar(ad), o["id"])
     for aranan in KONTROL:
         oid = ada_gore.get(isim_anahtar(aranan))
         d = detaylar.get(oid) if oid else None

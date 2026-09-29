@@ -9,6 +9,7 @@ import 'engine/common.dart';
 import 'engine/draft_engine.dart';
 import 'engine/duel_engine.dart' show CardStat, cardStat;
 import 'turn_timer.dart';
+import '../l10n/l10n.dart';
 
 export 'engine/draft_engine.dart';
 
@@ -21,8 +22,7 @@ List<CardStat> draftCriteria(Repository repo) {
 }
 
 /// Ölçütün ekrandaki başlığı: "EN ÇOK GOL", "EN YÜKSEK PİYASA DEĞERİ"...
-String criterionTitle(CardStat s) =>
-    s.money ? 'EN YÜKSEK ${s.label.toUpperCase()}' : 'EN ÇOK ${s.label.toUpperCase()}';
+String criterionTitle(CardStat s) => t('crit.${s.key}');
 
 /// Maç kurulumu: rastgele ölçüt + zorluğa uygun, yeterince aday oyuncusu olan 5 kulüp
 ({String criterion, List<String> clubs}) draftSetup(Repository repo, String difficulty,
